@@ -1,5 +1,5 @@
 # Insurance management application (Internship)
-Insurance Management application is a project in [Cohorent Solutions ʟᴛ](https://www.coherentsolutions.com/careers/lithuania/), which allows for the chosen Java internship students to challenge their skills by creating a backend implementation of an mock-up application. In theory, this application should allow to distribute various insurance related packages between the employees, reducing the tedious workflow for employers.
+Insurance Management application is a project in [Coherent Solutions ʟᴛ](https://www.coherentsolutions.com/careers/lithuania/), which allows for the chosen Java internship students to challenge their skills by creating a backend implementation of an mock-up application. In theory, this application should allow to distribute various insurance related packages between the employees, reducing the tedious workflow for employers.
 ## Project's teamwork 🧑‍🤝‍🧑
 This project uses Scrum framework to manage work and various developments of the chosen Java developer team. The deadline for this project is **6 weeks**.
 ## Building 🛠️
