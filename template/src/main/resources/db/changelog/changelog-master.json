@@ -1,10 +1,10 @@
 {
-    "databaseChangeLog": [
-      {
-        "include": {
-          "file": "db/changelog/changes/user_table.sql"
-        }
+  "databaseChangeLog": [
+    {
+      "includeAll": {
+        "relativeToChangelogFile": true,
+        "path": "changes"
       }
-    ]
-  }
-  
+    }
+  ]
+}
