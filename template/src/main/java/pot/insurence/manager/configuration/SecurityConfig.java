@@ -2,10 +2,12 @@ package pot.insurence.manager.configuration;
 
 import static org.springframework.security.config.Customizer.withDefaults;
 
+import org.springframework.boot.autoconfigure.security.servlet.PathRequest;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.annotation.web.configurers.HeadersConfigurer;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -23,6 +25,13 @@ public class SecurityConfig {
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+        // This is for development purposes only!
+        http.csrf(csrfCustomizer ->
+                csrfCustomizer.ignoringRequestMatchers(PathRequest.toH2Console())
+        );
+        http.headers(customizer ->
+                customizer.frameOptions(HeadersConfigurer.FrameOptionsConfig::disable)
+        );
         http
             .authorizeHttpRequests((authorizeRequests) ->
                 authorizeRequests
