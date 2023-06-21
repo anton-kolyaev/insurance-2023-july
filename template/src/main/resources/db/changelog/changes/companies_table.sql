@@ -1,7 +1,7 @@
 -- liquibase formatted sql
 
 -- changeset dovias:1
-CREATE TABLE `insurance_manager`.`companies` (
+CREATE TABLE `insurance_manager_v1`.`companies` (
     `id` UUID NOT NULL,
     `name` VARCHAR(35) NOT NULL,
     `country_code` VARCHAR(2) NOT NULL,
