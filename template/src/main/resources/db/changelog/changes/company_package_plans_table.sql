@@ -4,9 +4,9 @@
 CREATE TABLE `insurance_manager_v1`.`company_package_plans` (
     `id` UUID NOT NULL,
     `package_id` UUID NOT NULL,
-    `name` VARCHAR(100) NOT NULL,
-    `type` ENUM('DENTAL', 'MEDICAL') NOT NULL,
-    `contributions` DECIMAL(10, 2) NOT NULL,
+    `name` VARCHAR (100) NOT NULL,
+    `type` ENUM ('DENTAL', 'MEDICAL') NOT NULL,
+    `contributions` DECIMAL (10, 2) NOT NULL,
 
     PRIMARY KEY (`id`),
     FOREIGN KEY (`package_id`)

@@ -5,9 +5,9 @@ CREATE TABLE `insurance_manager_v1`.`user_profile_plan_claims` (
     `user_id` UUID NOT NULL,
     `plan_id` UUID NOT NULL,
     `date` DATE NOT NULL,
-    `number` VARCHAR(16) NOT NULL,
-    `amount` DECIMAL(10, 2) NOT NULL,
-    `status` ENUM('APPROVED', 'DECLINED', 'PENDING', 'HOLD') NOT NULL,
+    `number` VARCHAR (16) NOT NULL,
+    `amount` DECIMAL (10, 2) NOT NULL,
+    `status` ENUM ('APPROVED', 'DECLINED', 'PENDING', 'HOLD') NOT NULL,
 
     FOREIGN KEY (`user_id`)
     -- comment: if you're getting syntax error on an IDE on `users` table name,

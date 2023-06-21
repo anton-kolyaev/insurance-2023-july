@@ -4,7 +4,7 @@
 CREATE TABLE `insurance_manager_v1`.`company_plan_packages` (
     `id` UUID NOT NULL,
     `company_id` UUID NOT NULL,
-    `name` VARCHAR(100) NOT NULL,
+    `name` VARCHAR (100) NOT NULL,
     `start_date` DATE NOT NULL,
     `end_date` DATE NOT NULL,
     `payroll_frequency` ENUM ('MONTHLY', 'WEEKLY') NOT NULL,
