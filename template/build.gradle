@@ -1,10 +1,11 @@
 plugins {
 	id 'java'
+	id 'groovy'
 	id 'org.springframework.boot' version '3.1.0'
 	id 'io.spring.dependency-management' version '1.1.0'
 }
 
-group = 'pot.insurence'
+group = 'pot.insurance'
 version = '0.0.1-SNAPSHOT'
 sourceCompatibility = '17'
 
@@ -24,13 +25,33 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-security'
 	implementation 'org.springframework.boot:spring-boot-starter-web'
 	implementation 'org.liquibase:liquibase-core'
+	implementation libs.mapstruct
 	compileOnly 'org.projectlombok:lombok'
 	runtimeOnly 'com.h2database:h2'
+	annotationProcessor libs.mapstruct.processor
 	annotationProcessor 'org.projectlombok:lombok'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 	testImplementation 'org.springframework.security:spring-security-test'
+	testImplementation libs.groovy.all
+	testImplementation libs.spock.core
+	testImplementation 'org.mockito:mockito-core'
+
 }
 
 tasks.named('test') {
 	useJUnitPlatform()
+	testLogging {
+        events 'passed', 'skipped', 'failed'
+    }
+}
+
+sourceSets {
+    test {
+        groovy {
+            srcDirs = ['src/test/groovy']
+        }
+        java {
+            srcDirs = ['src/test/java']
+        }
+    }
 }

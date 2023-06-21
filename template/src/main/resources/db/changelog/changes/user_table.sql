@@ -14,4 +14,3 @@ PRIMARY KEY (`id`),
 UNIQUE (`user_name`),
 UNIQUE(`snn`)
 );
-
