@@ -1,7 +1,7 @@
 -- liquibase formatted sql
 
--- changeset dovias:1
-CREATE TABLE `insurance_manager_v1`.`company_plan_packages` (
+-- changeset dovias:0.0.1
+CREATE TABLE `company_plan_packages` (
     `id` UUID NOT NULL,
     `company_id` UUID NOT NULL,
     `name` VARCHAR (100) NOT NULL,
@@ -13,7 +13,7 @@ CREATE TABLE `insurance_manager_v1`.`company_plan_packages` (
     FOREIGN KEY (`company_id`)
     -- comment: if you're getting syntax error on an IDE on `companies` table name,
     -- comment: ignore it, its due to the fact that the definition is in another file.
-    REFERENCES `insurance_manager_v1`.`companies` (`id`)
+    REFERENCES `companies` (`id`)
     ON DELETE CASCADE ON UPDATE CASCADE
 )
 -- rollback DROP TABLE `company_plan_packages`;

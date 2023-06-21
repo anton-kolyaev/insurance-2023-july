@@ -17,7 +17,6 @@ spring:
         console:
             enabled: true
             path: /admin/db
-
     # Additional settings
     # main:
     #     banner-mode: off
