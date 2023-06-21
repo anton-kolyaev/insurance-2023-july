@@ -1,8 +1,8 @@
 -- DROP SCHEMA IF EXISTS `java_internship`;
-CREATE SCHEMA `java_internship`;
+-- CREATE SCHEMA `java_internship`;
 
 -- DROP TABLE IF EXISTS `users`;
-CREATE TABLE `java_internship`.`users`(
+CREATE TABLE `users`(
 `id` UUID NOT NULL,
 `first_name` VARCHAR(35) NOT NULL,
 `last_name` VARCHAR(35) NOT NULL,

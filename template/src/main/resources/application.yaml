@@ -2,17 +2,18 @@
 # Spring Boot configuration for development environment
 #
 spring:
-    # Liquibase setup for H2 database
+    # Liquibase setup
     liquibase:
-        change-log: classpath:/db/changelog/changelog-master.json
-        url: jdbc:h2:mem:java_internship;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=TRUE
+        change-log: classpath:db/changelog/changelog-master.json
         contexts: test
-        user: sa
-        password: admin
     # H2 database setup
     datasource:
         driver-class-name: org.h2.Driver
+        url: jdbc:h2:mem:java_internship;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=TRUE
+        username: sa
+        password: admin
     h2:
+        # Enable this for development purposes only!
         console:
             enabled: true
             path: /h2-console
