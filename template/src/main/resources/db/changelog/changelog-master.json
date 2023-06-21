@@ -1,9 +1,69 @@
 {
   "databaseChangeLog": [
     {
-      "includeAll": {
+      "include": {
         "relativeToChangelogFile": true,
-        "path": "changes"
+        "file": "changes/database_schema.sql"
+      }
+    },
+    {
+      "include": {
+        "relativeToChangelogFile": true,
+        "file": "changes/companies_table.sql"
+      }
+    },
+    {
+      "include": {
+        "relativeToChangelogFile": true,
+        "file": "changes/company_phones_table.sql"
+      }
+    },
+    {
+      "include": {
+        "relativeToChangelogFile": true,
+        "file": "changes/company_addresses_table.sql"
+      }
+    },
+    {
+      "include": {
+        "relativeToChangelogFile": true,
+        "file": "changes/company_plan_packages_table.sql"
+      }
+    },
+    {
+      "include": {
+        "relativeToChangelogFile": true,
+        "file": "changes/company_package_plans_table.sql"
+      }
+    },
+    {
+      "include": {
+        "relativeToChangelogFile": true,
+        "file": "changes/users_table.sql"
+      }
+    },
+    {
+      "include": {
+        "relativeToChangelogFile": true,
+        "file": "changes/user_profiles_table.sql"
+      }
+    },
+    {
+      "include": {
+        "relativeToChangelogFile": true,
+        "file": "changes/user_profile_addresses_table.sql"
+      }
+    },
+    {
+      "include": {
+        "relativeToChangelogFile": true,
+        "file": "changes/user_profile_roles_table.sql"
+      }
+    },
+    {
+      "include": {
+        "relativeToChangelogFile": true,
+        "file": "changes/user_profile_plan_claims_table.sql"
       }
     }
   ]
