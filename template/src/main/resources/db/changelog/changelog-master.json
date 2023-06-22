@@ -2,14 +2,7 @@
   "databaseChangeLog": [
     {
       "include": {
-        "relativeToChangelogFile": true,
-        "file": "changes/database_schema.sql"
-      }
-    },
-    {
-      "include": {
-        "relativeToChangelogFile": true,
-        "file": "changes/companies_table.sql"
+        "file": "db/changelog/changes/companies_table.sql"
       }
     }
   ]

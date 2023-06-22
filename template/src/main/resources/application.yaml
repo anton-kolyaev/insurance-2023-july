@@ -1,12 +1,8 @@
-# Spring Boot configuration for development environment
-#
 spring:
     # Liquibase setup
     liquibase:
         change-log: classpath:db/changelog/changelog-master.json
         contexts: test
-        user: sa
-        password: admin
     # H2 database setup
     datasource:
         driver-class-name: org.h2.Driver
