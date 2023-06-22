@@ -5,6 +5,10 @@ CREATE TABLE `users` (
     `id` UUID NOT NULL,
     `username` VARCHAR (100) NOT NULL,
     `password` VARCHAR (100) NOT NULL,
+    `privileges` ENUM (
+        'VIEWER',
+        'ADMIN'
+    ) NOT NULL,
 
     PRIMARY KEY (`id`)
 );

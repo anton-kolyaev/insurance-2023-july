@@ -36,7 +36,7 @@ public class SecurityConfig {
         http.authorizeHttpRequests(authorizeRequests ->
             authorizeRequests
                 .requestMatchers("/admin/**").hasRole("ADMIN")
-                .requestMatchers("/v1/echo").hasAnyRole("USER", "ADMIN")
+                .requestMatchers("/v1/echo").hasAnyRole("VIEWER", "ADMIN")
                 .requestMatchers("/**").authenticated()
         )
         .httpBasic(withDefaults());
@@ -51,14 +51,6 @@ public class SecurityConfig {
                         .password("password")
                         .roles("VIEWER")
                         .build();
-
-        UserDetails user =
-                User.withDefaultPasswordEncoder()
-                        .username("user")
-                        .password("password")
-                        .roles("USER")
-                        .build();
-
         UserDetails admin =
                 User.withDefaultPasswordEncoder()
                         .username("admin")
@@ -66,7 +58,7 @@ public class SecurityConfig {
                         .roles("ADMIN", "USER")
                         .build();
 
-        return new InMemoryUserDetailsManager(viewer, user, admin);
+        return new InMemoryUserDetailsManager(viewer, admin);
     }
 
 }
