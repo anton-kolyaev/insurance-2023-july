@@ -1,17 +1,25 @@
 package pot.insurence.manager.service;
 
-import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import pot.insurence.manager.dao.CompanyDAO;
+import pot.insurence.manager.domain.Company;
+import pot.insurence.manager.repository.CompanyRepository;
 import pot.insurence.manager.dto.CompanyDTO;
 
-@AllArgsConstructor
+import java.util.UUID;
+
 @Service
 public class CompanyService {
     @Autowired
-    CompanyDAO companyDAO;
+    CompanyRepository companyRepository;
     public void saveCompany(CompanyDTO companyDTO) {
-        companyDAO.save(companyDTO);
+        Company company = Company.builder()
+                .company_name(companyDTO.getCompany_name())
+                .id(UUID.randomUUID())
+                .country_code(companyDTO.getCountry_code())
+                .email(companyDTO.getEmail())
+                .site(companyDTO.getSite())
+                .build();
+        companyRepository.save(company);
     }
 }
