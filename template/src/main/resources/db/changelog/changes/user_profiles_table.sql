@@ -7,7 +7,7 @@ CREATE TABLE `user_profiles` (
     `last_name` VARCHAR (35) NOT NULL,
     `birthday` DATE NOT NULL,
     `email` VARCHAR (100) NOT NULL,
-    `snn` VARCHAR (20) NOT NULL UNIQUE,
+    `ssn` VARCHAR (20) NOT NULL UNIQUE,
 
     FOREIGN KEY (`user_id`)
     REFERENCES `users` (`id`)
