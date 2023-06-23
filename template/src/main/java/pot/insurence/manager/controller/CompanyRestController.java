@@ -18,7 +18,7 @@ public class CompanyRestController {
     private CompanyService companyService;
 
     @PostMapping("/v1/companies")
-    public ResponseEntity<CompanyDTO> createComment(@RequestBody CompanyDTO companyDTO) {
+    public ResponseEntity<CompanyDTO> createCompany(@RequestBody CompanyDTO companyDTO) {
         companyService.saveCompany(companyDTO);
         return new ResponseEntity<>(companyDTO, HttpStatus.CREATED);
     }

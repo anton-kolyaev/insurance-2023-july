@@ -9,13 +9,14 @@ import lombok.NoArgsConstructor;
 import java.util.UUID;
 
 @Entity
-@Table(name="companies")
+@Table(schema = "java_internship", name="companies")
 @Data
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
 public class Company {
     @Id
+    @Column(name = "id")
     private UUID id;
     @Column(name = "company_name")
     private String company_name;

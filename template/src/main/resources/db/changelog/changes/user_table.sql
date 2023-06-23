@@ -15,3 +15,14 @@ UNIQUE (`user_name`),
 UNIQUE(`snn`)
 );
 
+-- DROP TABLE IF EXISTS `companies`;
+CREATE TABLE `java_internship`.`companies` (
+    `id` UUID NOT NULL,
+    `company_name` VARCHAR (35) NOT NULL,
+    `country_code` VARCHAR (2) NOT NULL,
+    `email` VARCHAR (100) NOT NULL,
+    `site` VARCHAR (100),
+
+    PRIMARY KEY (`id`)
+);
+

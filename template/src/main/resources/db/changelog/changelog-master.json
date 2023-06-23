@@ -2,7 +2,7 @@
   "databaseChangeLog": [
     {
       "include": {
-        "file": "db/changelog/changes/companies_table.sql"
+        "file": "db/changelog/changes/user_table.sql"
       }
     }
   ]
