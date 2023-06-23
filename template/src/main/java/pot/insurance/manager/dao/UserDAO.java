@@ -1,11 +1,10 @@
-package pot.insurence.manager.dao;
+package pot.insurance.manager.dao;
 
 
 import java.util.List;
 import java.util.UUID;
 
-
-import pot.insurence.manager.dto.UserDTO;
+import pot.insurance.manager.dto.UserDTO;
 
 public interface UserDAO {
     
@@ -14,4 +13,8 @@ public interface UserDAO {
     List<UserDTO> getAllUsers();
 
     UserDTO getUserById(UUID id);
+
+    boolean isSsnExist(String ssn);
+
+    boolean isUsernameExist(String username);
 }

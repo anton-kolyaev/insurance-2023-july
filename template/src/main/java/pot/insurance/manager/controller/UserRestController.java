@@ -1,4 +1,4 @@
-package pot.insurence.manager.controller;
+package pot.insurance.manager.controller;
 
 import java.util.UUID;
 
@@ -10,8 +10,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import pot.insurence.manager.dto.UserDTO;
-import pot.insurence.manager.service.UserService;
+import pot.insurance.manager.dto.UserDTO;
+import pot.insurance.manager.service.UserService;
 
 @RestController
 public class UserRestController {
@@ -24,6 +24,13 @@ public class UserRestController {
 
     @PostMapping("/v1/users")
     public ResponseEntity<UserDTO> saveUser(@RequestBody UserDTO userDTO) {
+
+        if(userDTO == null){
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
+        }
+        else if (userService.isSsnExist(userDTO.getSsn()) || userService.isUsernameExist(userDTO.getUser_name())) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
+        }
         UUID uuid = UUID.randomUUID();
         userDTO.setId(uuid);
         UserDTO dbUser = userService.saveUser(userDTO);
@@ -39,7 +46,7 @@ public class UserRestController {
     public ResponseEntity<Object> getUserById(@PathVariable UUID id){
         UserDTO user = userService.getUserById(id);
         if(user == null){
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("User not found! Wrong id - " + id );
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("User not found!");
         }
         return ResponseEntity.status(HttpStatus.OK).body(user);
     }

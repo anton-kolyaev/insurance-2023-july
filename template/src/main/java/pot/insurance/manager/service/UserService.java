@@ -1,9 +1,9 @@
-package pot.insurence.manager.service;
+package pot.insurance.manager.service;
 
 import java.util.List;
 import java.util.UUID;
 
-import pot.insurence.manager.dto.UserDTO;
+import pot.insurance.manager.dto.UserDTO;
 
 public interface UserService {
     
@@ -12,5 +12,10 @@ public interface UserService {
     List<UserDTO> getAllUsers();
 
     UserDTO getUserById(UUID id);
+
+    // is ssn exist checker
+    boolean isSsnExist(String ssn);
     
+    boolean isUsernameExist(String username);
+
 }

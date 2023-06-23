@@ -5,7 +5,7 @@ plugins {
 	id 'io.spring.dependency-management' version '1.1.0'
 }
 
-group = 'pot.insurence'
+group = 'pot.insurance'
 version = '0.0.1-SNAPSHOT'
 sourceCompatibility = '17'
 
@@ -25,13 +25,14 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-security'
 	implementation 'org.springframework.boot:spring-boot-starter-web'
 	implementation 'org.liquibase:liquibase-core'
-	implementation 'org.codehaus.groovy:groovy-all:3.0.9'
+	implementation libs.groovy.all
 	compileOnly 'org.projectlombok:lombok'
 	runtimeOnly 'com.h2database:h2'
 	annotationProcessor 'org.projectlombok:lombok'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 	testImplementation 'org.springframework.security:spring-security-test'
-	testImplementation 'org.spockframework:spock-core:2.0-groovy-3.0'
+	testImplementation libs.spock.core
+	testImplementation 'org.mockito:mockito-core'
 }
 
 tasks.named('test') {
@@ -47,7 +48,7 @@ sourceSets {
             srcDirs = ['src/test/groovy']
         }
         java {
-            srcDirs = ['src/test/java/pot/insurence/manager']
+            srcDirs = ['src/test/java/pot/insurance/manager']
         }
     }
 }

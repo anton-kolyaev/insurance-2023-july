@@ -1,0 +1,9 @@
+[versions]
+springBootVersion = "3.1.0"
+groovyVersion = "3.0.9"
+spockVersion = "2.0-groovy-3.0"
+
+
+[libraries]
+groovy-all = { module = "org.codehaus.groovy:groovy-all", version.ref = "groovyVersion" }
+spock-core = { module = "org.spockframework:spock-core", version.ref = "spockVersion" }

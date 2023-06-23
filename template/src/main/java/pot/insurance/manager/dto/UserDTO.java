@@ -1,4 +1,4 @@
-package pot.insurence.manager.dto;
+package pot.insurance.manager.dto;
 
 import java.util.UUID;
 
@@ -15,7 +15,7 @@ import java.util.Date;
 
 
 @Entity
-@Table(name = "users")
+@Table(name = "users", schema = "java_internship")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
@@ -41,9 +41,8 @@ public class UserDTO {
     @Column(name = "email")
     private String email;
 
-    @Column(name = "snn")
-    private String snn;
+    @Column(name = "ssn")
+    private String ssn;
 
-    
 }
 
