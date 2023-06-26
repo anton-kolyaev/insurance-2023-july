@@ -1,4 +1,4 @@
-package pot.insurence.manager.configuration;
+package pot.insurance.manager.configuration;
 
 import static org.springframework.security.config.Customizer.withDefaults;
 

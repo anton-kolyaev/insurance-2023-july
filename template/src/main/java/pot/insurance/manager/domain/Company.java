@@ -1,4 +1,4 @@
-package pot.insurence.manager.domain;
+package pot.insurance.manager.domain;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;

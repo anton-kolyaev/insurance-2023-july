@@ -1,4 +1,4 @@
-package pot.insurence.manager.dto;
+package pot.insurance.manager.dto;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
