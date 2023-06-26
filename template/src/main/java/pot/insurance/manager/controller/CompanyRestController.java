@@ -1,4 +1,4 @@
-package pot.insurence.manager.controller;
+package pot.insurance.manager.controller;
 
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -7,8 +7,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
-import pot.insurence.manager.dto.CompanyDTO;
-import pot.insurence.manager.service.CompanyService;
+import pot.insurance.manager.dto.CompanyDTO;
+import pot.insurance.manager.service.CompanyService;
 
 @RestController
 @AllArgsConstructor
