@@ -48,7 +48,7 @@ sourceSets {
             srcDirs = ['src/test/groovy']
         }
         java {
-            srcDirs = ['src/test/java/pot/insurance/manager']
+            srcDirs = ['src/test/java']
         }
     }
 }

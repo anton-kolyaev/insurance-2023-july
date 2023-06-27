@@ -3,45 +3,51 @@ package pot.insurance.manager.service;
 
 import java.util.List;
 import java.util.UUID;
+import java.util.Optional;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import jakarta.transaction.Transactional;
-import pot.insurance.manager.dao.UserDAO;
+import pot.insurance.manager.dao.UserRepository;
 import pot.insurance.manager.dto.UserDTO;
 
 @Service
 public class UserServiceImpl implements UserService {
     
-    private UserDAO userDAO;
+    @Autowired
+    private UserRepository userRepository;
 
-    public UserServiceImpl(UserDAO theUserDAO) {
-        userDAO = theUserDAO;
+    public UserServiceImpl(UserRepository theUserRepository) {
+        userRepository = theUserRepository;
     }
     
     @Transactional
     @Override
-    public UserDTO saveUser(UserDTO userDTO) {
-        return userDAO.saveUser(userDTO);
+    public UserDTO save(UserDTO userDTO) {
+        return userRepository.save(userDTO);
     }
     
     @Override
-    public List<UserDTO> getAllUsers(){
-        return userDAO.getAllUsers();
+    public List<UserDTO> findAll(){
+        return userRepository.findAll();
     }
 
     @Override
-    public UserDTO getUserById(UUID id){
-        return userDAO.getUserById(id);
+    public UserDTO findById(UUID id){
+        
+        Optional<UserDTO> userDTO = userRepository.findById(id);
+        UserDTO theUser = null;
+        if(userDTO.isPresent()){
+            
+            theUser = userDTO.get();
+        }
+        else{
+            throw new RuntimeException("User not found for id: " + id);
+        }
+        return theUser;
+        
+
     }
 
-    @Override
-    public boolean isSsnExist(String ssn){
-        return userDAO.isSsnExist(ssn);
-    }
-
-    @Override
-    public boolean isUsernameExist(String username){
-        return userDAO.isUsernameExist(username);
-    }
 }

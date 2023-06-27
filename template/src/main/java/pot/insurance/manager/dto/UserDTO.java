@@ -35,8 +35,8 @@ public class UserDTO {
     @Column(name = "birthday")
     private Date birthday;
 
-    @Column(name = "user_name")
-    private String user_name;
+    @Column(name = "username")
+    private String username;
 
     @Column(name = "email")
     private String email;

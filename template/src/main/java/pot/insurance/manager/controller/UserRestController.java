@@ -2,6 +2,7 @@ package pot.insurance.manager.controller;
 
 import java.util.UUID;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -16,6 +17,7 @@ import pot.insurance.manager.service.UserService;
 @RestController
 public class UserRestController {
     
+    @Autowired
     private UserService userService;
 
     public UserRestController(UserService theUserService) {
@@ -28,23 +30,20 @@ public class UserRestController {
         if(userDTO == null){
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
         }
-        else if (userService.isSsnExist(userDTO.getSsn()) || userService.isUsernameExist(userDTO.getUser_name())) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
-        }
         UUID uuid = UUID.randomUUID();
         userDTO.setId(uuid);
-        UserDTO dbUser = userService.saveUser(userDTO);
+        UserDTO dbUser = userService.save(userDTO);
         return ResponseEntity.status(HttpStatus.CREATED).body(dbUser);
     }
 
     @GetMapping("/v1/users")
-    public ResponseEntity<Object> getAllUsers(){
-        return ResponseEntity.status(HttpStatus.OK).body(userService.getAllUsers());
+    public ResponseEntity<Object> findAllUsers(){
+        return ResponseEntity.status(HttpStatus.OK).body(userService.findAll());
     }
 
     @GetMapping("/v1/users/{id}")
-    public ResponseEntity<Object> getUserById(@PathVariable UUID id){
-        UserDTO user = userService.getUserById(id);
+    public ResponseEntity<Object> findUserById(@PathVariable UUID id){
+        UserDTO user = userService.findById(id);
         if(user == null){
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("User not found!");
         }

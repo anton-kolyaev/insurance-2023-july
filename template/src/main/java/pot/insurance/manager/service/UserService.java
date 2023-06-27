@@ -7,15 +7,11 @@ import pot.insurance.manager.dto.UserDTO;
 
 public interface UserService {
     
-    UserDTO saveUser(UserDTO userDTO);
+    UserDTO save(UserDTO userDTO);
     
-    List<UserDTO> getAllUsers();
+    List<UserDTO> findAll();
 
-    UserDTO getUserById(UUID id);
+    UserDTO findById(UUID id);
 
-    // is ssn exist checker
-    boolean isSsnExist(String ssn);
-    
-    boolean isUsernameExist(String username);
 
 }

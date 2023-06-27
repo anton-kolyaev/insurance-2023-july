@@ -7,11 +7,11 @@ CREATE TABLE `java_internship`.`users`(
 `first_name` VARCHAR(35) NOT NULL,
 `last_name` VARCHAR(35) NOT NULL,
 `birthday` DATE NOT NULL,
-`user_name` VARCHAR(35) NOT NULL,
+`username` VARCHAR(35) NOT NULL,
 `email` VARCHAR(100) NOT NULL,
 `ssn` VARCHAR(20) NOT NULL,
 PRIMARY KEY (`id`),
-UNIQUE (`user_name`),
+UNIQUE (`username`),
 UNIQUE(`ssn`)
 );
 
