@@ -3,13 +3,7 @@
       {
         "include": {
           "relativeToChangelogFile": true,
-        "file": "/changes/user_table.sql"
-      }
-    },
-    {
-      "include": {
-        "relativeToChangelogFile": true,
-        "file": "/changes/user_table_001.sql"
+        "file": "changes/user_table.sql"
       }
     }
   ]
