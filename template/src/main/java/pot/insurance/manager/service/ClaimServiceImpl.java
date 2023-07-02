@@ -40,15 +40,4 @@ public class ClaimServiceImpl implements ClaimService {
         List<Claim> claims = claimRepository.findAll();
         return claims.stream().map(claimMapper::claimToClaimDTO).toList();
     }
-
-    @Override
-    public ClaimDTO findById(UUID id){
-        try {
-            Claim claim = claimRepository.findById(id).get();
-            return claimMapper.claimToClaimDTO(claim);
-        } catch (RuntimeException e) {
-            throw new ClaimNotFoundException("Claim not found by id - " + id);
-        }
-    }
-
 }
