@@ -12,22 +12,27 @@ import lombok.NoArgsConstructor;
 import java.util.Date;
 import java.util.UUID;
 
+
 @Entity
-@Table(schema = "java_internship", name="claims")
+@Table(name = "claims", schema = "java_internship")
 @Data
-@Builder
 @NoArgsConstructor
 @AllArgsConstructor
+@Builder
 public class Claim {
     @Id
-    @Column(name = "id")
+    @Column(columnDefinition = "BINARY(16)")
     private UUID id;
+
     @Column(name = "consumer_name")
     private String consumer_name;
+
     @Column(name = "employer")
     private String employer;
+
     @Column(name = "date")
     private Date date;
+
     @Column(name = "plan")
     private String plan;
 

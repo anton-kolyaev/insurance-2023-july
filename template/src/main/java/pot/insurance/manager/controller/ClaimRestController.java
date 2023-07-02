@@ -11,15 +11,23 @@ import pot.insurance.manager.dto.ClaimDTO;
 import pot.insurance.manager.service.ClaimService;
 
 @RestController
-@AllArgsConstructor
+@RequestMapping("/v1/claims")
 public class ClaimRestController {
 
-    @Autowired
-    private ClaimService claimService;
+    private final ClaimService claimService;
 
-    @PostMapping("/v1/claims")
-    public ResponseEntity<ClaimDTO> createClaim(@RequestBody ClaimDTO claimDTO) {
-        claimService.saveClaim(claimDTO);
-        return new ResponseEntity<>(claimDTO, HttpStatus.CREATED);
+    public ClaimRestController (ClaimService theClaimService) {
+        claimService = theClaimService;
+    }
+
+    @PostMapping()
+    @ResponseStatus(HttpStatus.CREATED)
+    public ClaimDTO saveClaim(@RequestBody ClaimDTO claimDTO) {
+        return claimService.saveClaim(claimDTO);
+    }
+
+    @GetMapping()
+    public Object findAllClaims() {
+        return claimService.findAll();
     }
 }
