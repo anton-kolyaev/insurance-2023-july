@@ -27,6 +27,7 @@ import pot.insurance.manager.entity.Claim;
 import pot.insurance.manager.exception.exeptions.ClaimNotFoundException;
 import pot.insurance.manager.exception.exeptions.ClaimWrongCredentialsInput;
 import pot.insurance.manager.service.ClaimServiceImpl;
+import pot.insurance.manager.status.Status;
 
 @SpringBootTest
 @RunWith(MockitoJUnitRunner.class)
@@ -50,12 +51,11 @@ public class ClaimServiceImplTests {
         ClaimDTO claimDTO = new ClaimDTO();
         Claim claim = new Claim();
             claim.setId(UUID.randomUUID());
-            claim.setFirstName("Sammy");
-            claim.setLastName("Sam");
-            claim.setSsn("123456789");
-            claim.setBirthday(Date.valueOf("1990-01-01"));
-            claim.setEmail("test@test.test");
-            claim.setClaimname("test_sam");
+            claim.setemployer("Test inc.");
+            claim.setDate(Date.valueOf("1990-01-01"));
+            claim.setPlan("Dental");
+            claim.setAmount(123456789);
+            claim.setStatus(); // import status enum of pending
             
 
         when(claimRepository.save(any(Claim.class))).thenReturn(claim);
@@ -73,13 +73,12 @@ public class ClaimServiceImplTests {
     public void testSaveClaimWithDuplicateClaimname(){
         // Arrange
         ClaimDTO claim = new ClaimDTO();
-            claim.setClaimId(UUID.randomUUID());
-            claim.setFirstName("Sammy");
-            claim.setLastName("Sam");
-            claim.setSsn("123456789");
-            claim.setBirthday(Date.valueOf("1990-01-01"));
-            claim.setEmail("test@test.com");
-            claim.setClaimname("test_sam");
+            claim.setId(UUID.randomUUID());
+            claim.setemployer("Test inc.");
+            claim.setDate(Date.valueOf("1990-01-01"));
+            claim.setPlan("Dental");
+            claim.setAmount(123456789);
+            claim.setStatus(); // import status enum of pending
 
         // Act
         when(claimRepository.save(any(Claim.class))).thenThrow(DataIntegrityViolationException.class);
@@ -99,12 +98,11 @@ public class ClaimServiceImplTests {
         ClaimDTO claimDTO = new ClaimDTO();
         Claim claim = new Claim();
             claim.setId(UUID.randomUUID());
-            claim.setFirstName("Sammy");
-            claim.setLastName("Sam");
-            claim.setSsn("123456789");
-            claim.setBirthday(Date.valueOf("1990-01-01"));
-            claim.setEmail("test@test.test");
-            claim.setClaimname("test_sam");
+            claim.setemployer("Test inc.");
+            claim.setDate(Date.valueOf("1990-01-01"));
+            claim.setPlan("Dental");
+            claim.setAmount(123456789);
+            claim.setStatus(); // import status enum of pending
 
         // Act
         when(claimRepository.save(any(Claim.class))).thenReturn(claim).thenReturn(null);
