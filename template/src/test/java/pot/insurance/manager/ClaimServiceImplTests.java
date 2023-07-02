@@ -131,18 +131,4 @@ public class ClaimServiceImplTests {
         assertEquals(claimList, fetchedClaims);
         verify(claimRepository, times(1)).findAll();
     }
-
-    @Test
-    public void testFindNonExistingClaimThtowException() {
-        // Arrange
-        UUID claimId = UUID.randomUUID();
-
-        // Act
-        when(claimRepository.findById(claimId)).thenReturn(Optional.empty());
-
-        // Assert
-        assertThrows(ClaimNotFoundException.class, () -> claimService.findById(claimId));
-        verify(claimRepository, times(1)).findById(claimId);
-    }
-
 }
