@@ -4,22 +4,22 @@ import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import pot.insurance.manager.dto.CompanyDTO;
 import pot.insurance.manager.service.CompanyService;
 
 @RestController
 @AllArgsConstructor
+@RequestMapping("/v1/companies")
 public class CompanyRestController {
 
     @Autowired
     private CompanyService companyService;
 
-    @PostMapping("/v1/companies")
-    public ResponseEntity<CompanyDTO> createCompany(@RequestBody CompanyDTO companyDTO) {
-        companyService.saveCompany(companyDTO);
-        return new ResponseEntity<>(companyDTO, HttpStatus.CREATED);
+    @PostMapping
+    @ResponseStatus(HttpStatus.CREATED)
+    public CompanyDTO createCompany(@RequestBody CompanyDTO companyDTO) {
+        CompanyDTO response = companyService.saveCompany(companyDTO);
+        return response;
     }
 }

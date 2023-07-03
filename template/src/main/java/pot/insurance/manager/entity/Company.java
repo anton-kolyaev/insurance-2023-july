@@ -1,4 +1,4 @@
-package pot.insurance.manager.domain;
+package pot.insurance.manager.entity;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -19,9 +19,9 @@ public class Company {
     @Column(name = "id")
     private UUID id;
     @Column(name = "company_name")
-    private String company_name;
+    private String companyName;
     @Column(name = "country_code")
-    private String country_code;
+    private String countryCode;
     @Column(name = "email")
     private String email;
     @Column(name = "site")

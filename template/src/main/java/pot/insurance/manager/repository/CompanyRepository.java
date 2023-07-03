@@ -1,10 +1,12 @@
 package pot.insurance.manager.repository;
 
-import org.springframework.data.repository.CrudRepository;
-import pot.insurance.manager.domain.Company;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
+import pot.insurance.manager.entity.Company;
 
 import java.util.UUID;
 
-public interface CompanyRepository extends CrudRepository<Company, UUID> {
+@Repository
+public interface CompanyRepository extends JpaRepository<Company, UUID> {
 
 }

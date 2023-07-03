@@ -10,10 +10,12 @@ import java.util.UUID;
 
 @Data
 @Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class CompanyDTO {
     private UUID id;
-    private String company_name;
-    private String country_code;
+    private String companyName;
+    private String countryCode;
     private String email;
     private String site;
 }

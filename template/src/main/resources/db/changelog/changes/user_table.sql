@@ -1,3 +1,5 @@
+-- liquibase formatted sql
+
 -- DROP SCHEMA IF EXISTS `java_internship`;
 CREATE SCHEMA `java_internship`;
 
@@ -14,6 +16,7 @@ PRIMARY KEY (`id`),
 UNIQUE (`user_name`),
 UNIQUE(`snn`)
 );
+-- rollback DROP TABLE `java_internship`.`users`;
 
 -- DROP TABLE IF EXISTS `companies`;
 CREATE TABLE `java_internship`.`companies` (
@@ -25,4 +28,4 @@ CREATE TABLE `java_internship`.`companies` (
 
     PRIMARY KEY (`id`)
 );
-
+-- rollback DROP TABLE `java_internship`.`companies`;
