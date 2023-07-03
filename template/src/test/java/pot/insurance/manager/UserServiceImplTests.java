@@ -49,7 +49,7 @@ public class UserServiceImplTests {
         // Arrange
         UserDTO userDTO = new UserDTO();
         User user = new User();
-            user.setUserId(UUID.randomUUID());
+            user.setId(UUID.randomUUID());
             user.setFirstName("Sammy");
             user.setLastName("Sam");
             user.setSsn("123456789");
@@ -65,7 +65,7 @@ public class UserServiceImplTests {
 
         // Assert
         assertNotNull(savedUser);
-        assertEquals(user.getUserId(), savedUser.getUserId());
+        assertEquals(user.getId(), savedUser.getUserId());
         verify(userRepository, times(1)).save(any(User.class));
     }
     
@@ -98,7 +98,7 @@ public class UserServiceImplTests {
         // Arrange
         UserDTO userDTO = new UserDTO();
         User user = new User();
-            user.setUserId(UUID.randomUUID());
+            user.setId(UUID.randomUUID());
             user.setFirstName("Sammy");
             user.setLastName("Sam");
             user.setSsn("123456789");
@@ -112,7 +112,7 @@ public class UserServiceImplTests {
         UserDTO savedUser2 = userService.save(userDTO);
 
         // Assert
-        assertEquals(user.getUserId(), savedUser1.getUserId());
+        assertEquals(user.getId(), savedUser1.getUserId());
         assertNull(savedUser2);
         verify(userRepository, times(2)).save(any(User.class));
     }
@@ -137,7 +137,7 @@ public class UserServiceImplTests {
         // Arrange
         UUID userId = UUID.randomUUID();
         User user = new User();
-            user.setUserId(userId);
+            user.setId(userId);
             user.setFirstName("Sammy");
             user.setLastName("Sam");
             user.setSsn("123456789");
@@ -145,15 +145,15 @@ public class UserServiceImplTests {
             user.setEmail("test@test.test");
             user.setUsername("test_sam");
 
-        when(userRepository.findById(userId)).thenReturn(Optional.of(user));
+        when(userRepository.findByIdNotDeletedUser(userId, false)).thenReturn(Optional.of(user));
 
         // Act
         UserDTO fetchedUser = userService.findById(userId);
 
         // Assert
         assertNotNull(fetchedUser);
-        assertEquals(user.getUserId(), fetchedUser.getUserId());
-        verify(userRepository, times(1)).findById(userId);
+        assertEquals(user.getId(), fetchedUser.getUserId());
+        verify(userRepository, times(1)).findByIdNotDeletedUser(userId, false);
     }
 
     @Test
@@ -162,11 +162,11 @@ public class UserServiceImplTests {
         UUID userId = UUID.randomUUID();
 
         // Act
-        when(userRepository.findById(userId)).thenReturn(Optional.empty());
+        when(userRepository.findByIdNotDeletedUser(userId, false)).thenReturn(Optional.empty());
 
         // Assert
         assertThrows(UserNotFoundException.class, () -> userService.findById(userId));
-        verify(userRepository, times(1)).findById(userId);
+        verify(userRepository, times(1)).findByIdNotDeletedUser(userId, false);
     }
 
     @Test
@@ -175,7 +175,7 @@ public class UserServiceImplTests {
         UserDTO userDTO = new UserDTO();
         UUID userId = UUID.randomUUID();
         User user = new User();
-            user.setUserId(userId);
+            user.setId(userId);
             user.setFirstName("Sammy");
             user.setLastName("Sam");
             user.setSsn("123456789");
@@ -185,13 +185,13 @@ public class UserServiceImplTests {
             user.setDeletionStatus(false);
         
         // Act
-        when(userRepository.findById(userId)).thenReturn(Optional.of(user));
+        when(userRepository.findByIdNotDeletedUser(userId, false)).thenReturn(Optional.of(user));
         when(userRepository.save(any(User.class))).thenReturn(user);
         UserDTO updatedUser = userService.update(userId, userDTO);
 
         // Assert
         assertEquals(userId, updatedUser.getUserId());
-        verify(userRepository, times(1)).findById(userId);
+        verify(userRepository, times(1)).findByIdNotDeletedUser(userId, false);
         verify(userRepository, times(1)).save(any(User.class));
         
     }
@@ -203,11 +203,11 @@ public class UserServiceImplTests {
         UUID userId = UUID.randomUUID();
 
         // Act
-        when(userRepository.findById(userId)).thenReturn(Optional.empty());
+        when(userRepository.findByIdNotDeletedUser(userId, false)).thenReturn(Optional.empty());
 
         // Assert
         assertThrows(UserNotFoundException.class, () -> userService.update(userId, userDTO));
-        verify(userRepository, times(1)).findById(userId);
+        verify(userRepository, times(1)).findByIdNotDeletedUser(userId, false);
         verify(userRepository, times(0)).save(any(User.class));
     }
 
@@ -217,15 +217,15 @@ public class UserServiceImplTests {
         UUID id = UUID.randomUUID();
         UserDTO userDTO = new UserDTO();
         User user = new User();
-        user.setUserId(id);
+        user.setId(id);
         
         // Act
-        when(userRepository.findById(id)).thenReturn(Optional.of(user));
+        when(userRepository.findByIdNotDeletedUser(id, false)).thenReturn(Optional.of(user));
         when(userRepository.save(user)).thenThrow(DataIntegrityViolationException.class);
 
         // Assert
         assertThrows(UserWrongCredentialsInput.class, () -> userService.update(id, userDTO));
-        verify(userRepository, times(1)).findById(id);
+        verify(userRepository, times(1)).findByIdNotDeletedUser(id, false);
         verify(userRepository, times(1)).save(user);
     }
 
@@ -234,7 +234,7 @@ public class UserServiceImplTests {
         // Arrange
         UUID userId = UUID.randomUUID();
         User user = new User();
-            user.setUserId(userId);
+            user.setId(userId);
             user.setFirstName("Sammy");
             user.setLastName("Sam");
             user.setSsn("123456789");
@@ -244,14 +244,14 @@ public class UserServiceImplTests {
             user.setDeletionStatus(false);
 
         // Act
-        when(userRepository.findById(userId)).thenReturn(Optional.of(user));
+        when(userRepository.findByIdNotDeletedUser(userId, false)).thenReturn(Optional.of(user));
         when(userRepository.save(user)).thenReturn(user);
         UserDTO result = userService.softDeleteById(userId);
 
         // Assert
         assertEquals(userId, result.getUserId());
         assertTrue(result.isDeletionStatus());
-        verify(userRepository, times(1)).findById(userId);
+        verify(userRepository, times(1)).findByIdNotDeletedUser(userId, false);
         verify(userRepository, times(1)).save(user);
     }
 
@@ -261,11 +261,11 @@ public class UserServiceImplTests {
         UUID id = UUID.randomUUID();
 
         // Act
-        when(userRepository.findById(id)).thenReturn(Optional.empty());
+        when(userRepository.findByIdNotDeletedUser(id, false)).thenReturn(Optional.empty());
 
         // Assert
         assertThrows(UserNotFoundException.class, () -> userService.softDeleteById(id));
-        verify(userRepository, times(1)).findById(id);
+        verify(userRepository, times(1)).findByIdNotDeletedUser(id, false);
         verify(userRepository, never()).save(any());
     }
 }

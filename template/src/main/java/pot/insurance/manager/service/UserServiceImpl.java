@@ -28,7 +28,7 @@ public class UserServiceImpl implements UserService {
     public UserDTO save(UserDTO userDTO) {
         try {
             User user = userMapper.userDTOToUser(userDTO);
-            user.setUserId(UUID.randomUUID());
+            user.setId(UUID.randomUUID());
             return userMapper.userToUserDTO(userRepository.save(user));
         } catch (DataIntegrityViolationException e) {
             throw new UserWrongCredentialsInput(e.getMessage());
@@ -38,25 +38,23 @@ public class UserServiceImpl implements UserService {
     @Override
     public List<UserDTO> findAll(){
         List<User> users = userRepository.findAll();
-        return users.stream().map(userMapper::userToUserDTO).toList();
+        return users.stream().filter(user -> !user.isDeletionStatus()) .map(userMapper::userToUserDTO).toList();
     }
 
     @Override
     public UserDTO findById(UUID id){
-        try {
-            User user = userRepository.findById(id).get();
-            return userMapper.userToUserDTO(user);
-        } catch (RuntimeException e) {
-            throw new UserNotFoundException("User not found by id - " + id);
-        }
-    }
+        User user = userRepository.findByIdNotDeletedUser(id, false)
+            .orElseThrow(() -> new UserNotFoundException("User not found by id - " + id));
+        return userMapper.userToUserDTO(user);
+}
 
     @Override
     public UserDTO update(UUID id, UserDTO userDTO) {
         try {
-            User user = userRepository.findById(id).orElseThrow(() -> new UserNotFoundException("User not found by id - " + id));
+            User user = userRepository.findByIdNotDeletedUser(id, false)
+                .orElseThrow(() -> new UserNotFoundException("User not found by id - " + id));
             user = userMapper.userDTOToUser(userDTO);
-            user.setUserId(id);
+            user.setId(id);
             return userMapper.userToUserDTO(userRepository.save(user));
         } catch (DataIntegrityViolationException e) {
             throw new UserWrongCredentialsInput(e.getMessage());
@@ -65,13 +63,11 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserDTO softDeleteById(UUID id){
-        try {
-            User user = userRepository.findById(id).get();
-            user.setDeletionStatus(true);
-            return userMapper.userToUserDTO(userRepository.save(user));
-        } catch (RuntimeException e) {
-            throw new UserNotFoundException("User not found by id - " + id);
-        }
+        User user = userRepository.findByIdNotDeletedUser(id, false)
+            .orElseThrow(() -> new UserNotFoundException("User not found by id - " + id));
+        user.setDeletionStatus(true);
+        return userMapper.userToUserDTO(userRepository.save(user));
+        
     }
 
 }

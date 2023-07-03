@@ -44,5 +44,6 @@ public class UserRestExceptionHandler {
         return new ResponseEntity<>(error, HttpStatus.BAD_REQUEST);
     }
 }
+
     
 }
