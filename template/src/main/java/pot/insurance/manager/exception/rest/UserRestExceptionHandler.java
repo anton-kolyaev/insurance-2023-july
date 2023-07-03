@@ -23,6 +23,7 @@ public class UserRestExceptionHandler {
 
     @ExceptionHandler(UserWrongCredentialsInput.class)
     public ResponseEntity<UserErrorResponse> handleException(UserWrongCredentialsInput exc){
+    // TODO: TechDept - This is not the best way to handle this exception. decouple the business logic from the third-party message and instead implement a more reliable solution.
     if (exc.getMessage().contains("USERNAME") && exc.getMessage().contains("Unique index or primary key violation")) {
         UserErrorResponse error = new UserErrorResponse();
         error.setStatus(409);

@@ -22,7 +22,7 @@ public class User {
 
     @Id
     @Column(columnDefinition = "BINARY(16)")
-    private UUID id;
+    private UUID userId;
 
     @Column(name = "first_name")
     private String firstName;
@@ -41,5 +41,8 @@ public class User {
 
     @Column(name = "ssn")
     private String ssn;
+
+    @Column(name = "deletion_status")
+    private boolean deletionStatus;
 
 }

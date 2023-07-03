@@ -13,5 +13,7 @@ public interface UserService {
 
     UserDTO findById(UUID id);
 
+    UserDTO update(UUID id, UserDTO userDTO);
 
+    UserDTO softDeleteById(UUID id);
 }

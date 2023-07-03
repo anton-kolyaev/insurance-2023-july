@@ -22,6 +22,7 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
+
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import jakarta.transaction.Transactional;
@@ -48,9 +49,9 @@ public class UserIntegrationTests {
 
         @Before
         public void setup() {
-            MockitoAnnotations.openMocks(this);
-            userService = mock(UserService.class);
-            mockMvc = MockMvcBuilders.standaloneSetup(new UserRestController(userService)).build();
+                MockitoAnnotations.openMocks(this);
+                userService = mock(UserService.class);
+                mockMvc = MockMvcBuilders.standaloneSetup(new UserRestController(userService)).build();
         }
 
         @Test
@@ -58,13 +59,13 @@ public class UserIntegrationTests {
 
         // Arrange
         UserDTO user = new UserDTO();
-            user.setUserId(UUID.randomUUID());
-            user.setFirstName("Sammy");
-            user.setLastName("Sam");
-            user.setSsn("123456789");
-            user.setBirthday(Date.valueOf("1990-01-01"));
-            user.setEmail("test@test.test");
-            user.setUsername("test_sam");
+                user.setUserId(UUID.randomUUID());
+                user.setFirstName("Sammy");
+                user.setLastName("Sam");
+                user.setSsn("123456789");
+                user.setBirthday(Date.valueOf("1990-01-01"));
+                user.setEmail("test@test.test");
+                user.setUsername("test_sam");
 
         // Act
         when(userService.save(any(UserDTO.class))).thenReturn(user);
@@ -106,13 +107,13 @@ public class UserIntegrationTests {
 
         // Arrange
         UserDTO user1 = new UserDTO();
-            user1.setUserId(UUID.randomUUID());
-            user1.setFirstName("Kenny");
-            user1.setLastName("Martin");
-            user1.setSsn("123456789");
-            user1.setBirthday(Date.valueOf("1990-01-01"));
-            user1.setEmail("test@test.com");
-            user1.setUsername("test_kenny");
+                user1.setUserId(UUID.randomUUID());
+                user1.setFirstName("Kenny");
+                user1.setLastName("Martin");
+                user1.setSsn("123456789");
+                user1.setBirthday(Date.valueOf("1990-01-01"));
+                user1.setEmail("test@test.com");
+                user1.setUsername("test_kenny");
 
         UserDTO user2 = new UserDTO();
                 user2.setUserId(UUID.randomUUID());
@@ -170,7 +171,7 @@ public class UserIntegrationTests {
         when(userService.findById(id)).thenReturn(user);
         
         // Assert
-        mockMvc.perform(get("/v1/users/{id}", user.getUserId() ))
+        mockMvc.perform(get("/v1/users/{userId}", user.getUserId() ))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
                 .andExpect(jsonPath("$.userId", is(user.getUserId().toString())))
@@ -193,10 +194,78 @@ public class UserIntegrationTests {
         // Act
         when(userService.findById(id)).thenThrow(new UserNotFoundException("User not found by id: " + id));
         // Assert
-        mockMvc.perform(get("/users/{user_id}", id)
+        mockMvc.perform(get("/users/{userId}", id)
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isNotFound());
         
         verify(userService, never()).findById(id);
+        }
+
+        @Test
+        public void testUpdateUser() throws Exception {
+        // Arrange
+        UUID userId = UUID.randomUUID();
+        UserDTO userBeforeUpdate = new UserDTO();
+                userBeforeUpdate.setUserId(userId);
+                userBeforeUpdate.setFirstName("Sammy");
+                userBeforeUpdate.setLastName("Sam");
+                userBeforeUpdate.setSsn("123456789");
+                userBeforeUpdate.setBirthday(Date.valueOf("1990-01-01"));
+                userBeforeUpdate.setEmail("test@test.test");
+                userBeforeUpdate.setUsername("test_sam");
+        
+        UserDTO updatedUserDTO = new UserDTO();
+                updatedUserDTO.setUserId(userId);
+                updatedUserDTO.setFirstName("James");
+                updatedUserDTO.setLastName("Json");
+                updatedUserDTO.setSsn("12345789");
+                updatedUserDTO.setBirthday(Date.valueOf("1990-01-01"));
+                updatedUserDTO.setEmail("test@test.test");
+                updatedUserDTO.setUsername("test_james");
+
+        // Act
+        when(userService.update(eq(userId), any(UserDTO.class))).thenReturn(updatedUserDTO);
+
+        // Assert
+        mockMvc.perform(put("/v1/users/{userId}", userId)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(new ObjectMapper().writeValueAsString(userBeforeUpdate)))
+                .andExpect(status().isOk())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+                .andExpect(jsonPath("$.userId", is(updatedUserDTO.getUserId().toString())))
+                .andExpect(jsonPath("$.firstName", is(updatedUserDTO.getFirstName())))
+                .andExpect(jsonPath("$.lastName", is(updatedUserDTO.getLastName())))
+                .andExpect(jsonPath("$.ssn", is(updatedUserDTO.getSsn())))
+                .andExpect(jsonPath("$.birthday", is(updatedUserDTO.getBirthday().getTime())))
+                .andExpect(jsonPath("$.email", is(updatedUserDTO.getEmail())))
+                .andExpect(jsonPath("$.username", is(updatedUserDTO.getUsername())));
+        
+        verify(userService, times(1)).update(eq(userId), any(UserDTO.class));
+        }
+
+        @Test
+        public void testDeleteUser() throws Exception {
+         // Arrange
+        UUID userId = UUID.randomUUID();
+        UserDTO beforeDeletionUser = new UserDTO();
+                beforeDeletionUser.setUserId(userId);
+                beforeDeletionUser.setDeletionStatus(false);
+        UserDTO deletedUser = new UserDTO();
+                deletedUser.setUserId(userId);
+                deletedUser.setDeletionStatus(true);
+
+        // Act
+        when(userService.softDeleteById(userId)).thenReturn(deletedUser);
+
+        // Assert
+        mockMvc.perform(delete("/v1/users/{userId}", userId)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(new ObjectMapper().writeValueAsString(beforeDeletionUser)))
+                .andExpect(status().isOk())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+                .andExpect(jsonPath("$.userId", is(deletedUser.getUserId().toString())))
+                .andExpect(jsonPath("$.deletionStatus", is(true)));
+
+        verify(userService, times(1)).softDeleteById(userId);
         }
 }

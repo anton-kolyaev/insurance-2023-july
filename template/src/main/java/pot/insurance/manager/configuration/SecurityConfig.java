@@ -35,6 +35,8 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.GET ,"/v1/users").hasRole("ADMIN")
                         .requestMatchers(HttpMethod.POST, "/v1/users").hasRole("ADMIN")
                         .requestMatchers(HttpMethod.GET ,"/v1/users/{userId}").hasRole("ADMIN")
+                        .requestMatchers(HttpMethod.PUT ,"/v1/users/{userId}").hasRole("ADMIN")
+                        .requestMatchers(HttpMethod.DELETE ,"/v1/users/{userId}").hasRole("ADMIN")
                         
                         // config for h2 console
                         .requestMatchers(PathRequest.toH2Console()).permitAll()

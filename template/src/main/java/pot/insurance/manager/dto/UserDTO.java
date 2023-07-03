@@ -22,6 +22,7 @@ public class UserDTO {
     private String username;
     private String email;
     private String ssn;
+    private boolean deletionStatus;
 
 }
 

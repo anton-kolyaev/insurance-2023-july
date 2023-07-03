@@ -137,4 +137,45 @@ public class UserRestControllerTests {
         assertNull(result);
         verify(userService, times(1)).findById(userId);
     }
+
+    @Test
+    public void testUpdateUser_Success() {
+        // Arrange
+        UUID userId = UUID.randomUUID();
+        UserDTO userBeforeUpdate = new UserDTO();
+        UserDTO updatedUser = new UserDTO();
+            updatedUser.setUserId(UUID.randomUUID());
+            updatedUser.setFirstName("Sammy");
+            updatedUser.setLastName("Sam");
+            updatedUser.setSsn("123456789");
+            updatedUser.setBirthday(Date.valueOf("1990-01-01"));
+            updatedUser.setEmail("test@test.test");
+            updatedUser.setUsername("test_sam");
+
+        // Act
+        when(userService.update(userId, userBeforeUpdate)).thenReturn(updatedUser);
+        Object result = userRestController.updateUser(userId, userBeforeUpdate);
+
+        // Assert
+        assertEquals(updatedUser, result);
+        verify(userService, times(1)).update(any(UUID.class), any(UserDTO.class));
+    }
+
+    @Test
+    public void testDeleteUserById_Success() {
+        // Arrange
+        UUID userId = UUID.randomUUID();
+        UserDTO deletedUserDTO = new UserDTO();
+        deletedUserDTO.setUserId(userId);
+        deletedUserDTO.setDeletionStatus(true);
+
+        when(userService.softDeleteById(userId)).thenReturn(deletedUserDTO);
+
+        // Act
+        Object result = userRestController.deleteUserById(userId);
+
+        // Assert
+        assertEquals(deletedUserDTO, result);
+        verify(userService, times(1)).softDeleteById(userId);
+    }
 }
