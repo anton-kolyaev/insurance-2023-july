@@ -5,25 +5,29 @@ spring:
     # Liquibase setup
     liquibase:
         change-log: classpath:db/changelog/changelog-master.json
+        # use "test" context to enable test changelogs!
         contexts: test
+        test-rollback-on-update: on
+
     # H2 database setup
     datasource:
         driver-class-name: org.h2.Driver
-        url: jdbc:h2:mem:java_internship;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=TRUE
-        username: sa
-        password: admin
-    jpa:
-        database-platform: org.hibernate.dialect.H2Dialect
-        hibernate:
-            ddl-auto: update
+        url: "jdbc:h2:mem:database;\
+              DB_CLOSE_DELAY=-1;\
+              DB_CLOSE_ON_EXIT=TRUE;\
+              INIT=CREATE SCHEMA IF NOT EXISTS `insurance_manager`\\;\
+                   SET SCHEMA `insurance_manager`"
+        username: admin
+        password: password
     h2:
-        # Enable this for development purposes only!
+        # Enable this to enable debug H2 console web application.
+        # (this also unlocks debug controllers which are protected)
         console:
             enabled: true
-            path: /h2-console
+            path: /debug/db
+
     # Additional settings
     # main:
     #     banner-mode: off
     # jpa:
     #     open-in-view: false
-    
