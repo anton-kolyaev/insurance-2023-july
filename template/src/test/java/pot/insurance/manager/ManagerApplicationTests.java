@@ -9,5 +9,5 @@ class ManagerApplicationTests {
 	@Test
 	void contextLoads() {
 	}
-
+	
 }

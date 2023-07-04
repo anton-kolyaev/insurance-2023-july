@@ -1,7 +1,7 @@
--- DROP SCHEMA IF EXISTS `java_internship`;
+-- liquibase formatted sql
+-- changeset dzmitry.papkou:0.0.0
 CREATE SCHEMA `java_internship`;
 
--- DROP TABLE IF EXISTS `users`;
 CREATE TABLE `java_internship`.`users`(
 `id` UUID NOT NULL,
 `first_name` VARCHAR(35) NOT NULL,
@@ -14,14 +14,12 @@ PRIMARY KEY (`id`),
 UNIQUE (`user_name`),
 UNIQUE(`snn`)
 );
+-- rollback DROP TABLE `java_internship`.`users`;
+-- rollback DROP SCHEMA `java-internship`;
 
--- DROP TABLE IF EXISTS `java_internship`.`companies`;
-CREATE TABLE `java_internship`.`companies` (
-    `id` UUID NOT NULL,
-    `company_name` VARCHAR (35) NOT NULL,
-    `country_code` VARCHAR (2) NOT NULL,
-    `email` VARCHAR (100) NOT NULL,
-    `site` VARCHAR (100),
+-- changeset dzmitry.papkou:0.0.1
+ALTER TABLE IF EXISTS `java_internship`.`users`
+ALTER COLUMN `user_name` RENAME TO `username`;
 
-    PRIMARY KEY (`id`)
-);
+ALTER TABLE IF EXISTS `java_internship`.`users`
+ALTER COLUMN `snn` RENAME TO `ssn`;

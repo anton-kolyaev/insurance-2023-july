@@ -1,63 +1,72 @@
 package pot.insurance.manager.configuration;
 
-import static org.springframework.security.config.Customizer.withDefaults;
-
+import org.springframework.boot.autoconfigure.security.servlet.PathRequest;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
+import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.annotation.web.configurers.HeadersConfigurer;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
-
-/**
- * Attention: This is a security configuration ONLY for quick start and development purposes. It is
- * not secure and should NOT be used in production.
- */
 
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig {
+        @Bean
+        public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
 
-    @Bean
-    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-        http
-                .authorizeHttpRequests((authorizeRequests) ->
-                        authorizeRequests
-                                .requestMatchers("/admin/**").hasRole("ADMIN")
-                                .requestMatchers("/v1/echo").hasAnyRole("USER", "ADMIN")
-                                .requestMatchers("/**").authenticated()
-                )
-                .httpBasic(withDefaults());
-        return http.build();
-    }
 
-    @Bean
-    public UserDetailsService userDetailsService() {
-        UserDetails viewer =
-                User.withDefaultPasswordEncoder()
-                        .username("viewer")
-                        .password("password")
-                        .roles("VIEWER")
-                        .build();
+                http.authorizeHttpRequests(configurer ->
+                configurer
+                        .requestMatchers("/admin/**").hasRole("ADMIN")
+                        .requestMatchers("/v1/echo").hasAnyRole("USER", "ADMIN")
+                        .requestMatchers("/**").authenticated()
 
-        UserDetails user =
-                User.withDefaultPasswordEncoder()
-                        .username("user")
-                        .password("password")
-                        .roles("USER")
-                        .build();
+                        // config for user
+                        .requestMatchers(HttpMethod.GET ,"/v1/users").hasRole("ADMIN")
+                        .requestMatchers(HttpMethod.POST, "/v1/users").hasRole("ADMIN")
+                        .requestMatchers(HttpMethod.GET ,"/v1/users/{userId}").hasRole("ADMIN")
 
-        UserDetails admin =
-                User.withDefaultPasswordEncoder()
-                        .username("admin")
-                        .password("password")
-                        .roles("ADMIN", "USER")
-                        .build();
+                        // config for h2 console
+                        .requestMatchers(PathRequest.toH2Console()).permitAll()
+                );
 
-        return new InMemoryUserDetailsManager(viewer, user, admin);
-    }
+                http.httpBasic(Customizer.withDefaults());
+                http.csrf(csrfCustomizer ->
+                        csrfCustomizer.disable());
 
+                http.headers(headersCustomizer ->
+                        headersCustomizer.frameOptions(HeadersConfigurer.FrameOptionsConfig::sameOrigin)
+                );
+
+                return http.build();
+        }
+
+        @Bean
+        public InMemoryUserDetailsManager userDetailsManager() {
+
+        UserDetails admin = User.builder()
+                .username("admin")
+                .password("{bcrypt}$2a$10$FzKgkghitNLmmWGWmDOD/uENyAn0fZRuRmi75uEQECFp3mmrhbN/C") // password: password
+                .roles("ADMIN")
+                .build();
+
+        UserDetails viewer = User.builder()
+                .username("viewer")
+                .password("{bcrypt}$2a$10$FzKgkghitNLmmWGWmDOD/uENyAn0fZRuRmi75uEQECFp3mmrhbN/C") // password: password
+                .roles("VIEWER")
+                .build();
+
+        UserDetails user = User.builder()
+                .username("user")
+                .password("{bcrypt}$2a$10$FzKgkghitNLmmWGWmDOD/uENyAn0fZRuRmi75uEQECFp3mmrhbN/C") // password: password
+                .roles( "USER")
+                .build();
+
+        return new InMemoryUserDetailsManager(admin, viewer, user);
+        }
 }
