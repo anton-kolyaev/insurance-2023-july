@@ -36,3 +36,4 @@ ADD COLUMN `deletion_status` BOOLEAN NOT NULL DEFAULT FALSE;
 
 -- rollback ALTER TABLE IF EXISTS `java_internship`.`users`
 -- rollback DROP COLUMN `deletion_status`;
+

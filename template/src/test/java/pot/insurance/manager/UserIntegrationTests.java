@@ -29,6 +29,7 @@ import jakarta.transaction.Transactional;
 import pot.insurance.manager.controller.UserRestController;
 import pot.insurance.manager.dto.UserDTO;
 import pot.insurance.manager.exception.user.exceptions.UserNotFoundException;
+
 import pot.insurance.manager.service.UserService;
 
 
@@ -49,9 +50,11 @@ public class UserIntegrationTests {
 
         @Before
         public void setup() {
+
                 MockitoAnnotations.openMocks(this);
                 userService = mock(UserService.class);
                 mockMvc = MockMvcBuilders.standaloneSetup(new UserRestController(userService)).build();
+
         }
 
         @Test
@@ -66,6 +69,7 @@ public class UserIntegrationTests {
                 user.setBirthday(Date.valueOf("1990-01-01"));
                 user.setEmail("test@test.test");
                 user.setUsername("test_sam");
+
 
         // Act
         when(userService.save(any(UserDTO.class))).thenReturn(user);
@@ -114,6 +118,7 @@ public class UserIntegrationTests {
                 user1.setBirthday(Date.valueOf("1990-01-01"));
                 user1.setEmail("test@test.com");
                 user1.setUsername("test_kenny");
+
 
         UserDTO user2 = new UserDTO();
                 user2.setUserId(UUID.randomUUID());
@@ -171,7 +176,9 @@ public class UserIntegrationTests {
         when(userService.findById(id)).thenReturn(user);
         
         // Assert
+
         mockMvc.perform(get("/v1/users/{userId}", user.getUserId() ))
+
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
                 .andExpect(jsonPath("$.userId", is(user.getUserId().toString())))
@@ -194,12 +201,15 @@ public class UserIntegrationTests {
         // Act
         when(userService.findById(id)).thenThrow(new UserNotFoundException("User not found by id: " + id));
         // Assert
+
         mockMvc.perform(get("/users/{userId}", id)
+
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isNotFound());
         
         verify(userService, never()).findById(id);
         }
+
 
         @Test
         public void testUpdateUser() throws Exception {
@@ -268,4 +278,5 @@ public class UserIntegrationTests {
 
         verify(userService, times(1)).softDeleteById(userId);
         }
+
 }

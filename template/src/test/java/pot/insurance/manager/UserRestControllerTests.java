@@ -138,6 +138,7 @@ public class UserRestControllerTests {
         verify(userService, times(1)).findById(userId);
     }
 
+
     @Test
     public void testUpdateUser_Success() {
         // Arrange
@@ -178,4 +179,5 @@ public class UserRestControllerTests {
         assertEquals(deletedUserDTO, result);
         verify(userService, times(1)).softDeleteById(userId);
     }
+
 }

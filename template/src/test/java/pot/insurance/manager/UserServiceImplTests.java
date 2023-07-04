@@ -21,11 +21,13 @@ import org.mockito.junit.MockitoJUnitRunner;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.dao.DataIntegrityViolationException;
 
+
 import pot.insurance.manager.dto.UserDTO;
 import pot.insurance.manager.entity.User;
 import pot.insurance.manager.exception.user.exceptions.UserNotFoundException;
 import pot.insurance.manager.exception.user.exceptions.UserWrongCredentialsInput;
 import pot.insurance.manager.repository.UserRepository;
+
 import pot.insurance.manager.service.UserServiceImpl;
 
 @SpringBootTest
@@ -147,13 +149,16 @@ public class UserServiceImplTests {
 
         when(userRepository.findByIdNotDeletedUser(userId, false)).thenReturn(Optional.of(user));
 
+
         // Act
         UserDTO fetchedUser = userService.findById(userId);
 
         // Assert
         assertNotNull(fetchedUser);
         assertEquals(user.getId(), fetchedUser.getUserId());
+
         verify(userRepository, times(1)).findByIdNotDeletedUser(userId, false);
+
     }
 
     @Test
@@ -162,6 +167,7 @@ public class UserServiceImplTests {
         UUID userId = UUID.randomUUID();
 
         // Act
+
         when(userRepository.findByIdNotDeletedUser(userId, false)).thenReturn(Optional.empty());
 
         // Assert
@@ -268,4 +274,5 @@ public class UserServiceImplTests {
         verify(userRepository, times(1)).findByIdNotDeletedUser(id, false);
         verify(userRepository, never()).save(any());
     }
+
 }

@@ -24,5 +24,6 @@ public class UserDTO {
     private String ssn;
     private boolean deletionStatus;
 
+
 }
 

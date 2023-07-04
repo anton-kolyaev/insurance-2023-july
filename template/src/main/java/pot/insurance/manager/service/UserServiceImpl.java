@@ -7,12 +7,14 @@ import java.util.UUID;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 
+
 import pot.insurance.manager.dto.UserDTO;
 import pot.insurance.manager.entity.User;
 import pot.insurance.manager.exception.user.exceptions.UserNotFoundException;
 import pot.insurance.manager.exception.user.exceptions.UserWrongCredentialsInput;
 import pot.insurance.manager.mapper.UserMapper;
 import pot.insurance.manager.repository.UserRepository;
+
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -38,7 +40,9 @@ public class UserServiceImpl implements UserService {
     @Override
     public List<UserDTO> findAll(){
         List<User> users = userRepository.findAll();
+
         return users.stream().filter(user -> !user.isDeletionStatus()) .map(userMapper::userToUserDTO).toList();
+
     }
 
     @Override
@@ -69,5 +73,6 @@ public class UserServiceImpl implements UserService {
         return userMapper.userToUserDTO(userRepository.save(user));
         
     }
+
 
 }
