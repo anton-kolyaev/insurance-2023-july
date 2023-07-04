@@ -1,4 +1,4 @@
-package pot.insurance.manager.exception.responce;
+package pot.insurance.manager.exception.user.responce;
 
 import java.time.Instant;
 import java.time.LocalDateTime;

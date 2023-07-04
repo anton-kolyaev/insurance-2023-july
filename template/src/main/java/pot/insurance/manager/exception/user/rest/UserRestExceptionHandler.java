@@ -1,13 +1,13 @@
-package pot.insurance.manager.exception.rest;
+package pot.insurance.manager.exception.user.rest;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
-import pot.insurance.manager.exception.exeptions.UserWrongCredentialsInput;
-import pot.insurance.manager.exception.exeptions.UserNotFoundException;
-import pot.insurance.manager.exception.responce.UserErrorResponse;
+import pot.insurance.manager.exception.user.exceptions.UserNotFoundException;
+import pot.insurance.manager.exception.user.exceptions.UserWrongCredentialsInput;
+import pot.insurance.manager.exception.user.responce.UserErrorResponse;
 
 @ControllerAdvice
 public class UserRestExceptionHandler {

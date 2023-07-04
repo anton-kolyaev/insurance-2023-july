@@ -1,4 +1,4 @@
-package pot.insurance.manager.dao;
+package pot.insurance.manager.repository;
 
 
 import java.util.UUID;

@@ -7,12 +7,12 @@ import java.util.UUID;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 
-import pot.insurance.manager.dao.UserRepository;
 import pot.insurance.manager.dto.UserDTO;
 import pot.insurance.manager.entity.User;
-import pot.insurance.manager.exception.exeptions.UserNotFoundException;
-import pot.insurance.manager.exception.exeptions.UserWrongCredentialsInput;
+import pot.insurance.manager.exception.user.exceptions.UserNotFoundException;
+import pot.insurance.manager.exception.user.exceptions.UserWrongCredentialsInput;
 import pot.insurance.manager.mapper.UserMapper;
+import pot.insurance.manager.repository.UserRepository;
 
 @Service
 public class UserServiceImpl implements UserService {

@@ -21,11 +21,11 @@ import org.mockito.junit.MockitoJUnitRunner;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.dao.DataIntegrityViolationException;
 
-import pot.insurance.manager.dao.UserRepository;
 import pot.insurance.manager.dto.UserDTO;
 import pot.insurance.manager.entity.User;
-import pot.insurance.manager.exception.exeptions.UserNotFoundException;
-import pot.insurance.manager.exception.exeptions.UserWrongCredentialsInput;
+import pot.insurance.manager.exception.user.exceptions.UserNotFoundException;
+import pot.insurance.manager.exception.user.exceptions.UserWrongCredentialsInput;
+import pot.insurance.manager.repository.UserRepository;
 import pot.insurance.manager.service.UserServiceImpl;
 
 @SpringBootTest
