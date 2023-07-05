@@ -3,6 +3,7 @@ package pot.insurance.manager.debug.configuration;
 import jakarta.annotation.PostConstruct;
 
 import jakarta.annotation.PreDestroy;
+
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.autoconfigure.security.servlet.PathRequest;
 import org.springframework.context.annotation.Bean;
@@ -20,6 +21,7 @@ import org.springframework.security.web.SecurityFilterChain;
 import pot.insurance.manager.entity.UserAuth;
 import pot.insurance.manager.repository.UserAuthRepository;
 import pot.insurance.manager.type.UserAuthRole;
+import pot.insurance.manager.type.UserAuthStatus;
 
 import java.util.UUID;
 
@@ -59,6 +61,7 @@ public class DebugSecurityConfiguration {
 			.username("admin")
 			.password("$2a$10$fGHe9m9nCaWepdoFszUpz.MjGdot/LecvxbhmBz7CplmB3xXlDZby")
 			.role(UserAuthRole.ADMIN)
+			.status(UserAuthStatus.ACTIVE)
 			.build();
 		repository.save(admin);
 
@@ -67,6 +70,7 @@ public class DebugSecurityConfiguration {
 			.username("moderator")
 			.password("$2a$10$adep3.38anG5LXIkrYFEFO0T7oxspRjsplB7II7NzlkAWVkf8sWZy")
 			.role(UserAuthRole.MODERATOR)
+			.status(UserAuthStatus.ACTIVE)
 			.build();
 		repository.save(moderator);
 
@@ -75,6 +79,7 @@ public class DebugSecurityConfiguration {
 			.username("viewer")
 			.password("$2a$10$z7w5ZASKP6Ic/j4rGq6e3u19z3l/4pwpuGdN3OOnEwUU9dnbTnIaW")
 			.role(UserAuthRole.VIEWER)
+			.status(UserAuthStatus.ACTIVE)
 			.build();
 		repository.save(viewer);
 	}

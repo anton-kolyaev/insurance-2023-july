@@ -6,6 +6,7 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import pot.insurance.manager.entity.UserAuth;
+import pot.insurance.manager.type.UserAuthStatus;
 
 import java.util.Collection;
 import java.util.Collections;
@@ -38,12 +39,12 @@ public class UserAuthDetails implements UserDetails {
 
 	@Override
 	public boolean isAccountNonExpired() {
-		return true;
+		return this.auth.getStatus() != UserAuthStatus.DELETED;
 	}
 
 	@Override
 	public boolean isAccountNonLocked() {
-		return true;
+		return this.auth.getStatus() != UserAuthStatus.DEACTIVATED;
 	}
 
 	@Override
@@ -53,6 +54,6 @@ public class UserAuthDetails implements UserDetails {
 
 	@Override
 	public boolean isEnabled() {
-		return true;
+		return this.auth.getStatus() == UserAuthStatus.ACTIVE;
 	}
 }
