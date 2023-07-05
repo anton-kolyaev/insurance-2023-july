@@ -8,6 +8,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import pot.insurance.manager.type.UserAuthRole;
+import pot.insurance.manager.type.UserAuthStatus;
 
 import java.util.UUID;
 
@@ -34,4 +35,7 @@ public class UserAuth {
 	@Column(name = "role")
 	private UserAuthRole role;
 
+	@Enumerated(EnumType.STRING)
+	@Column(name = "status")
+	private UserAuthStatus status;
 }
