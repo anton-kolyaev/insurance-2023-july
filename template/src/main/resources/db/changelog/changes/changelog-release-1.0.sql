@@ -49,3 +49,11 @@ CREATE TABLE `user_auth` (
     UNIQUE (`username`)
 );
 -- rollback DROP TABLE `user_auth`;
+
+-- changeset Dovidas Zablockis:4
+-- comment: add auth id inside users table
+ALTER TABLE `users` ADD COLUMN `auth_id` UUID AFTER `id`;
+ALTER TABLE `users` ADD CONSTRAINT `FK_USERS`
+FOREIGN KEY (`auth_id`) REFERENCES `user_auth` (`id`);
+-- rollback ALTER TABLE `users` DROP CONSTRAINT `FK_USERS`;
+-- rollback ALTER TABLE `users` DROP COLUMN `auth_id`;
