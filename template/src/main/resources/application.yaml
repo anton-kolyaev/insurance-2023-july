@@ -6,11 +6,15 @@ spring:
     # H2 database setup
     datasource:
         driver-class-name: org.h2.Driver
-        url: jdbc:h2:mem:java_internship;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=TRUE
+        url: jdbc:h2:mem:insurance_manager;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=TRUE
         username: sa
         password: admin
     jpa:
         database-platform: org.hibernate.dialect.H2Dialect
+        properties:
+            hibernate:
+                dialect: org.hibernate.dialect.H2Dialect
+                default-schema: insurance_manager
         hibernate:
             ddl-auto: update
     h2:

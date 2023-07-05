@@ -1,4 +1,4 @@
-package pot.insurance.manager.exception.responce;
+package pot.insurance.manager.dto;
 
 import java.time.Instant;
 import java.time.LocalDateTime;
@@ -14,7 +14,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class UserErrorResponse {
+public class ErrorResponse {
     
     private int status;
     private String message;

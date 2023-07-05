@@ -29,12 +29,9 @@ dependencies {
 	compileOnly 'org.projectlombok:lombok'
 	runtimeOnly 'com.h2database:h2'
 	annotationProcessor libs.mapstruct.processor
-	annotationProcessor 'org.projectlombok:lombok'
-	testImplementation 'org.codehaus.groovy.modules.http-builder:http-builder:0.7.1'
-	testImplementation 'org.spockframework:spock-core:2.3-groovy-3.0'
-	testImplementation 'org.codehaus.groovy:groovy-all:3.0.8'
+	annotationProcessor libs.lombok
+	annotationProcessor libs.lombok.mapstruct.binding
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
-	testImplementation group: 'io.github.http-builder-ng', name: 'http-builder-ng-apache', version: '1.0.3'
 	testImplementation 'org.springframework.security:spring-security-test'
 	testImplementation libs.groovy.all
 	testImplementation libs.spock.core

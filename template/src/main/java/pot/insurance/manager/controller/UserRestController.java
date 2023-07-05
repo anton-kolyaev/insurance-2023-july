@@ -2,6 +2,7 @@ package pot.insurance.manager.controller;
 
 import java.util.UUID;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -17,7 +18,7 @@ import pot.insurance.manager.service.UserService;
 @RestController
 @RequestMapping("/v1/users")
 public class UserRestController {
-    
+
     private final UserService userService;
 
     public UserRestController(UserService theUserService) {

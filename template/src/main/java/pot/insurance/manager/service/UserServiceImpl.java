@@ -7,11 +7,11 @@ import java.util.UUID;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 
-import pot.insurance.manager.dao.UserRepository;
+import pot.insurance.manager.repository.UserRepository;
 import pot.insurance.manager.dto.UserDTO;
 import pot.insurance.manager.entity.User;
-import pot.insurance.manager.exception.exeptions.UserNotFoundException;
-import pot.insurance.manager.exception.exeptions.UserWrongCredentialsInput;
+import pot.insurance.manager.exception.UserNotFoundException;
+import pot.insurance.manager.exception.WrongCredentialsException;
 import pot.insurance.manager.mapper.UserMapper;
 
 @Service
@@ -31,7 +31,7 @@ public class UserServiceImpl implements UserService {
             user.setId(UUID.randomUUID());
             return userMapper.userToUserDTO(userRepository.save(user));
         } catch (DataIntegrityViolationException e) {
-            throw new UserWrongCredentialsInput(e.getMessage());
+            throw new WrongCredentialsException(e.getMessage());
         }
     }
     

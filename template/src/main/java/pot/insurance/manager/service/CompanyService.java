@@ -1,27 +1,31 @@
 package pot.insurance.manager.service;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 import pot.insurance.manager.entity.Company;
 import pot.insurance.manager.dto.CompanyDTO;
+import pot.insurance.manager.exception.WrongCredentialsException;
 import pot.insurance.manager.mapper.CompanyMapper;
 import pot.insurance.manager.repository.CompanyRepository;
 
 import java.util.UUID;
 
 @Service
+@RequiredArgsConstructor
 public class CompanyService {
-    @Autowired
+
     private final CompanyRepository companyRepository;
     private static final CompanyMapper companyMapper = CompanyMapper.INSTANCE;
 
-    public CompanyService(CompanyRepository companyRepository) {
-        this.companyRepository = companyRepository;
-    }
     public CompanyDTO saveCompany(CompanyDTO companyDTO) {
-        Company company = companyMapper.companyDTOToCompany(companyDTO);
-        company.setId(UUID.randomUUID());
-        CompanyDTO savedCompany = companyMapper.companyToCompanyDTO(companyRepository.save(company));
-        return savedCompany;
+        try {
+            Company company = companyMapper.companyDTOToCompany(companyDTO);
+            company.setId(UUID.randomUUID());
+            CompanyDTO savedCompany = companyMapper.companyToCompanyDTO(companyRepository.save(company));
+            return savedCompany;
+        } catch (DataIntegrityViolationException e) {
+            throw new WrongCredentialsException(e.getMessage());
+        }
     }
 }

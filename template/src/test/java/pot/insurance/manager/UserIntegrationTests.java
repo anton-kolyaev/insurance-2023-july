@@ -27,7 +27,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.transaction.Transactional;
 import pot.insurance.manager.controller.UserRestController;
 import pot.insurance.manager.dto.UserDTO;
-import pot.insurance.manager.exception.exeptions.UserNotFoundException;
+import pot.insurance.manager.exception.UserNotFoundException;
 import pot.insurance.manager.service.UserService;
 
 
