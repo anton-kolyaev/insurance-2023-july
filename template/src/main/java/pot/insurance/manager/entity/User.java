@@ -3,25 +3,24 @@ package pot.insurance.manager.entity;
 import java.util.Date;
 import java.util.UUID;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-@Entity
-@Table(name = "users", schema = "java_internship")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
+@Entity
+@Table(name = "users")
 public class User {
 
     @Id
-    @Column(columnDefinition = "BINARY(16)")
+    @GeneratedValue
+    @Column(name = "id")
     private UUID id;
 
     @Column(name = "first_name")
@@ -32,9 +31,6 @@ public class User {
 
     @Column(name = "birthday")
     private Date birthday;
-
-    @Column(name = "username")
-    private String username;
 
     @Column(name = "email")
     private String email;

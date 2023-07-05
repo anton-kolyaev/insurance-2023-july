@@ -20,8 +20,8 @@ public class UserRestController {
     
     private final UserService userService;
 
-    public UserRestController(UserService theUserService) {
-        userService = theUserService;
+    public UserRestController(UserService userService) {
+        this.userService = userService;
     }
 
     @PostMapping()
@@ -36,9 +36,9 @@ public class UserRestController {
         
     }
 
-    @GetMapping("/{userId}")
-    public Object findUserById(@PathVariable UUID userId){
-        return userService.findById(userId);
+    @GetMapping("/{id}")
+    public Object findUserById(@PathVariable UUID id){
+        return userService.findById(id);
     }
 
 

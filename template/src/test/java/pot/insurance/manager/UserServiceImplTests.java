@@ -18,14 +18,16 @@ import org.mockito.Mock;
 
 import org.mockito.MockitoAnnotations;
 import org.mockito.junit.MockitoJUnitRunner;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.dao.DataIntegrityViolationException;
 
-import pot.insurance.manager.dao.UserRepository;
+import pot.insurance.manager.mapper.UserMapper;
+import pot.insurance.manager.repository.UserRepository;
 import pot.insurance.manager.dto.UserDTO;
 import pot.insurance.manager.entity.User;
-import pot.insurance.manager.exception.exeptions.UserNotFoundException;
-import pot.insurance.manager.exception.exeptions.UserWrongCredentialsInput;
+import pot.insurance.manager.exception.UserNotFoundException;
+import pot.insurance.manager.exception.UserWrongCredentialsException;
 import pot.insurance.manager.service.UserServiceImpl;
 
 @SpringBootTest
@@ -34,14 +36,20 @@ public class UserServiceImplTests {
     
     @Mock
     private UserRepository userRepository;
-    
+
     @InjectMocks
     private UserServiceImpl userService;
 
+    @Autowired
+    private UserMapper userMapper;
+
     @Before
     public void setup() {
-        MockitoAnnotations.openMocks(this);
-        userService = new UserServiceImpl(userRepository);
+        try (final AutoCloseable ignored = MockitoAnnotations.openMocks(this)) {
+            this.userService = new UserServiceImpl(this.userMapper, this.userRepository);
+        } catch (Exception exception) {
+            exception.printStackTrace();
+        }
     }
 
     @Test
@@ -55,8 +63,7 @@ public class UserServiceImplTests {
             user.setSsn("123456789");
             user.setBirthday(Date.valueOf("1990-01-01"));
             user.setEmail("test@test.test");
-            user.setUsername("test_sam");
-            
+
 
         when(userRepository.save(any(User.class))).thenReturn(user);
 
@@ -65,7 +72,7 @@ public class UserServiceImplTests {
 
         // Assert
         assertNotNull(savedUser);
-        assertEquals(user.getId(), savedUser.getUserId());
+        assertEquals(user.getId(), savedUser.getId());
         verify(userRepository, times(1)).save(any(User.class));
     }
     
@@ -73,20 +80,19 @@ public class UserServiceImplTests {
     public void testSaveUserWithDuplicateUsername(){
         // Arrange
         UserDTO user = new UserDTO();
-            user.setUserId(UUID.randomUUID());
+            user.setId(UUID.randomUUID());
             user.setFirstName("Sammy");
             user.setLastName("Sam");
             user.setSsn("123456789");
             user.setBirthday(Date.valueOf("1990-01-01"));
             user.setEmail("test@test.com");
-            user.setUsername("test_sam");
 
         // Act
         when(userRepository.save(any(User.class))).thenThrow(DataIntegrityViolationException.class);
 
         // Assert
-        assertThrows(UserWrongCredentialsInput.class, () -> userService.save(user));
-        assertNull(assertThrows(UserWrongCredentialsInput.class, () -> userService.save(user)).getMessage());
+        assertThrows(UserWrongCredentialsException.class, () -> userService.save(user));
+        assertNull(assertThrows(UserWrongCredentialsException.class, () -> userService.save(user)).getMessage());
         verify(userRepository, times(2)).save(any(User.class));
         
     }
@@ -104,7 +110,6 @@ public class UserServiceImplTests {
             user.setSsn("123456789");
             user.setBirthday(Date.valueOf("1990-01-01"));
             user.setEmail("test@test.test");
-            user.setUsername("test_sam");
 
         // Act
         when(userRepository.save(any(User.class))).thenReturn(user).thenReturn(null);
@@ -112,7 +117,7 @@ public class UserServiceImplTests {
         UserDTO savedUser2 = userService.save(userDTO);
 
         // Assert
-        assertEquals(user.getId(), savedUser1.getUserId());
+        assertEquals(user.getId(), savedUser1.getId());
         assertNull(savedUser2);
         verify(userRepository, times(2)).save(any(User.class));
     }
@@ -143,7 +148,6 @@ public class UserServiceImplTests {
             user.setSsn("123456789");
             user.setBirthday(Date.valueOf("1990-01-01"));
             user.setEmail("test@test.test");
-            user.setUsername("test_sam");
 
         when(userRepository.findById(userId)).thenReturn(Optional.of(user));
 
@@ -152,7 +156,7 @@ public class UserServiceImplTests {
 
         // Assert
         assertNotNull(fetchedUser);
-        assertEquals(user.getId(), fetchedUser.getUserId());
+        assertEquals(user.getId(), fetchedUser.getId());
         verify(userRepository, times(1)).findById(userId);
     }
 

@@ -1,23 +1,24 @@
-package pot.insurance.manager.auth;
+package pot.insurance.manager.dto;
 
 import lombok.Getter;
+
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
-import pot.insurance.manager.entity.user.BasicUser;
+import pot.insurance.manager.entity.UserAuth;
 
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
-public class BasicUserDetails implements UserDetails {
+public class UserAuthDetails implements UserDetails {
 	@Getter
-	private final BasicUser user;
-	private final List<BasicUserGrantedRole> roles;
-	public BasicUserDetails(BasicUser user) {
+	private final UserAuth auth;
+	private final List<UserAuthGrantedRole> roles;
+	public UserAuthDetails(UserAuth auth) {
 		// TODO: Not null annotation or null check?
-		this.user = user;
-		this.roles = Collections.singletonList(new BasicUserGrantedRole(user.getRole()));
+		this.auth = auth;
+		this.roles = Collections.singletonList(new UserAuthGrantedRole(auth.getRole()));
 	}
 
 	@Override
@@ -27,12 +28,12 @@ public class BasicUserDetails implements UserDetails {
 
 	@Override
 	public String getPassword() {
-		return this.user.getPassword();
+		return this.auth.getPassword();
 	}
 
 	@Override
 	public String getUsername() {
-		return this.user.getUsername();
+		return this.auth.getUsername();
 	}
 
 	@Override

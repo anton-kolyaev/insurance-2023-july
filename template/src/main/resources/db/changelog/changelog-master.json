@@ -3,7 +3,7 @@
       {
         "include": {
           "relativeToChangelogFile": true,
-        "file": "changes/user_table.sql"
+        "file": "changes/changelog-release-1.0.sql"
       }
     }
   ]

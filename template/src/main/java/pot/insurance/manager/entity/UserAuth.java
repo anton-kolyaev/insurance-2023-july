@@ -1,4 +1,4 @@
-package pot.insurance.manager.entity.user;
+package pot.insurance.manager.entity;
 
 import jakarta.persistence.*;
 
@@ -7,6 +7,8 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import pot.insurance.manager.type.UserAuthRole;
+
 import java.util.UUID;
 
 @Data
@@ -14,12 +16,13 @@ import java.util.UUID;
 @AllArgsConstructor
 @Builder
 @Entity
-@Table (name = "users")
-public class BasicUser {
+@Table (name = "user_auth")
+public class UserAuth {
 
 	@Id
+	@GeneratedValue
 	@Column(name = "id")
-	private UUID uuid;
+	private UUID id;
 
 	@Column(name = "username")
 	private String username;
@@ -27,11 +30,8 @@ public class BasicUser {
 	@Column(name = "password")
 	private String password;
 
-	@Column(name = "email")
-	private String email;
-
 	@Enumerated(EnumType.STRING)
 	@Column(name = "role")
-	private BasicUserRole role;
+	private UserAuthRole role;
 
 }

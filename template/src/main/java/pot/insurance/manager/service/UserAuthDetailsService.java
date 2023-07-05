@@ -1,32 +1,34 @@
 package pot.insurance.manager.service;
 
+import lombok.Getter;
+
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
-
 import org.springframework.stereotype.Service;
 
-import pot.insurance.manager.auth.BasicUserDetails;
-import pot.insurance.manager.entity.user.BasicUser;
-import pot.insurance.manager.repository.BasicUserRepository;
+import pot.insurance.manager.dto.UserAuthDetails;
+import pot.insurance.manager.entity.UserAuth;
+import pot.insurance.manager.repository.UserAuthRepository;
 
 @Service
-public class BasicUserDetailsService implements UserDetailsService {
+public class UserAuthDetailsService implements UserDetailsService {
 
-	private final BasicUserRepository repository;
+	@Getter
+	private final UserAuthRepository repository;
 
-	public BasicUserDetailsService(BasicUserRepository repository) {
+	public UserAuthDetailsService(UserAuthRepository repository) {
 		// TODO: Handling for null exception maybe?
 		this.repository = repository;
 	}
 
 	@Override
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-		BasicUser user = this.repository.findByUsername(username);
-		if (user == null) {
+		UserAuth auth = this.repository.findByUsername(username);
+		if (auth == null) {
 			throw new UsernameNotFoundException("user with username " + username + " is not found");
 		}
-		return new BasicUserDetails(user);
+		return new UserAuthDetails(auth);
 	}
 
 }

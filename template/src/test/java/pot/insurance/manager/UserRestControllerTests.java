@@ -31,22 +31,24 @@ public class UserRestControllerTests {
 
     @Before
     public void setUp() {
-        MockitoAnnotations.openMocks(this);
-        userService = mock(UserService.class);
-        userRestController = new UserRestController(userService);
+        try (final AutoCloseable ignored = MockitoAnnotations.openMocks(this)) {
+            userService = mock(UserService.class);
+            userRestController = new UserRestController(userService);
+        } catch (Exception exception) {
+            exception.printStackTrace();
+        }
     }
 
     @Test
     public void testSaveUser_Success() {
         // Arrange
         UserDTO user = new UserDTO();
-            user.setUserId(UUID.randomUUID());
+            user.setId(UUID.randomUUID());
             user.setFirstName("Sammy");
             user.setLastName("Sam");
             user.setSsn("123456789");
             user.setBirthday(Date.valueOf("1990-01-01"));
             user.setEmail("test@test.test");
-            user.setUsername("test_sam");
 
         when(userService.save(user)).thenReturn(user);
 
@@ -76,22 +78,20 @@ public class UserRestControllerTests {
     public void testFindAllUsers() {
         // Arrange
         UserDTO user1 = new UserDTO();
-            user1.setUserId(UUID.randomUUID());
+            user1.setId(UUID.randomUUID());
             user1.setFirstName("Kenny");
             user1.setLastName("Martin");
             user1.setSsn("123456789");
             user1.setBirthday(Date.valueOf("1990-01-01"));
             user1.setEmail("test@test.com");
-            user1.setUsername("test_kenny");
 
         UserDTO user2 = new UserDTO();
-            user2.setUserId(UUID.randomUUID());
+            user2.setId(UUID.randomUUID());
             user2.setFirstName("Jane");
             user2.setLastName("Smith");
             user2.setSsn("987654321");
             user2.setBirthday(Date.valueOf("1990-01-01"));
             user2.setEmail("test@Test2.com");
-            user2.setUsername("test_jane");
 
         List<UserDTO> userList = List.of(user1, user2);
 
@@ -110,13 +110,12 @@ public class UserRestControllerTests {
         // Arrange
         UUID id = UUID.randomUUID();
         UserDTO user = new UserDTO();
-            user.setUserId(UUID.randomUUID());
+            user.setId(UUID.randomUUID());
             user.setFirstName("Sammy");
             user.setLastName("Sam");
             user.setSsn("123456789");
             user.setBirthday(Date.valueOf("1990-01-01"));
             user.setEmail("test@test.test");
-            user.setUsername("test_sam");
 
         // Act
         when(userService.findById(id)).thenReturn(user);

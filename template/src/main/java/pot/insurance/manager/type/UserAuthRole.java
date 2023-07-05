@@ -1,6 +1,6 @@
-package pot.insurance.manager.entity.user;
+package pot.insurance.manager.type;
 
-public enum BasicUserRole {
+public enum UserAuthRole {
 	VIEWER,
 	MODERATOR,
 	ADMIN;
