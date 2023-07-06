@@ -20,7 +20,6 @@ public class CompanyRestController {
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public CompanyDTO createCompany(@RequestBody CompanyDTO companyDTO) {
-        CompanyDTO response = companyService.saveCompany(companyDTO);
-        return response;
+        return companyService.saveCompany(companyDTO);
     }
 }
