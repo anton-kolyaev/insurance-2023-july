@@ -11,7 +11,7 @@ import pot.insurance.manager.repository.UserRepository;
 import pot.insurance.manager.dto.UserDTO;
 import pot.insurance.manager.entity.User;
 import pot.insurance.manager.exception.UserNotFoundException;
-import pot.insurance.manager.exception.WrongCredentialsException;
+import pot.insurance.manager.exception.UserWrongCredentialsException;
 import pot.insurance.manager.mapper.UserMapper;
 
 @Service
@@ -31,7 +31,7 @@ public class UserServiceImpl implements UserService {
             user.setId(UUID.randomUUID());
             return userMapper.userToUserDTO(userRepository.save(user));
         } catch (DataIntegrityViolationException e) {
-            throw new WrongCredentialsException(e.getMessage());
+            throw new UserWrongCredentialsException(e.getMessage());
         }
     }
     

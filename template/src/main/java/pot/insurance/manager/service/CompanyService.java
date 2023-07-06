@@ -5,7 +5,7 @@ import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 import pot.insurance.manager.entity.Company;
 import pot.insurance.manager.dto.CompanyDTO;
-import pot.insurance.manager.exception.WrongCredentialsException;
+import pot.insurance.manager.exception.CompanyWrongCredentialsException;
 import pot.insurance.manager.mapper.CompanyMapper;
 import pot.insurance.manager.repository.CompanyRepository;
 
@@ -25,7 +25,7 @@ public class CompanyService {
             CompanyDTO savedCompany = companyMapper.companyToCompanyDTO(companyRepository.save(company));
             return savedCompany;
         } catch (DataIntegrityViolationException e) {
-            throw new WrongCredentialsException(e.getMessage());
+            throw new CompanyWrongCredentialsException(e.getMessage());
         }
     }
 }

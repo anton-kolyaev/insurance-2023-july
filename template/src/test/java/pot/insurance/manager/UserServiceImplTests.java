@@ -25,7 +25,7 @@ import pot.insurance.manager.repository.UserRepository;
 import pot.insurance.manager.dto.UserDTO;
 import pot.insurance.manager.entity.User;
 import pot.insurance.manager.exception.UserNotFoundException;
-import pot.insurance.manager.exception.WrongCredentialsException;
+import pot.insurance.manager.exception.UserWrongCredentialsException;
 import pot.insurance.manager.service.UserServiceImpl;
 
 @SpringBootTest
@@ -85,8 +85,8 @@ public class UserServiceImplTests {
         when(userRepository.save(any(User.class))).thenThrow(DataIntegrityViolationException.class);
 
         // Assert
-        assertThrows(WrongCredentialsException.class, () -> userService.save(user));
-        assertNull(assertThrows(WrongCredentialsException.class, () -> userService.save(user)).getMessage());
+        assertThrows(UserWrongCredentialsException.class, () -> userService.save(user));
+        assertNull(assertThrows(UserWrongCredentialsException.class, () -> userService.save(user)).getMessage());
         verify(userRepository, times(2)).save(any(User.class));
         
     }
