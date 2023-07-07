@@ -42,17 +42,17 @@ dependencies {
 tasks.named('test') {
 	useJUnitPlatform()
 	testLogging {
-        events 'passed', 'skipped', 'failed'
-    }
+		events 'passed', 'skipped', 'failed'
+	}
 }
 
 sourceSets {
-    test {
-        groovy {
-            srcDirs = ['src/test/groovy']
-        }
-        java {
-            srcDirs = ['src/test/java']
-        }
-    }
+	test {
+		groovy {
+			srcDirs = ['src/test/groovy']
+		}
+		java {
+			srcDirs = ['src/test/java']
+		}
+	}
 }
