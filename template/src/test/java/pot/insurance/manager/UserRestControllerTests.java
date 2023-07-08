@@ -42,22 +42,22 @@ public class UserRestControllerTests {
     @Test
     public void testSaveUser_Success() {
         // Arrange
-        UserDTO user = new UserDTO();
-            user.setId(UUID.randomUUID());
-            user.setFirstName("Sammy");
-            user.setLastName("Sam");
-            user.setSsn("123456789");
-            user.setBirthday(Date.valueOf("1990-01-01"));
-            user.setEmail("test@test.test");
+        UserDTO userDTO = new UserDTO();
+            userDTO.setId(UUID.randomUUID());
+            userDTO.setFirstName("Sammy");
+            userDTO.setLastName("Sam");
+            userDTO.setSsn("123456789");
+            userDTO.setBirthday(Date.valueOf("1990-01-01"));
+            userDTO.setEmail("test@test.test");
 
-        when(userService.save(user)).thenReturn(user);
+        when(userService.save(userDTO)).thenReturn(userDTO);
 
         // Act
-        UserDTO response = userRestController.saveUser(user);
+        UserDTO response = userRestController.saveUser(userDTO);
 
         // Asserert
-        assertEquals(user, response);
-        verify(userService, times(1)).save(user);
+        assertEquals(userDTO, response);
+        verify(userService, times(1)).save(userDTO);
     }
 
     @Test
@@ -77,30 +77,30 @@ public class UserRestControllerTests {
     @Test
     public void testFindAllUsers() {
         // Arrange
-        UserDTO user1 = new UserDTO();
-            user1.setId(UUID.randomUUID());
-            user1.setFirstName("Kenny");
-            user1.setLastName("Martin");
-            user1.setSsn("123456789");
-            user1.setBirthday(Date.valueOf("1990-01-01"));
-            user1.setEmail("test@test.com");
+        UserDTO userDTO1 = new UserDTO();
+            userDTO1.setId(UUID.randomUUID());
+            userDTO1.setFirstName("Kenny");
+            userDTO1.setLastName("Martin");
+            userDTO1.setSsn("123456789");
+            userDTO1.setBirthday(Date.valueOf("1990-01-01"));
+            userDTO1.setEmail("test@test.com");
 
-        UserDTO user2 = new UserDTO();
-            user2.setId(UUID.randomUUID());
-            user2.setFirstName("Jane");
-            user2.setLastName("Smith");
-            user2.setSsn("987654321");
-            user2.setBirthday(Date.valueOf("1990-01-01"));
-            user2.setEmail("test@Test2.com");
+        UserDTO userDTO2 = new UserDTO();
+            userDTO2.setId(UUID.randomUUID());
+            userDTO2.setFirstName("Jane");
+            userDTO2.setLastName("Smith");
+            userDTO2.setSsn("987654321");
+            userDTO2.setBirthday(Date.valueOf("1990-01-01"));
+            userDTO2.setEmail("test@Test2.com");
 
-        List<UserDTO> userList = List.of(user1, user2);
+        List<UserDTO> userDTOList = List.of(userDTO1, userDTO2);
 
         // Act
-        when(userService.findAll()).thenReturn(userList);
+        when(userService.findAll()).thenReturn(userDTOList);
         Object result = userRestController.findAllUsers();
 
         // Assert
-        assertEquals(userList, result);
+        assertEquals(userDTOList, result);
         verify(userService, times(1)).findAll();
         
     }
@@ -109,20 +109,20 @@ public class UserRestControllerTests {
     public void testFindUserById_Success() {
         // Arrange
         UUID id = UUID.randomUUID();
-        UserDTO user = new UserDTO();
-            user.setId(UUID.randomUUID());
-            user.setFirstName("Sammy");
-            user.setLastName("Sam");
-            user.setSsn("123456789");
-            user.setBirthday(Date.valueOf("1990-01-01"));
-            user.setEmail("test@test.test");
+        UserDTO userDTO = new UserDTO();
+            userDTO.setId(UUID.randomUUID());
+            userDTO.setFirstName("Sammy");
+            userDTO.setLastName("Sam");
+            userDTO.setSsn("123456789");
+            userDTO.setBirthday(Date.valueOf("1990-01-01"));
+            userDTO.setEmail("test@test.test");
 
         // Act
-        when(userService.findById(id)).thenReturn(user);
+        when(userService.findById(id)).thenReturn(userDTO);
         Object result = userRestController.findUserById(id);
 
         // Assert
-        assertEquals(user, result);
+        assertEquals(userDTO, result);
         verify(userService, times(1)).findById(id);
     }
 

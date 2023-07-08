@@ -8,7 +8,7 @@ import pot.insurance.manager.entity.User;
 
 @Mapper(componentModel = MappingConstants.ComponentModel.SPRING)
 public interface UserMapper {
-    UserDTO userToUserDTO(User User);
+    UserDTO toUser(User User);
 
-    User userDTOToUser(UserDTO UserDTO);
+    User toDTO(UserDTO UserDTO);
 }

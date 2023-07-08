@@ -1,57 +1,60 @@
 package pot.insurance.manager.service;
 
-
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
+
+import lombok.RequiredArgsConstructor;
 
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 
-import pot.insurance.manager.repository.UserRepository;
 import pot.insurance.manager.dto.UserDTO;
 import pot.insurance.manager.entity.User;
-import pot.insurance.manager.exception.UserNotFoundException;
-import pot.insurance.manager.exception.UserWrongCredentialsException;
+import pot.insurance.manager.repository.UserRepository;
+import pot.insurance.manager.exception.DataValidationException;
 import pot.insurance.manager.mapper.UserMapper;
+import pot.insurance.manager.type.DataValidation;
 
 @Service
+@RequiredArgsConstructor
 public class UserServiceImpl implements UserService {
-    
-    private final UserRepository userRepository;
+    private final UserRepository repository;
+    private final UserMapper mapper;
 
-    private final UserMapper userMapper;
-
-    public UserServiceImpl(UserMapper userMapper, UserRepository userRepository) {
-        // TODO: Null checking?
-        this.userMapper = userMapper;
-        this.userRepository = userRepository;
-    }
-    
     @Override
     public UserDTO save(UserDTO userDTO) {
+        User entity = mapper.toDTO(userDTO);
+        if (entity.getId() == null) {
+            entity.setId(UUID.randomUUID());
+        }
+        Optional<User> conflictEntity = this.repository.findById(entity.getId());
+        if (conflictEntity.isPresent()) {
+            throw new DataValidationException(DataValidation.Status.USER_ID_EXISTS);
+        }
+        Optional<User> ssnEntity = this.repository.findBySsn(entity.getSsn());
+        if (ssnEntity.isPresent()) {
+            throw new DataValidationException(DataValidation.Status.USER_SSN_EXISTS);
+        }
         try {
-            User user = userMapper.userDTOToUser(userDTO);
-            user.setId(UUID.randomUUID());
-            return userMapper.userToUserDTO(userRepository.save(user));
-        } catch (DataIntegrityViolationException e) {
-            throw new UserWrongCredentialsException(e.getMessage());
+            return mapper.toUser(repository.save(entity));
+        } catch (DataIntegrityViolationException exception) {
+            throw new DataValidationException(DataValidation.Status.USER_INVALID_DATA);
         }
     }
     
     @Override
     public List<UserDTO> findAll(){
-        List<User> users = userRepository.findAll();
-        return users.stream().map(userMapper::userToUserDTO).toList();
+        List<User> userEntities = repository.findAll();
+        return userEntities.stream().map(mapper::toUser).toList();
     }
 
     @Override
     public UserDTO findById(UUID id){
-        try {
-            User user = userRepository.findById(id).get();
-            return userMapper.userToUserDTO(user);
-        } catch (RuntimeException e) {
-            throw new UserNotFoundException("User not found by id - " + id);
+        Optional<User> entity = this.repository.findById(id);
+        if (entity.isEmpty()) {
+            throw new DataValidationException(DataValidation.Status.USER_NOT_FOUND);
         }
+        return mapper.toUser(entity.get());
     }
-
 }

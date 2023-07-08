@@ -13,22 +13,23 @@ import java.util.UUID;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-
 import org.mockito.MockitoAnnotations;
 import org.mockito.junit.MockitoJUnitRunner;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.dao.DataIntegrityViolationException;
 
-import pot.insurance.manager.mapper.UserMapper;
-import pot.insurance.manager.repository.UserRepository;
 import pot.insurance.manager.dto.UserDTO;
 import pot.insurance.manager.entity.User;
-import pot.insurance.manager.exception.UserNotFoundException;
-import pot.insurance.manager.exception.UserWrongCredentialsException;
+import pot.insurance.manager.mapper.UserMapper;
+import pot.insurance.manager.repository.UserRepository;
+import pot.insurance.manager.exception.DataValidationException;
 import pot.insurance.manager.service.UserServiceImpl;
+import pot.insurance.manager.service.UserService;
 
 @SpringBootTest
 @RunWith(MockitoJUnitRunner.class)
@@ -38,7 +39,7 @@ public class UserServiceImplTests {
     private UserRepository userRepository;
 
     @InjectMocks
-    private UserServiceImpl userService;
+    private UserService userService;
 
     @Autowired
     private UserMapper userMapper;
@@ -46,7 +47,7 @@ public class UserServiceImplTests {
     @Before
     public void setup() {
         try (final AutoCloseable ignored = MockitoAnnotations.openMocks(this)) {
-            this.userService = new UserServiceImpl(this.userMapper, this.userRepository);
+            this.userService = new UserServiceImpl(this.userRepository, this.userMapper);
         } catch (Exception exception) {
             exception.printStackTrace();
         }
@@ -68,31 +69,31 @@ public class UserServiceImplTests {
         when(userRepository.save(any(User.class))).thenReturn(user);
 
         // Act
-        UserDTO savedUser = userService.save(userDTO);
+        UserDTO savedUserDTO = userService.save(userDTO);
 
         // Assert
-        assertNotNull(savedUser);
-        assertEquals(user.getId(), savedUser.getId());
+        assertNotNull(savedUserDTO);
+        assertEquals(user.getId(), savedUserDTO.getId());
         verify(userRepository, times(1)).save(any(User.class));
     }
     
     @Test
     public void testSaveUserWithDuplicateUsername(){
         // Arrange
-        UserDTO user = new UserDTO();
-            user.setId(UUID.randomUUID());
-            user.setFirstName("Sammy");
-            user.setLastName("Sam");
-            user.setSsn("123456789");
-            user.setBirthday(Date.valueOf("1990-01-01"));
-            user.setEmail("test@test.com");
+        UserDTO userDTO = new UserDTO();
+            userDTO.setId(UUID.randomUUID());
+            userDTO.setFirstName("Sammy");
+            userDTO.setLastName("Sam");
+            userDTO.setSsn("123456789");
+            userDTO.setBirthday(Date.valueOf("1990-01-01"));
+            userDTO.setEmail("test@test.com");
 
         // Act
         when(userRepository.save(any(User.class))).thenThrow(DataIntegrityViolationException.class);
 
         // Assert
-        assertThrows(UserWrongCredentialsException.class, () -> userService.save(user));
-        assertNull(assertThrows(UserWrongCredentialsException.class, () -> userService.save(user)).getMessage());
+        assertThrows(DataValidationException.class, () -> userService.save(userDTO));
+        assertNull(assertThrows(DataValidationException.class, () -> userService.save(userDTO)).getMessage());
         verify(userRepository, times(2)).save(any(User.class));
         
     }
@@ -113,12 +114,12 @@ public class UserServiceImplTests {
 
         // Act
         when(userRepository.save(any(User.class))).thenReturn(user).thenReturn(null);
-        UserDTO savedUser1 = userService.save(userDTO);
-        UserDTO savedUser2 = userService.save(userDTO);
+        UserDTO savedUser1DTO = userService.save(userDTO);
+        UserDTO savedUser2DTO = userService.save(userDTO);
 
         // Assert
-        assertEquals(user.getId(), savedUser1.getId());
-        assertNull(savedUser2);
+        assertEquals(user.getId(), savedUser1DTO.getId());
+        assertNull(savedUser2DTO);
         verify(userRepository, times(2)).save(any(User.class));
     }
 
@@ -129,11 +130,11 @@ public class UserServiceImplTests {
         when(userRepository.findAll()).thenReturn(userList);
 
         // Act
-        List<UserDTO> fetchedUsers = userService.findAll();
+        List<UserDTO> fetchedUserDTOS = userService.findAll();
 
         // Assert
-        assertNotNull(fetchedUsers);
-        assertEquals(userList, fetchedUsers);
+        assertNotNull(fetchedUserDTOS);
+        assertEquals(userList, fetchedUserDTOS);
         verify(userRepository, times(1)).findAll();
     }
 
@@ -152,11 +153,11 @@ public class UserServiceImplTests {
         when(userRepository.findById(userId)).thenReturn(Optional.of(user));
 
         // Act
-        UserDTO fetchedUser = userService.findById(userId);
+        UserDTO fetchedUserDTO = userService.findById(userId);
 
         // Assert
-        assertNotNull(fetchedUser);
-        assertEquals(user.getId(), fetchedUser.getId());
+        assertNotNull(fetchedUserDTO);
+        assertEquals(user.getId(), fetchedUserDTO.getId());
         verify(userRepository, times(1)).findById(userId);
     }
 
@@ -169,7 +170,7 @@ public class UserServiceImplTests {
         when(userRepository.findById(userId)).thenReturn(Optional.empty());
 
         // Assert
-        assertThrows(UserNotFoundException.class, () -> userService.findById(userId));
+        assertThrows(DataNotFoundException.class, () -> userService.findById(userId));
         verify(userRepository, times(1)).findById(userId);
     }
 

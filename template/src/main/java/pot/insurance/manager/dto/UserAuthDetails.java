@@ -16,8 +16,8 @@ public class UserAuthDetails implements UserDetails {
 	@Getter
 	private final UserAuth auth;
 	private final List<UserAuthGrantedRole> roles;
+
 	public UserAuthDetails(UserAuth auth) {
-		// TODO: Not null annotation or null check?
 		this.auth = auth;
 		this.roles = Collections.singletonList(new UserAuthGrantedRole(auth.getRole()));
 	}

@@ -24,15 +24,12 @@ public class SecurityConfiguration {
         http.authorizeHttpRequests(authorizeRequests ->
             authorizeRequests
                 .requestMatchers("/admin/**").hasRole(UserAuthRole.ADMIN.name())
-                .requestMatchers("/v1/echo").hasAnyRole(
-                    UserAuthRole.VIEWER.name(),
-                    UserAuthRole.MODERATOR.name(),
-                    UserAuthRole.ADMIN.name()
-                )
+                
 
                 .requestMatchers("/v1/users").hasRole(UserAuthRole.ADMIN.name())
                 .requestMatchers(HttpMethod.GET ,"/v1/users/{userId}").hasRole(UserAuthRole.ADMIN.name())
 
+                .requestMatchers("/v1/user-packages").hasRole(UserAuthRole.ADMIN.name())
                 .anyRequest().authenticated()
         )
         // (START)

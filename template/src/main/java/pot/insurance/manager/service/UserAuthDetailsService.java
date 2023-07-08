@@ -2,6 +2,7 @@ package pot.insurance.manager.service;
 
 import lombok.Getter;
 
+import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -11,16 +12,12 @@ import pot.insurance.manager.dto.UserAuthDetails;
 import pot.insurance.manager.entity.UserAuth;
 import pot.insurance.manager.repository.UserAuthRepository;
 
+@RequiredArgsConstructor
 @Service
 public class UserAuthDetailsService implements UserDetailsService {
 
 	@Getter
 	private final UserAuthRepository repository;
-
-	public UserAuthDetailsService(UserAuthRepository repository) {
-		// TODO: Handling for null exception maybe?
-		this.repository = repository;
-	}
 
 	@Override
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {

@@ -27,7 +27,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.transaction.Transactional;
 import pot.insurance.manager.controller.UserRestController;
 import pot.insurance.manager.dto.UserDTO;
-import pot.insurance.manager.exception.UserNotFoundException;
 import pot.insurance.manager.service.UserService;
 
 
@@ -60,29 +59,29 @@ public class UserIntegrationTests {
         public void saveUserReturnSuccessStatus() throws Exception {
 
         // Arrange
-        UserDTO user = new UserDTO();
-            user.setId(UUID.randomUUID());
-            user.setFirstName("Sammy");
-            user.setLastName("Sam");
-            user.setSsn("123456789");
-            user.setBirthday(Date.valueOf("1990-01-01"));
-            user.setEmail("test@test.test");
+        UserDTO userDTO = new UserDTO();
+            userDTO.setId(UUID.randomUUID());
+            userDTO.setFirstName("Sammy");
+            userDTO.setLastName("Sam");
+            userDTO.setSsn("123456789");
+            userDTO.setBirthday(Date.valueOf("1990-01-01"));
+            userDTO.setEmail("test@test.test");
 
         // Act
-        when(userService.save(any(UserDTO.class))).thenReturn(user);
+        when(userService.save(any(UserDTO.class))).thenReturn(userDTO);
 
         // Assert
         mockMvc.perform(post("/v1/users")
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(new ObjectMapper().writeValueAsString(user)))
+                .content(new ObjectMapper().writeValueAsString(userDTO)))
                 .andExpect(status().isCreated())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
-                .andExpect(jsonPath("$.userId", is(user.getId().toString())))
-                .andExpect(jsonPath("$.firstName", is(user.getFirstName())))
-                .andExpect(jsonPath("$.lastName", is(user.getLastName())))
-                .andExpect(jsonPath("$.ssn", is(user.getSsn())))
-                .andExpect(jsonPath("$.birthday", is(user.getBirthday().getTime())))
-                .andExpect(jsonPath("$.email", is(user.getEmail())));
+                .andExpect(jsonPath("$.userId", is(userDTO.getId().toString())))
+                .andExpect(jsonPath("$.firstName", is(userDTO.getFirstName())))
+                .andExpect(jsonPath("$.lastName", is(userDTO.getLastName())))
+                .andExpect(jsonPath("$.ssn", is(userDTO.getSsn())))
+                .andExpect(jsonPath("$.birthday", is(userDTO.getBirthday().getTime())))
+                .andExpect(jsonPath("$.email", is(userDTO.getEmail())));
 
         verify(userService).save(any(UserDTO.class));
         }
@@ -106,43 +105,43 @@ public class UserIntegrationTests {
         public void findAllUsers() throws Exception{
 
         // Arrange
-        UserDTO user1 = new UserDTO();
-            user1.setId(UUID.randomUUID());
-            user1.setFirstName("Kenny");
-            user1.setLastName("Martin");
-            user1.setSsn("123456789");
-            user1.setBirthday(Date.valueOf("1990-01-01"));
-            user1.setEmail("test@test.com");
+        UserDTO userDTO1 = new UserDTO();
+            userDTO1.setId(UUID.randomUUID());
+            userDTO1.setFirstName("Kenny");
+            userDTO1.setLastName("Martin");
+            userDTO1.setSsn("123456789");
+            userDTO1.setBirthday(Date.valueOf("1990-01-01"));
+            userDTO1.setEmail("test@test.com");
 
-        UserDTO user2 = new UserDTO();
-                user2.setId(UUID.randomUUID());
-                user2.setFirstName("Jane");
-                user2.setLastName("Smith");
-                user2.setSsn("987654321");
-                user2.setBirthday(Date.valueOf("1990-01-01"));
-                user2.setEmail("test@Test2.com");
+        UserDTO userDTO2 = new UserDTO();
+                userDTO2.setId(UUID.randomUUID());
+                userDTO2.setFirstName("Jane");
+                userDTO2.setLastName("Smith");
+                userDTO2.setSsn("987654321");
+                userDTO2.setBirthday(Date.valueOf("1990-01-01"));
+                userDTO2.setEmail("test@Test2.com");
 
-        List<UserDTO> userList = List.of(user1, user2);
+        List<UserDTO> userDTOList = List.of(userDTO1, userDTO2);
         // Act
-        when(userService.findAll()).thenReturn(userList);
+        when(userService.findAll()).thenReturn(userDTOList);
 
         // Assert
         mockMvc.perform(get("/v1/users"))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
-                .andExpect(jsonPath("$[0].userId", is(user1.getId().toString())))
-                .andExpect(jsonPath("$[0].firstName", is(user1.getFirstName())))
-                .andExpect(jsonPath("$[0].lastName", is(user1.getLastName())))
-                .andExpect(jsonPath("$[0].ssn", is(user1.getSsn())))
-                .andExpect(jsonPath("$[0].birthday", is(user1.getBirthday().getTime())))
-                .andExpect(jsonPath("$[0].email", is(user1.getEmail())))
+                .andExpect(jsonPath("$[0].userId", is(userDTO1.getId().toString())))
+                .andExpect(jsonPath("$[0].firstName", is(userDTO1.getFirstName())))
+                .andExpect(jsonPath("$[0].lastName", is(userDTO1.getLastName())))
+                .andExpect(jsonPath("$[0].ssn", is(userDTO1.getSsn())))
+                .andExpect(jsonPath("$[0].birthday", is(userDTO1.getBirthday().getTime())))
+                .andExpect(jsonPath("$[0].email", is(userDTO1.getEmail())))
         // User2
-                .andExpect(jsonPath("$[1].userId", is(user2.getId().toString())))
-                .andExpect(jsonPath("$[1].firstName", is(user2.getFirstName())))
-                .andExpect(jsonPath("$[1].lastName", is(user2.getLastName())))
-                .andExpect(jsonPath("$[1].ssn", is(user2.getSsn())))
-                .andExpect(jsonPath("$[1].birthday", is(user2.getBirthday().getTime())))
-                .andExpect(jsonPath("$[1].email", is(user2.getEmail())));
+                .andExpect(jsonPath("$[1].userId", is(userDTO2.getId().toString())))
+                .andExpect(jsonPath("$[1].firstName", is(userDTO2.getFirstName())))
+                .andExpect(jsonPath("$[1].lastName", is(userDTO2.getLastName())))
+                .andExpect(jsonPath("$[1].ssn", is(userDTO2.getSsn())))
+                .andExpect(jsonPath("$[1].birthday", is(userDTO2.getBirthday().getTime())))
+                .andExpect(jsonPath("$[1].email", is(userDTO2.getEmail())));
 
         verify(userService, times(1)).findAll();
         }
@@ -154,27 +153,27 @@ public class UserIntegrationTests {
 
         // Arrange
         UUID id = UUID.randomUUID();
-        UserDTO user = new UserDTO();
-                user.setId(id);
-                user.setFirstName("Sammy");
-                user.setLastName("Sam");
-                user.setSsn("123456789");
-                user.setBirthday(Date.valueOf("1990-01-01"));
-                user.setEmail("test@test.test");
+        UserDTO userDTO = new UserDTO();
+                userDTO.setId(id);
+                userDTO.setFirstName("Sammy");
+                userDTO.setLastName("Sam");
+                userDTO.setSsn("123456789");
+                userDTO.setBirthday(Date.valueOf("1990-01-01"));
+                userDTO.setEmail("test@test.test");
 
         // Act
-        when(userService.findById(id)).thenReturn(user);
+        when(userService.findById(id)).thenReturn(userDTO);
         
         // Assert
-        mockMvc.perform(get("/v1/users/{id}", user.getId() ))
+        mockMvc.perform(get("/v1/users/{id}", userDTO.getId() ))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
-                .andExpect(jsonPath("$.userId", is(user.getId().toString())))
-                .andExpect(jsonPath("$.firstName", is(user.getFirstName())))
-                .andExpect(jsonPath("$.lastName", is(user.getLastName())))
-                .andExpect(jsonPath("$.ssn", is(user.getSsn())))
-                .andExpect(jsonPath("$.birthday", is(user.getBirthday().getTime())))
-                .andExpect(jsonPath("$.email", is(user.getEmail())));
+                .andExpect(jsonPath("$.userId", is(userDTO.getId().toString())))
+                .andExpect(jsonPath("$.firstName", is(userDTO.getFirstName())))
+                .andExpect(jsonPath("$.lastName", is(userDTO.getLastName())))
+                .andExpect(jsonPath("$.ssn", is(userDTO.getSsn())))
+                .andExpect(jsonPath("$.birthday", is(userDTO.getBirthday().getTime())))
+                .andExpect(jsonPath("$.email", is(userDTO.getEmail())));
 
         verify(userService).findById(id);
         }
@@ -186,7 +185,7 @@ public class UserIntegrationTests {
         UUID id = UUID.randomUUID();
 
         // Act
-        when(userService.findById(id)).thenThrow(new UserNotFoundException("User not found by id: " + id));
+        when(userService.findById(id)).thenThrow(new DataNotFoundException("User not found by id: " + id));
         // Assert
         mockMvc.perform(get("/users/{user_id}", id)
                 .contentType(MediaType.APPLICATION_JSON))
