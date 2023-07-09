@@ -2,12 +2,11 @@
 # auth testing users and verbose logging
 debug: true
 spring:
-
     # Liquibase setup
     liquibase:
         change-log: classpath:db/changelog/changelog-master.json
         contexts: test
-        test-rollback-on-update: on
+        test-rollback-on-update: true
 
 
     # H2 database setup

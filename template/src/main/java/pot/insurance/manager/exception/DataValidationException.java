@@ -1,9 +1,6 @@
 package pot.insurance.manager.exception;
 
-import lombok.EqualsAndHashCode;
-
 import lombok.Getter;
-import lombok.Value;
 
 import org.springframework.dao.DataIntegrityViolationException;
 
@@ -14,10 +11,13 @@ public class DataValidationException extends DataIntegrityViolationException {
     @Getter
     DataValidation.Status status;
 
-    public DataValidationException(DataValidation.Status status) {
-        super(status.getDescription());
-
+    public DataValidationException(DataValidation.Status status, String message) {
+        super(message == null ? status.getDescription() : message);
         this.status = status;
+    }
+
+    public DataValidationException(DataValidation.Status status) {
+        this(status, status.getDescription());
     }
 
 }

@@ -39,7 +39,7 @@ public class UserServiceImpl implements UserService {
         try {
             return mapper.toUser(repository.save(entity));
         } catch (DataIntegrityViolationException exception) {
-            throw new DataValidationException(DataValidation.Status.USER_INVALID_DATA);
+            throw new DataValidationException(DataValidation.Status.MALFORMED_DATA);
         }
     }
     

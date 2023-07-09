@@ -16,4 +16,5 @@ public class StatusMapper {
             case ABSENT -> HttpStatus.NOT_FOUND;
         };
     }
+
 }

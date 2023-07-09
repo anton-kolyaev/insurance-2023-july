@@ -52,7 +52,7 @@ public class PlanPackageServiceImpl implements PlanPackageService {
             }
             return finalPlanPackage;
         } catch (DataIntegrityViolationException exception) {
-            throw new DataValidationException(DataValidation.Status.PLAN_PACKAGE_INVALID_DATA);
+            throw new DataValidationException(DataValidation.Status.MALFORMED_DATA);
         }
 
     }
@@ -74,7 +74,7 @@ public class PlanPackageServiceImpl implements PlanPackageService {
         try {
             return mapper.toDTO(repository.save(entity));
         } catch (DataIntegrityViolationException exception) {
-            throw new DataValidationException(DataValidation.Status.PLAN_INVALID_DATA);
+            throw new DataValidationException(DataValidation.Status.MALFORMED_DATA);
         }
     }
 
