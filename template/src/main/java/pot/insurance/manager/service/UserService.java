@@ -11,7 +11,9 @@ public interface UserService {
     
     List<UserDTO> findAll();
 
-    UserDTO findById(UUID id);
+    UserDTO findById(UUID userId);
 
+    UserDTO update(UUID userId, UserDTO userDTO);
 
+    UserDTO softDeleteById(UUID userId);
 }

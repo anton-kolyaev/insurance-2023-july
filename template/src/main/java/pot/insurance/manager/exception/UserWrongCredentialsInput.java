@@ -1,4 +1,4 @@
-package pot.insurance.manager.exception.exeptions;
+package pot.insurance.manager.exception;
 
 import org.springframework.dao.DataIntegrityViolationException;
 
