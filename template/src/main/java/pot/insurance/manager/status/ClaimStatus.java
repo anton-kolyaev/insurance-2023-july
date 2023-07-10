@@ -1,7 +1,8 @@
 package pot.insurance.manager.status;
 
-public enum Status {
+public enum ClaimStatus {
     DECLINED,
     PENDING,
-    APPROVED
+    APPROVED,
+    DELETED
 }

@@ -32,3 +32,21 @@ ADD COLUMN `deletion_status` BOOLEAN NOT NULL DEFAULT FALSE;
 
 -- rollback ALTER TABLE IF EXISTS `users`
 -- rollback DROP COLUMN `deletion_status`;
+
+-- changeset matas:4
+-- comment: add claims table
+CREATE TABLE `claims` (
+    `id` UUID NOT NULL DEFAULT random_uuid(),
+    `consumer_id` UUID NOT NULL DEFAULT random_uuid(),
+    `employer` VARCHAR (35) NOT NULL,
+    `plan` VARCHAR (35) NOT NULL,
+    `date` DATE NOT NULL,
+    `amount` NUMERIC (35) NOT NULL,
+    `status` ENUM('DECLINED', 'PENDING', 'APPROVED', 'DELETED') NOT NULL,
+
+    CONSTRAINT `PK_CLAIMS`
+    PRIMARY KEY (`id`)
+);
+
+-- rollback ALTER TABLE IF EXISTS `claims`
+-- rollback DROP COLUMN `deletion_status`;

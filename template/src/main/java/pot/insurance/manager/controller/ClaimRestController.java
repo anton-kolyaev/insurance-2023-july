@@ -1,27 +1,23 @@
 package pot.insurance.manager.controller;
 
-import lombok.AllArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
+
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import pot.insurance.manager.dto.ClaimDTO;
 import pot.insurance.manager.service.ClaimService;
 
 @RestController
 @RequestMapping("/v1/claims")
+@RequiredArgsConstructor
 public class ClaimRestController {
 
     private final ClaimService claimService;
 
-    public ClaimRestController (ClaimService theClaimService) {
-        claimService = theClaimService;
-    }
-
     @PostMapping()
     @ResponseStatus(HttpStatus.CREATED)
     public ClaimDTO saveClaim(@RequestBody ClaimDTO claimDTO) {
-        return claimService.saveClaim(claimDTO);
+        return claimService.save(claimDTO);
     }
 
     @GetMapping()

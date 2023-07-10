@@ -4,6 +4,7 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.Mockito.*;
 
+import java.math.BigDecimal;
 import java.sql.Date;
 import java.util.ArrayList;
 import java.util.List;
@@ -23,9 +24,10 @@ import org.springframework.dao.DataIntegrityViolationException;
 import pot.insurance.manager.repository.ClaimRepository;
 import pot.insurance.manager.dto.ClaimDTO;
 import pot.insurance.manager.entity.Claim;
-import pot.insurance.manager.exception.exeptions.ClaimNotFoundException;
-import pot.insurance.manager.exception.exeptions.ClaimWrongCredentialsInput;
+import pot.insurance.manager.exception.ClaimNotFoundException;
+import pot.insurance.manager.exception.ClaimWrongCredentialsInput;
 import pot.insurance.manager.service.ClaimServiceImpl;
+import pot.insurance.manager.status.ClaimStatus;
 
 @SpringBootTest
 @RunWith(MockitoJUnitRunner.class)
@@ -48,12 +50,13 @@ public class ClaimServiceImplTests {
         // Arrange
         ClaimDTO claimDTO = new ClaimDTO();
         Claim claim = new Claim();
-            claim.setId(UUID.randomUUID());
-            claim.setemployer("Test inc.");
-            claim.setDate(Date.valueOf("1990-01-01"));
-            claim.setPlan("Dental");
-            claim.setAmount(123456789);
-            claim.setStatus(); // import status enum of pending
+        claim.setId(UUID.randomUUID());
+        claim.setConsumerId(UUID.randomUUID());
+        claim.setEmployer("Test inc.");
+        claim.setPlan("Dental");
+        claim.setDate(Date.valueOf("2023-01-01"));
+        claim.setAmount(BigDecimal.valueOf(75.10));
+        claim.setStatus(ClaimStatus.DECLINED);
             
 
         when(claimRepository.save(any(Claim.class))).thenReturn(claim);
@@ -63,20 +66,21 @@ public class ClaimServiceImplTests {
 
         // Assert
         assertNotNull(savedClaim);
-        assertEquals(claim.getId(), savedClaim.getClaimId());
+        assertEquals(claim.getId(), savedClaim.getId());
         verify(claimRepository, times(1)).save(any(Claim.class));
     }
     
     @Test
-    public void testSaveClaimWithDuplicateClaimname(){
+    public void testSaveClaimWithDuplicateClaimId(){
         // Arrange
         ClaimDTO claim = new ClaimDTO();
-            claim.setId(UUID.randomUUID());
-            claim.setemployer("Test inc.");
-            claim.setDate(Date.valueOf("1990-01-01"));
-            claim.setPlan("Dental");
-            claim.setAmount(123456789);
-            claim.setStatus(); // import status enum of pending
+        claim.setId(UUID.randomUUID());
+        claim.setConsumerId(UUID.randomUUID());
+        claim.setEmployer("Test inc.");
+        claim.setPlan("Dental");
+        claim.setDate(Date.valueOf("2023-01-01"));
+        claim.setAmount(BigDecimal.valueOf(75.10));
+        claim.setStatus(ClaimStatus.PENDING);
 
         // Act
         when(claimRepository.save(any(Claim.class))).thenThrow(DataIntegrityViolationException.class);
@@ -95,12 +99,13 @@ public class ClaimServiceImplTests {
         // Arrange
         ClaimDTO claimDTO = new ClaimDTO();
         Claim claim = new Claim();
-            claim.setId(UUID.randomUUID());
-            claim.setemployer("Test inc.");
-            claim.setDate(Date.valueOf("1990-01-01"));
-            claim.setPlan("Dental");
-            claim.setAmount(123456789);
-            claim.setStatus(); // import status enum of pending
+        claim.setId(UUID.randomUUID());
+        claim.setConsumerId(UUID.randomUUID());
+        claim.setEmployer("Test inc.");
+        claim.setPlan("Dental");
+        claim.setDate(Date.valueOf("2023-01-01"));
+        claim.setAmount(BigDecimal.valueOf(75.10));
+        claim.setStatus(ClaimStatus.PENDING);
 
         // Act
         when(claimRepository.save(any(Claim.class))).thenReturn(claim).thenReturn(null);
@@ -108,7 +113,7 @@ public class ClaimServiceImplTests {
         ClaimDTO savedClaim2 = claimService.save(claimDTO);
 
         // Assert
-        assertEquals(claim.getId(), savedClaim1.getClaimId());
+        assertEquals(claim.getId(), savedClaim1.getId());
         assertNull(savedClaim2);
         verify(claimRepository, times(2)).save(any(Claim.class));
     }

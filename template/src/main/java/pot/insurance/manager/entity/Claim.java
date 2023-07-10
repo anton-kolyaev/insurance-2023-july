@@ -1,4 +1,4 @@
-package pot.insurance.manager.domain;
+package pot.insurance.manager.entity;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -8,7 +8,9 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import pot.insurance.manager.status.ClaimStatus;
 
+import java.math.BigDecimal;
 import java.util.Date;
 import java.util.UUID;
 
@@ -24,8 +26,8 @@ public class Claim {
     @Column(columnDefinition = "BINARY(16)")
     private UUID id;
 
-    @Column(name = "consumer_name")
-    private String consumer_name;
+    @Column(name = "consumerId")
+    private UUID consumerId;
 
     @Column(name = "employer")
     private String employer;
@@ -37,8 +39,8 @@ public class Claim {
     private String plan;
 
     @Column(name = "amount")
-    private int amount;
+    private BigDecimal amount;
 
     @Column(name = "status")
-    private Enum status;
+    private ClaimStatus status;
 }

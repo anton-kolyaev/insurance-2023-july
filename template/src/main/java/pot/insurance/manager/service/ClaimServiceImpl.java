@@ -7,6 +7,7 @@ import java.util.UUID;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 
+import pot.insurance.manager.exception.ClaimWrongCredentialsInput;
 import pot.insurance.manager.repository.ClaimRepository;
 import pot.insurance.manager.dto.ClaimDTO;
 import pot.insurance.manager.entity.Claim;
