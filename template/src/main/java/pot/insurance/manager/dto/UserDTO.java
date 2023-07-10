@@ -15,13 +15,13 @@ import lombok.NoArgsConstructor;
 @Builder
 public class UserDTO {
 
-    private UUID userId;
+    private UUID id;
     private String firstName;
     private String lastName;
     private Date birthday;
-    private String username;
     private String email;
     private String ssn;
+    private boolean deletionStatus;
 
 }
 
