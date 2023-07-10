@@ -30,8 +30,7 @@ CREATE TABLE `users` (
 ALTER TABLE IF EXISTS `users`
 ADD COLUMN `deletion_status` BOOLEAN NOT NULL DEFAULT FALSE;
 
--- rollback ALTER TABLE IF EXISTS `users`
--- rollback DROP COLUMN `deletion_status`;
+-- rollback ALTER TABLE IF EXISTS `users` DROP COLUMN `deletion_status`;
 
 -- changeset matas:4
 -- comment: add claims table
@@ -48,5 +47,4 @@ CREATE TABLE `claims` (
     PRIMARY KEY (`id`)
 );
 
--- rollback ALTER TABLE IF EXISTS `claims`
--- rollback DROP COLUMN `deletion_status`;
+-- rollback DROP TABLE `claims`

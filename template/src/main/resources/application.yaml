@@ -1,35 +1,31 @@
-#
-# Spring Boot configuration for development environment
-#
+# Debug mode. Enables debug controllers,
+# auth testing users and verbose logging
+debug: true
 spring:
     # Liquibase setup
     liquibase:
         change-log: classpath:db/changelog/changelog-master.json
         contexts: test
         test-rollback-on-update: true
+
+
     # H2 database setup
     datasource:
         driver-class-name: org.h2.Driver
-        url: jdbc:h2:mem:java_internship;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=TRUE
-        username: sa
-        password: admin
-        name: java_internship
+        url: "jdbc:h2:mem:database;\
+              DB_CLOSE_DELAY=-1;\
+              DB_CLOSE_ON_EXIT=TRUE;"
+        username: admin
+        password: password
     jpa:
-        database-platform: org.hibernate.dialect.H2Dialect
         properties:
             hibernate:
-                dialect: org.hibernate.dialect.H2Dialect
-                '[default_schema]': insurance_manager
-        hibernate:
-            ddl-auto: update
-    # Enable this for development purposes only!
+                # This is needed in order to fix an issue with h2 console auth
+                # This represents the schema where all the business logic is held
+                default_schema: insurance_manager
     h2:
+        # Enable this to enable H2 console web application.
+        # (debug mode needs to be enabled for this to work)
         console:
             enabled: true
-            path: /h2-console
-    # Additional settings
-    # main:
-    #     banner-mode: off
-    # jpa:
-    #     open-in-view: false
-    
+            path: /debug/db

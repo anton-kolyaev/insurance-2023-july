@@ -12,9 +12,10 @@ import java.util.UUID;
 
 @Data
 @NoArgsConstructor
-@AllArgsConstructor
+@AllArgsConstructor()
 @Builder
 public class ClaimDTO {
+
     private UUID id;
     private UUID consumerId;
     private String employer;
