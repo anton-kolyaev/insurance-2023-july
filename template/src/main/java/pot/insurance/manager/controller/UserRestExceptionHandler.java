@@ -4,10 +4,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
-
-import pot.insurance.manager.exception.UserWrongCredentialsException;
 import pot.insurance.manager.exception.UserNotFoundException;
 import pot.insurance.manager.dto.ErrorResponse;
+import pot.insurance.manager.exception.UserWrongCredentialsInput;
 
 @ControllerAdvice
 public class UserRestExceptionHandler {
@@ -21,8 +20,8 @@ public class UserRestExceptionHandler {
         return new ResponseEntity<>(error, HttpStatus.NOT_FOUND);
     }
 
-    @ExceptionHandler(UserWrongCredentialsException.class)
-    public ResponseEntity<ErrorResponse> handleException(UserWrongCredentialsException exc){
+    @ExceptionHandler(UserWrongCredentialsInput.class)
+    public ResponseEntity<ErrorResponse> handleException(UserWrongCredentialsInput exc){
         if (exc.getMessage().contains("USERNAME") && exc.getMessage().contains("Unique index or primary key violation")) {
             ErrorResponse error = new ErrorResponse();
             error.setStatus(409);

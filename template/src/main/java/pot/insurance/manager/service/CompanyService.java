@@ -22,8 +22,7 @@ public class CompanyService {
         try {
             Company company = companyMapper.companyDTOToCompany(companyDTO);
             company.setId(UUID.randomUUID());
-            CompanyDTO savedCompany = companyMapper.companyToCompanyDTO(companyRepository.save(company));
-            return savedCompany;
+            return companyMapper.companyToCompanyDTO(companyRepository.save(company));
         } catch (DataIntegrityViolationException e) {
             throw new CompanyWrongCredentialsException(e.getMessage());
         }

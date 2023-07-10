@@ -21,7 +21,7 @@ import lombok.NoArgsConstructor;
 public class User {
 
     @Id
-    @Column(columnDefinition = "BINARY(16)")
+    @Column(name="id", columnDefinition = "BINARY(16)")
     private UUID id;
 
     @Column(name = "first_name")
@@ -33,13 +33,13 @@ public class User {
     @Column(name = "birthday")
     private Date birthday;
 
-    @Column(name = "username")
-    private String username;
-
     @Column(name = "email")
     private String email;
 
     @Column(name = "ssn")
     private String ssn;
+
+    @Column(name = "deletion_status")
+    private boolean deletionStatus;
 
 }

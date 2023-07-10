@@ -3,7 +3,7 @@ package pot.insurance.manager.configuration;
 import org.springframework.boot.autoconfigure.security.servlet.PathRequest;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.http.HttpMethod;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -16,6 +16,8 @@ import org.springframework.security.web.SecurityFilterChain;
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig {
+
+        @PreAuthorize("hasRole('ADMIN')")
         @Bean
         public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
 
@@ -25,11 +27,6 @@ public class SecurityConfig {
                         .requestMatchers("/admin/**").hasRole("ADMIN")
                         .requestMatchers("/v1/echo").hasAnyRole("USER", "ADMIN")
                         .requestMatchers("/**").authenticated()
-
-                        // config for user
-                        .requestMatchers(HttpMethod.GET ,"/v1/users").hasRole("ADMIN")
-                        .requestMatchers(HttpMethod.POST, "/v1/users").hasRole("ADMIN")
-                        .requestMatchers(HttpMethod.GET ,"/v1/users/{userId}").hasRole("ADMIN")
 
                         // config for h2 console
                         .requestMatchers(PathRequest.toH2Console()).permitAll()
