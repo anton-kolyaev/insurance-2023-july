@@ -1,5 +1,6 @@
 package pot.insurance.manager.service;
 
+import java.util.List;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.dao.DataIntegrityViolationException;
@@ -29,10 +30,16 @@ public class CompanyService {
         if(conflictEntity.isPresent()) {
             throw new DataValidationException(DataValidation.Status.COMPANY_ID_EXISTS);
         }
+
         try {
             return companyMapper.companyToCompanyDTO(companyRepository.save(company));
         } catch(DataIntegrityViolationException e) {
             throw new DataValidationException(DataValidation.Status.MALFORMED_DATA);
         }
+    }
+
+    public Object getAllCompanies() {
+        List<Company> companyList = companyRepository.findAll();
+        return companyList.stream().map(companyMapper::companyToCompanyDTO).toList();
     }
 }
