@@ -4,6 +4,7 @@ import jakarta.annotation.PostConstruct;
 
 import jakarta.annotation.PreDestroy;
 
+import lombok.RequiredArgsConstructor;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.autoconfigure.security.servlet.PathRequest;
 import org.springframework.context.annotation.Bean;
@@ -29,14 +30,10 @@ import java.util.UUID;
 @Configuration
 @EnableWebSecurity
 @ConditionalOnProperty("debug")
+@RequiredArgsConstructor
 public class DebugSecurityConfiguration {
 
 	private final UserAuthRepository repository;
-
-	public DebugSecurityConfiguration(UserAuthRepository repository) {
-		// TODO: Null checking?
-		this.repository = repository;
-	}
 
 	@Bean
 	@Order(1)
@@ -59,7 +56,7 @@ public class DebugSecurityConfiguration {
 		UserAuth admin = UserAuth.builder()
 			.id(UUID.randomUUID())
 			.username("admin")
-			.password("$2a$10$fGHe9m9nCaWepdoFszUpz.MjGdot/LecvxbhmBz7CplmB3xXlDZby")
+			.password("$2a$10$fGHe9m9nCaWepdoFszUpz.MjGdot/LecvxbhmBz7CplmB3xXlDZby") // password: adminpassword
 			.role(UserAuthRole.ADMIN)
 			.status(UserAuthStatus.ACTIVE)
 			.build();
@@ -68,7 +65,7 @@ public class DebugSecurityConfiguration {
 		UserAuth moderator = UserAuth.builder()
 			.id(UUID.randomUUID())
 			.username("moderator")
-			.password("$2a$10$adep3.38anG5LXIkrYFEFO0T7oxspRjsplB7II7NzlkAWVkf8sWZy")
+			.password("$2a$10$adep3.38anG5LXIkrYFEFO0T7oxspRjsplB7II7NzlkAWVkf8sWZy") // password: moderatorpassword
 			.role(UserAuthRole.MODERATOR)
 			.status(UserAuthStatus.ACTIVE)
 			.build();
@@ -77,7 +74,7 @@ public class DebugSecurityConfiguration {
 		UserAuth viewer = UserAuth.builder()
 			.id(UUID.randomUUID())
 			.username("viewer")
-			.password("$2a$10$z7w5ZASKP6Ic/j4rGq6e3u19z3l/4pwpuGdN3OOnEwUU9dnbTnIaW")
+			.password("$2a$10$z7w5ZASKP6Ic/j4rGq6e3u19z3l/4pwpuGdN3OOnEwUU9dnbTnIaW") // password: viewerpassword
 			.role(UserAuthRole.VIEWER)
 			.status(UserAuthStatus.ACTIVE)
 			.build();

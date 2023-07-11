@@ -11,7 +11,6 @@ public class UserAuthGrantedRole implements GrantedAuthority {
 	private final String authority;
 
 	public UserAuthGrantedRole(UserAuthRole role) {
-		// TODO: CHECK FOR NULL OBJECT
 		this.authority = role.toString();
 	}
 }

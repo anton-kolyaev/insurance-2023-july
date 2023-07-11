@@ -3,9 +3,12 @@ package pot.insurance.manager.service;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
+
 import lombok.RequiredArgsConstructor;
+
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
+
 import pot.insurance.manager.dto.UserDTO;
 import pot.insurance.manager.entity.User;
 import pot.insurance.manager.exception.DataValidationException;

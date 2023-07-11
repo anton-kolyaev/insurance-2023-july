@@ -1,9 +1,9 @@
 package pot.insurance.manager.controller;
 
-import java.util.List;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -30,22 +30,25 @@ public class UserRestController {
     }
 
     @GetMapping()
-    public List<UserDTO> findAllUsers(){
+    public Object findAllUsers(){
         return userService.findAll();
     }
 
     @GetMapping("/{userId}")
-    public UserDTO findUserById(@PathVariable UUID userId){
+    @PreAuthorize("hasRole(T(pot.insurance.manager.type.UserAuthRole).ADMIN.name())")
+    public Object findUserById(@PathVariable UUID userId){
         return userService.findById(userId);
     }
 
     @PutMapping("/{userId}")
-    public UserDTO updateUser(@PathVariable UUID userId, @RequestBody UserDTO userDTO){
+    @PreAuthorize("hasRole(T(pot.insurance.manager.type.UserAuthRole).ADMIN.name())")
+    public Object updateUser(@PathVariable UUID userId, @RequestBody UserDTO userDTO){
         return userService.update(userId, userDTO);
     }
 
     @DeleteMapping("/{userId}")
-    public UserDTO deleteUserById(@PathVariable UUID userId){
+    @PreAuthorize("hasRole(T(pot.insurance.manager.type.UserAuthRole).ADMIN.name())")
+    public Object deleteUserById(@PathVariable UUID userId){
         return userService.softDeleteById(userId);
     }
 
