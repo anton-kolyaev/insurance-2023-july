@@ -18,4 +18,10 @@ public class CompanyRestController {
     public CompanyDTO createCompany(@RequestBody CompanyDTO companyDTO) {
         return companyService.saveCompany(companyDTO);
     }
+
+    @GetMapping
+    @ResponseStatus(HttpStatus.OK)
+    public Object getAllCompanies() {
+        return companyService.getAllCompanies();
+    }
 }
