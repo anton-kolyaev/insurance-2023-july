@@ -4,46 +4,34 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonSetter;
 import com.fasterxml.jackson.annotation.Nulls;
-import java.util.Date;
-import java.util.UUID;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
+import java.util.UUID;
 
 @Data
+@Builder
 @NoArgsConstructor
 @AllArgsConstructor(onConstructor = @__(@JsonCreator))
-@Builder
-public class UserDTO {
+public class CompanyDTO {
 
     @JsonProperty
     private UUID id;
 
     @JsonSetter(nulls = Nulls.FAIL)
     @JsonProperty(required = true)
-    private String firstName;
+    private String companyName;
 
     @JsonSetter(nulls = Nulls.FAIL)
     @JsonProperty(required = true)
-    private String lastName;
-
-    @JsonSetter(nulls = Nulls.FAIL)
-    @JsonProperty(required = true)
-    private Date birthday;
+    private String countryCode;
 
     @JsonSetter(nulls = Nulls.FAIL)
     @JsonProperty(required = true)
     private String email;
 
-    @JsonSetter(nulls = Nulls.FAIL)
-    @JsonProperty(required = true)
-    private String ssn;
-
-    @JsonSetter(nulls = Nulls.FAIL)
-    @JsonProperty(required = true)
-    private boolean deletionStatus;
-
+    @JsonProperty
+    private String site;
 }
 

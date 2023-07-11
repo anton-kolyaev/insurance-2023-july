@@ -1,7 +1,7 @@
 package pot.insurance.manager.controller;
 
 import java.util.UUID;
-
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -12,19 +12,15 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
-
 import pot.insurance.manager.dto.UserDTO;
 import pot.insurance.manager.service.UserService;
 
 @RestController
+@RequiredArgsConstructor
 @RequestMapping("/v1/users")
 public class UserRestController {
-    
-    private final UserService userService;
 
-    public UserRestController(UserService theUserService) {
-        userService = theUserService;
-    }
+    private final UserService userService;
 
     @PostMapping()
     @ResponseStatus(HttpStatus.CREATED)
@@ -44,7 +40,7 @@ public class UserRestController {
     }
 
     @PutMapping("/{userId}")
-    public Object updateUser(@PathVariable UUID userId,@RequestBody UserDTO userDTO){
+    public Object updateUser(@PathVariable UUID userId, @RequestBody UserDTO userDTO){
         return userService.update(userId, userDTO);
     }
 

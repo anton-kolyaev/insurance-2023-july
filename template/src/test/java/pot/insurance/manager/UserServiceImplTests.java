@@ -3,45 +3,40 @@ package pot.insurance.manager;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.Mockito.*;
-
 import java.sql.Date;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
-
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-
 import org.mockito.MockitoAnnotations;
 import org.mockito.junit.MockitoJUnitRunner;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.dao.DataIntegrityViolationException;
-
 import pot.insurance.manager.dto.UserDTO;
 import pot.insurance.manager.entity.User;
-import pot.insurance.manager.exception.UserNotFoundException;
-import pot.insurance.manager.exception.UserWrongCredentialsInput;
+import pot.insurance.manager.exception.DataValidationException;
 import pot.insurance.manager.repository.UserRepository;
 import pot.insurance.manager.service.UserServiceImpl;
 
 @SpringBootTest
 @RunWith(MockitoJUnitRunner.class)
 public class UserServiceImplTests {
-    
+
     @Mock
     private UserRepository userRepository;
-    
+
     @InjectMocks
     private UserServiceImpl userService;
 
     @Before
     public void setup() {
-        MockitoAnnotations.openMocks(this);
-        userService = new UserServiceImpl(userRepository);
+      MockitoAnnotations.openMocks(this);
+      userService = new UserServiceImpl(userRepository);
     }
 
     @Test
@@ -49,13 +44,13 @@ public class UserServiceImplTests {
         // Arrange
         UserDTO userDTO = new UserDTO();
         User user = new User();
-            user.setId(UUID.randomUUID());
-            user.setFirstName("Sammy");
-            user.setLastName("Sam");
-            user.setSsn("123456789");
-            user.setBirthday(Date.valueOf("1990-01-01"));
-            user.setEmail("test@test.test");
-            
+        user.setId(UUID.randomUUID());
+        user.setFirstName("Sammy");
+        user.setLastName("Sam");
+        user.setSsn("123456789");
+        user.setBirthday(Date.valueOf("1990-01-01"));
+        user.setEmail("test@test.test");
+
 
         when(userRepository.save(any(User.class))).thenReturn(user);
 
@@ -67,41 +62,39 @@ public class UserServiceImplTests {
         assertEquals(user.getId(), savedUser.getId());
         verify(userRepository, times(1)).save(any(User.class));
     }
-    
+
     @Test
     public void testSaveUserWithDuplicateUsername(){
         // Arrange
         UserDTO user = new UserDTO();
-            user.setId(UUID.randomUUID());
-            user.setFirstName("Sammy");
-            user.setLastName("Sam");
-            user.setSsn("123456789");
-            user.setBirthday(Date.valueOf("1990-01-01"));
-            user.setEmail("test@test.com");
+        user.setId(UUID.randomUUID());
+        user.setFirstName("Sammy");
+        user.setLastName("Sam");
+        user.setSsn("123456789");
+        user.setBirthday(Date.valueOf("1990-01-01"));
+        user.setEmail("test@test.com");
 
         // Act
         when(userRepository.save(any(User.class))).thenThrow(DataIntegrityViolationException.class);
 
         // Assert
-        assertThrows(UserWrongCredentialsInput.class, () -> userService.save(user));
-        assertNull(assertThrows(UserWrongCredentialsInput.class, () -> userService.save(user)).getMessage());
+        assertThrows(DataValidationException.class, () -> userService.save(user));
+        assertNull(assertThrows(DataValidationException.class, () -> userService.save(user)).getMessage());
         verify(userRepository, times(2)).save(any(User.class));
-        
     }
-    
+
 
     @Test
     public void testSaveUserDuplicateExistedUser(){
-
         // Arrange
         UserDTO userDTO = new UserDTO();
         User user = new User();
-            user.setId(UUID.randomUUID());
-            user.setFirstName("Sammy");
-            user.setLastName("Sam");
-            user.setSsn("123456789");
-            user.setBirthday(Date.valueOf("1990-01-01"));
-            user.setEmail("test@test.test");
+        user.setId(UUID.randomUUID());
+        user.setFirstName("Sammy");
+        user.setLastName("Sam");
+        user.setSsn("123456789");
+        user.setBirthday(Date.valueOf("1990-01-01"));
+        user.setEmail("test@test.test");
 
         // Act
         when(userRepository.save(any(User.class))).thenReturn(user).thenReturn(null);
@@ -134,12 +127,12 @@ public class UserServiceImplTests {
         // Arrange
         UUID userId = UUID.randomUUID();
         User user = new User();
-            user.setId(userId);
-            user.setFirstName("Sammy");
-            user.setLastName("Sam");
-            user.setSsn("123456789");
-            user.setBirthday(Date.valueOf("1990-01-01"));
-            user.setEmail("test@test.test");
+        user.setId(userId);
+        user.setFirstName("Sammy");
+        user.setLastName("Sam");
+        user.setSsn("123456789");
+        user.setBirthday(Date.valueOf("1990-01-01"));
+        user.setEmail("test@test.test");
 
         when(userRepository.findByIdAndDeletionStatusFalse(userId)).thenReturn(Optional.of(user));
 
@@ -161,7 +154,7 @@ public class UserServiceImplTests {
         when(userRepository.findByIdAndDeletionStatusFalse(userId)).thenReturn(Optional.empty());
 
         // Assert
-        assertThrows(UserNotFoundException.class, () -> userService.findById(userId));
+        assertThrows(DataValidationException.class, () -> userService.findById(userId));
         verify(userRepository, times(1)).findByIdAndDeletionStatusFalse(userId);
     }
 
@@ -171,14 +164,14 @@ public class UserServiceImplTests {
         UserDTO userDTO = new UserDTO();
         UUID userId = UUID.randomUUID();
         User user = new User();
-            user.setId(userId);
-            user.setFirstName("Sammy");
-            user.setLastName("Sam");
-            user.setSsn("123456789");
-            user.setBirthday(Date.valueOf("1990-01-01"));
-            user.setEmail("test@test.com");
-            user.setDeletionStatus(false);
-        
+        user.setId(userId);
+        user.setFirstName("Sammy");
+        user.setLastName("Sam");
+        user.setSsn("123456789");
+        user.setBirthday(Date.valueOf("1990-01-01"));
+        user.setEmail("test@test.com");
+        user.setDeletionStatus(false);
+
         // Act
         when(userRepository.findByIdAndDeletionStatusFalse(userId)).thenReturn(Optional.of(user));
         when(userRepository.save(any(User.class))).thenReturn(user);
@@ -188,7 +181,6 @@ public class UserServiceImplTests {
         assertEquals(userId, updatedUser.getId());
         verify(userRepository, times(1)).findByIdAndDeletionStatusFalse(userId);
         verify(userRepository, times(1)).save(any(User.class));
-        
     }
 
     @Test
@@ -201,7 +193,7 @@ public class UserServiceImplTests {
         when(userRepository.findByIdAndDeletionStatusFalse(userId)).thenReturn(Optional.empty());
 
         // Assert
-        assertThrows(UserNotFoundException.class, () -> userService.update(userId, userDTO));
+        assertThrows(DataValidationException.class, () -> userService.update(userId, userDTO));
         verify(userRepository, times(1)).findByIdAndDeletionStatusFalse(userId);
         verify(userRepository, times(0)).save(any(User.class));
     }
@@ -213,13 +205,13 @@ public class UserServiceImplTests {
         UserDTO userDTO = new UserDTO();
         User user = new User();
         user.setId(userId);
-        
+
         // Act
         when(userRepository.findByIdAndDeletionStatusFalse(userId)).thenReturn(Optional.of(user));
         when(userRepository.save(user)).thenThrow(DataIntegrityViolationException.class);
 
         // Assert
-        assertThrows(UserWrongCredentialsInput.class, () -> userService.update(userId, userDTO));
+        assertThrows(DataValidationException.class, () -> userService.update(userId, userDTO));
         verify(userRepository, times(1)).findByIdAndDeletionStatusFalse(userId);
         verify(userRepository, times(1)).save(user);
     }
@@ -229,13 +221,13 @@ public class UserServiceImplTests {
         // Arrange
         UUID userId = UUID.randomUUID();
         User user = new User();
-            user.setId(userId);
-            user.setFirstName("Sammy");
-            user.setLastName("Sam");
-            user.setSsn("123456789");
-            user.setBirthday(Date.valueOf("1990-01-01"));
-            user.setEmail("test@test.com");
-            user.setDeletionStatus(false);
+        user.setId(userId);
+        user.setFirstName("Sammy");
+        user.setLastName("Sam");
+        user.setSsn("123456789");
+        user.setBirthday(Date.valueOf("1990-01-01"));
+        user.setEmail("test@test.com");
+        user.setDeletionStatus(false);
 
         // Act
         when(userRepository.findByIdAndDeletionStatusFalse(userId)).thenReturn(Optional.of(user));
@@ -258,7 +250,7 @@ public class UserServiceImplTests {
         when(userRepository.findByIdAndDeletionStatusFalse(userId)).thenReturn(Optional.empty());
 
         // Assert
-        assertThrows(UserNotFoundException.class, () -> userService.softDeleteById(userId));
+        assertThrows(DataValidationException.class, () -> userService.softDeleteById(userId));
         verify(userRepository, times(1)).findByIdAndDeletionStatusFalse(userId);
         verify(userRepository, never()).save(any());
     }

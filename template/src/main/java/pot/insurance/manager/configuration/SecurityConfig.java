@@ -1,7 +1,5 @@
 package pot.insurance.manager.configuration;
 
-
-
 import org.springframework.boot.autoconfigure.security.servlet.PathRequest;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -15,27 +13,25 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
 
-
-
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig {
-        
+
         @PreAuthorize("hasRole('ADMIN')")
         @Bean
         public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-                
-        
+
+
                 http.authorizeHttpRequests(configurer ->
                 configurer
                         .requestMatchers("/admin/**").hasRole("ADMIN")
                         .requestMatchers("/v1/echo").hasAnyRole("USER", "ADMIN")
                         .requestMatchers("/**").authenticated()
-                        
+
                         // config for h2 console
                         .requestMatchers(PathRequest.toH2Console()).permitAll()
                 );
-                
+
                 http.httpBasic(Customizer.withDefaults());
                 http.csrf(csrfCustomizer ->
                         csrfCustomizer.disable());
@@ -43,7 +39,7 @@ public class SecurityConfig {
                 http.headers(headersCustomizer ->
                         headersCustomizer.frameOptions(HeadersConfigurer.FrameOptionsConfig::sameOrigin)
                 );
-                
+
                 return http.build();
         }
 

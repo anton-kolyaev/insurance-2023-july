@@ -27,8 +27,9 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.transaction.Transactional;
 import pot.insurance.manager.controller.UserRestController;
 import pot.insurance.manager.dto.UserDTO;
-import pot.insurance.manager.exception.UserNotFoundException;
+import pot.insurance.manager.exception.DataValidationException;
 import pot.insurance.manager.service.UserService;
+import pot.insurance.manager.type.DataValidation.Status;
 
 
 @SpringBootTest
@@ -37,33 +38,33 @@ import pot.insurance.manager.service.UserService;
 @RunWith(MockitoJUnitRunner.class)
 
 public class UserIntegrationTests {
-        
-        @Autowired
-        private MockMvc mockMvc;
 
-        @MockBean
-        private UserService userService;
+    @Autowired
+    private MockMvc mockMvc;
+
+    @MockBean
+    private UserService userService;
 
 
 
-        @Before
-        public void setup() {
-                MockitoAnnotations.openMocks(this);
-                userService = mock(UserService.class);
-                mockMvc = MockMvcBuilders.standaloneSetup(new UserRestController(userService)).build();
-        }
+    @Before
+    public void setup() {
+        MockitoAnnotations.openMocks(this);
+        userService = mock(UserService.class);
+        mockMvc = MockMvcBuilders.standaloneSetup(new UserRestController(userService)).build();
+    }
 
-        @Test
-        public void saveUserReturnSuccessStatus() throws Exception {
+    @Test
+    public void saveUserReturnSuccessStatus() throws Exception {
 
         // Arrange
         UserDTO user = new UserDTO();
-                user.setId(UUID.randomUUID());
-                user.setFirstName("Sammy");
-                user.setLastName("Sam");
-                user.setSsn("123456789");
-                user.setBirthday(Date.valueOf("1990-01-01"));
-                user.setEmail("test@test.test");
+        user.setId(UUID.randomUUID());
+        user.setFirstName("Sammy");
+        user.setLastName("Sam");
+        user.setSsn("123456789");
+        user.setBirthday(Date.valueOf("1990-01-01"));
+        user.setEmail("test@test.test");
 
         // Act
         when(userService.save(any(UserDTO.class))).thenReturn(user);
@@ -82,42 +83,41 @@ public class UserIntegrationTests {
                 .andExpect(jsonPath("$.email", is(user.getEmail())));
 
         verify(userService).save(any(UserDTO.class));
-        }
+    }
 
-        @Test
-        public void saveUserReturnBadRequestStatus() throws Exception {
+    @Test
+    public void saveUserReturnBadRequestStatus() throws Exception {
 
-        // Arrange
-        String invalidUser = "{\"first_name\": \"Sammy\", \"last_name\": \"Sam\", \"ssn\": \"123456789\", \"birthday\": \"1990-01-01\", \"email\": \"}";
+      // Arrange
+      String invalidUser = "{\"first_name\": \"Sammy\", \"last_name\": \"Sam\", \"ssn\": \"123456789\", \"birthday\": \"1990-01-01\", \"email\": \"}";
 
-        // Act & Assert
-        mockMvc.perform(post("/v1/users")
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(new ObjectMapper().writeValueAsString(invalidUser)))
-                .andExpect(status().isBadRequest());
+      // Act & Assert
+      mockMvc.perform(post("/v1/users")
+              .contentType(MediaType.APPLICATION_JSON)
+              .content(new ObjectMapper().writeValueAsString(invalidUser)))
+              .andExpect(status().isBadRequest());
 
-        verify(userService, never()).save(any(UserDTO.class));
-}
+      verify(userService, never()).save(any(UserDTO.class));
+    }
 
-        @Test
-        public void findAllUsers() throws Exception{
-
+    @Test
+    public void findAllUsers() throws Exception{
         // Arrange
         UserDTO user1 = new UserDTO();
-                user1.setId(UUID.randomUUID());
-                user1.setFirstName("Kenny");
-                user1.setLastName("Martin");
-                user1.setSsn("123456789");
-                user1.setBirthday(Date.valueOf("1990-01-01"));
-                user1.setEmail("test@test.com");
+        user1.setId(UUID.randomUUID());
+        user1.setFirstName("Kenny");
+        user1.setLastName("Martin");
+        user1.setSsn("123456789");
+        user1.setBirthday(Date.valueOf("1990-01-01"));
+        user1.setEmail("test@test.com");
 
         UserDTO user2 = new UserDTO();
-                user2.setId(UUID.randomUUID());
-                user2.setFirstName("Jane");
-                user2.setLastName("Smith");
-                user2.setSsn("987654321");
-                user2.setBirthday(Date.valueOf("1990-01-01"));
-                user2.setEmail("test@Test2.com");
+        user2.setId(UUID.randomUUID());
+        user2.setFirstName("Jane");
+        user2.setLastName("Smith");
+        user2.setSsn("987654321");
+        user2.setBirthday(Date.valueOf("1990-01-01"));
+        user2.setEmail("test@Test2.com");
 
         List<UserDTO> userList = List.of(user1, user2);
         // Act
@@ -133,7 +133,7 @@ public class UserIntegrationTests {
                 .andExpect(jsonPath("$[0].ssn", is(user1.getSsn())))
                 .andExpect(jsonPath("$[0].birthday", is(user1.getBirthday().getTime())))
                 .andExpect(jsonPath("$[0].email", is(user1.getEmail())))
-        // User2
+                // User2
                 .andExpect(jsonPath("$[1].id", is(user2.getId().toString())))
                 .andExpect(jsonPath("$[1].firstName", is(user2.getFirstName())))
                 .andExpect(jsonPath("$[1].lastName", is(user2.getLastName())))
@@ -141,26 +141,26 @@ public class UserIntegrationTests {
                 .andExpect(jsonPath("$[1].birthday", is(user2.getBirthday().getTime())))
                 .andExpect(jsonPath("$[1].email", is(user2.getEmail())));
         verify(userService, times(1)).findAll();
-        }
+    }
 
 
 
-        @Test
-        public void findUserById() throws Exception{
+    @Test
+    public void findUserById() throws Exception{
 
         // Arrange
         UUID userId = UUID.randomUUID();
         UserDTO user = new UserDTO();
-                user.setId(userId);
-                user.setFirstName("Sammy");
-                user.setLastName("Sam");
-                user.setSsn("123456789");
-                user.setBirthday(Date.valueOf("1990-01-01"));
-                user.setEmail("test@test.test");
+        user.setId(userId);
+        user.setFirstName("Sammy");
+        user.setLastName("Sam");
+        user.setSsn("123456789");
+        user.setBirthday(Date.valueOf("1990-01-01"));
+        user.setEmail("test@test.test");
 
         // Act
         when(userService.findById(userId)).thenReturn(user);
-        
+
         // Assert
         mockMvc.perform(get("/v1/users/{userId}", user.getId() ))
                 .andExpect(status().isOk())
@@ -173,42 +173,42 @@ public class UserIntegrationTests {
                 .andExpect(jsonPath("$.email", is(user.getEmail())));
 
         verify(userService).findById(userId);
-        }
-        
-        @Test
-        public void notFindUserById() throws Exception{
+    }
 
-        // Arrange
-        UUID userId = UUID.randomUUID();
+    @Test
+    public void notFindUserById() throws Exception{
 
-        // Act
-        when(userService.findById(userId)).thenThrow(new UserNotFoundException("User not found by id: " + userId));
-        // Assert
-        mockMvc.perform(get("/users/{userId}", userId)
-                .contentType(MediaType.APPLICATION_JSON))
-                .andExpect(status().isNotFound());
-        
-        verify(userService, never()).findById(userId);
-        }
+      // Arrange
+      UUID userId = UUID.randomUUID();
 
-        @Test
-        public void testUpdateUser() throws Exception {
+      // Act
+      when(userService.findById(userId)).thenThrow(new DataValidationException(Status.USER_NOT_FOUND));
+      // Assert
+      mockMvc.perform(get("/users/{userId}", userId)
+              .contentType(MediaType.APPLICATION_JSON))
+              .andExpect(status().isNotFound());
+
+      verify(userService, never()).findById(userId);
+    }
+
+    @Test
+    public void testUpdateUser() throws Exception {
         UUID userId = UUID.randomUUID();
         UserDTO userBeforeUpdate = new UserDTO();
-                userBeforeUpdate.setId(userId);
-                userBeforeUpdate.setFirstName("Sammy");
-                userBeforeUpdate.setLastName("Sam");
-                userBeforeUpdate.setSsn("123456789");
-                userBeforeUpdate.setBirthday(Date.valueOf("1990-01-01"));
-                userBeforeUpdate.setEmail("test@test.test");
-        
+        userBeforeUpdate.setId(userId);
+        userBeforeUpdate.setFirstName("Sammy");
+        userBeforeUpdate.setLastName("Sam");
+        userBeforeUpdate.setSsn("123456789");
+        userBeforeUpdate.setBirthday(Date.valueOf("1990-01-01"));
+        userBeforeUpdate.setEmail("test@test.test");
+
         UserDTO updatedUserDTO = new UserDTO();
-                updatedUserDTO.setId(userId);
-                updatedUserDTO.setFirstName("James");
-                updatedUserDTO.setLastName("Json");
-                updatedUserDTO.setSsn("12345789");
-                updatedUserDTO.setBirthday(Date.valueOf("1990-01-01"));
-                updatedUserDTO.setEmail("test@test.test");
+        updatedUserDTO.setId(userId);
+        updatedUserDTO.setFirstName("James");
+        updatedUserDTO.setLastName("Json");
+        updatedUserDTO.setSsn("12345789");
+        updatedUserDTO.setBirthday(Date.valueOf("1990-01-01"));
+        updatedUserDTO.setEmail("test@test.test");
 
         // Act
         when(userService.update(eq(userId), any(UserDTO.class))).thenReturn(updatedUserDTO);
@@ -225,20 +225,20 @@ public class UserIntegrationTests {
                 .andExpect(jsonPath("$.ssn", is(updatedUserDTO.getSsn())))
                 .andExpect(jsonPath("$.birthday", is(updatedUserDTO.getBirthday().getTime())))
                 .andExpect(jsonPath("$.email", is(updatedUserDTO.getEmail())));
-        
-        verify(userService, times(1)).update(eq(userId), any(UserDTO.class));
-        }
 
-        @Test
-        public void testDeleteUser() throws Exception {
-         // Arrange
+        verify(userService, times(1)).update(eq(userId), any(UserDTO.class));
+    }
+
+    @Test
+    public void testDeleteUser() throws Exception {
+        // Arrange
         UUID userId = UUID.randomUUID();
         UserDTO beforeDeletionUser = new UserDTO();
-                beforeDeletionUser.setId(userId);
-                beforeDeletionUser.setDeletionStatus(false);
+        beforeDeletionUser.setId(userId);
+        beforeDeletionUser.setDeletionStatus(false);
         UserDTO deletedUser = new UserDTO();
-                deletedUser.setId(userId);
-                deletedUser.setDeletionStatus(true);
+        deletedUser.setId(userId);
+        deletedUser.setDeletionStatus(true);
 
         // Act
         when(userService.softDeleteById(userId)).thenReturn(deletedUser);
@@ -247,11 +247,11 @@ public class UserIntegrationTests {
         mockMvc.perform(delete("/v1/users/{userId}", userId)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(new ObjectMapper().writeValueAsString(beforeDeletionUser)))
-                .andExpect(status().isOk())
-                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
-                .andExpect(jsonPath("$.id", is(deletedUser.getId().toString())))
-                .andExpect(jsonPath("$.deletionStatus", is(true)));
+            .andExpect(status().isOk())
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+            .andExpect(jsonPath("$.id", is(deletedUser.getId().toString())))
+            .andExpect(jsonPath("$.deletionStatus", is(true)));
 
         verify(userService, times(1)).softDeleteById(userId);
-        }
+    }
 }

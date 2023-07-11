@@ -23,10 +23,10 @@ import pot.insurance.manager.service.UserService;
 @WebMvcTest(UserRestController.class)
 @RunWith(MockitoJUnitRunner.class)
 public class UserRestControllerTests {
-    
+
     @MockBean
     private UserService userService;
-    
+
     @InjectMocks
     private UserRestController userRestController;
 
@@ -39,23 +39,23 @@ public class UserRestControllerTests {
 
     @Test
     public void testSaveUser_Success() {
-        // Arrange
-        UserDTO user = new UserDTO();
-            user.setId(UUID.randomUUID());
-            user.setFirstName("Sammy");
-            user.setLastName("Sam");
-            user.setSsn("123456789");
-            user.setBirthday(Date.valueOf("1990-01-01"));
-            user.setEmail("test@test.test");
+      // Arrange
+      UserDTO user = new UserDTO();
+      user.setId(UUID.randomUUID());
+      user.setFirstName("Sammy");
+      user.setLastName("Sam");
+      user.setSsn("123456789");
+      user.setBirthday(Date.valueOf("1990-01-01"));
+      user.setEmail("test@test.test");
 
-        when(userService.save(user)).thenReturn(user);
+      when(userService.save(user)).thenReturn(user);
 
-        // Act
-        UserDTO response = userRestController.saveUser(user);
+      // Act
+      UserDTO response = userRestController.saveUser(user);
 
-        // Asserert
-        assertEquals(user, response);
-        verify(userService, times(1)).save(user);
+      // Asserert
+      assertEquals(user, response);
+      verify(userService, times(1)).save(user);
     }
 
     @Test
@@ -76,20 +76,20 @@ public class UserRestControllerTests {
     public void testFindAllUsers() {
         // Arrange
         UserDTO user1 = new UserDTO();
-            user1.setId(UUID.randomUUID());
-            user1.setFirstName("Kenny");
-            user1.setLastName("Martin");
-            user1.setSsn("123456789");
-            user1.setBirthday(Date.valueOf("1990-01-01"));
-            user1.setEmail("test@test.com");
+        user1.setId(UUID.randomUUID());
+        user1.setFirstName("Kenny");
+        user1.setLastName("Martin");
+        user1.setSsn("123456789");
+        user1.setBirthday(Date.valueOf("1990-01-01"));
+        user1.setEmail("test@test.com");
 
         UserDTO user2 = new UserDTO();
-            user2.setId(UUID.randomUUID());
-            user2.setFirstName("Jane");
-            user2.setLastName("Smith");
-            user2.setSsn("987654321");
-            user2.setBirthday(Date.valueOf("1990-01-01"));
-            user2.setEmail("test@Test2.com");
+        user2.setId(UUID.randomUUID());
+        user2.setFirstName("Jane");
+        user2.setLastName("Smith");
+        user2.setSsn("987654321");
+        user2.setBirthday(Date.valueOf("1990-01-01"));
+        user2.setEmail("test@Test2.com");
 
         List<UserDTO> userList = List.of(user1, user2);
 
@@ -100,7 +100,7 @@ public class UserRestControllerTests {
         // Assert
         assertEquals(userList, result);
         verify(userService, times(1)).findAll();
-        
+
     }
 
     @Test
@@ -108,12 +108,12 @@ public class UserRestControllerTests {
         // Arrange
         UUID userId = UUID.randomUUID();
         UserDTO user = new UserDTO();
-            user.setId(UUID.randomUUID());
-            user.setFirstName("Sammy");
-            user.setLastName("Sam");
-            user.setSsn("123456789");
-            user.setBirthday(Date.valueOf("1990-01-01"));
-            user.setEmail("test@test.test");
+        user.setId(UUID.randomUUID());
+        user.setFirstName("Sammy");
+        user.setLastName("Sam");
+        user.setSsn("123456789");
+        user.setBirthday(Date.valueOf("1990-01-01"));
+        user.setEmail("test@test.test");
 
         // Act
         when(userService.findById(userId)).thenReturn(user);
@@ -141,12 +141,12 @@ public class UserRestControllerTests {
         UUID userId = UUID.randomUUID();
         UserDTO userBeforeUpdate = new UserDTO();
         UserDTO updatedUser = new UserDTO();
-            updatedUser.setId(UUID.randomUUID());
-            updatedUser.setFirstName("Sammy");
-            updatedUser.setLastName("Sam");
-            updatedUser.setSsn("123456789");
-            updatedUser.setBirthday(Date.valueOf("1990-01-01"));
-            updatedUser.setEmail("test@test.test");
+        updatedUser.setId(UUID.randomUUID());
+        updatedUser.setFirstName("Sammy");
+        updatedUser.setLastName("Sam");
+        updatedUser.setSsn("123456789");
+        updatedUser.setBirthday(Date.valueOf("1990-01-01"));
+        updatedUser.setEmail("test@test.test");
 
         // Act
         when(userService.update(userId, userBeforeUpdate)).thenReturn(updatedUser);
@@ -167,7 +167,7 @@ public class UserRestControllerTests {
 
         when(userService.softDeleteById(userId)).thenReturn(deletedUserDTO);
 
-          // Act
+        // Act
         Object result = userRestController.deleteUserById(userId);
 
         // Assert
