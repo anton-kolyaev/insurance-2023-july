@@ -4,7 +4,8 @@ import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
-import lombok.*;
+import lombok.Builder;
+import lombok.Value;
 
 @Value
 public class StatusResponse {

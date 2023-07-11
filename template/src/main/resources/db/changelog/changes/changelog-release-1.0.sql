@@ -10,7 +10,7 @@ SET SCHEMA `insurance_manager`;
 -- changeset dzmitry.papkou:2
 -- comment: add users table
 CREATE TABLE `users` (
-    `id` UUID NOT NULL DEFAULT random_uuid(),
+    `id` UUID NOT NULL,
     `first_name` VARCHAR (35) NOT NULL,
     `last_name` VARCHAR (35) NOT NULL,
     `birthday` DATE NOT NULL,
@@ -35,7 +35,7 @@ ADD COLUMN `deletion_status` BOOLEAN NOT NULL DEFAULT FALSE;
 -- changeset paulius.kondratas:4
 -- comment: add company table
 CREATE TABLE `companies` (
-    `id` UUID NOT NULL DEFAULT random_uuid(),
+    `id` UUID NOT NULL,
     `company_name` VARCHAR (35) NOT NULL,
     `country_code` VARCHAR (2) NOT NULL,
     `email` VARCHAR (100) NOT NULL,
