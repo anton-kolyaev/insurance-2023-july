@@ -30,8 +30,7 @@ CREATE TABLE `users` (
 ALTER TABLE IF EXISTS `users`
 ADD COLUMN `deletion_status` BOOLEAN NOT NULL DEFAULT FALSE;
 
--- rollback ALTER TABLE IF EXISTS `users`
--- rollback DROP COLUMN `deletion_status`;
+-- rollback ALTER TABLE IF EXISTS `users` DROP COLUMN `deletion_status`;
 
 -- changeset paulius.kondratas:4
 -- comment: add company table
@@ -45,4 +44,4 @@ CREATE TABLE `companies` (
     CONSTRAINT `PK_COMPANIES`
     PRIMARY KEY (`id`)
 );
--- rollback DROP TABLE `companies`
+-- rollback DROP TABLE `companies`;

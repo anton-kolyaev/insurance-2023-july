@@ -1,7 +1,6 @@
 package pot.insurance.manager.mapper;
 
 import org.mapstruct.Mapper;
-import org.mapstruct.Mapping;
 import org.mapstruct.factory.Mappers;
 import pot.insurance.manager.entity.Company;
 import pot.insurance.manager.dto.CompanyDTO;

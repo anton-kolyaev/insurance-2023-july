@@ -1,10 +1,10 @@
 {
-  "databaseChangeLog": [
-    {
-      "include": {
-          "relativeToChangelogFile": true,
-          "file": "changes/changelog-release-1.0.sql"
-      }
-    }
-  ]
+    "databaseChangeLog": [
+        {
+            "include": {
+                "relativeToChangelogFile": true,
+                "file": "changes/changelog-release-1.0.sql"
+            }
+        }
+    ]
 }

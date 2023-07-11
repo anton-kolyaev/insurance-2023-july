@@ -12,13 +12,13 @@ class CompanyRestControllerSpec extends Specification implements TestableTrait {
 
     def "createCompany test"() {
         when:
-        companyService.saveCompany(_) >> a
+        companyService.saveCompany(_) >> companyDTO
 
         then:
-        assertReceivedDataAreAsExpected(controller.createCompany(a), a)
+        assertReceivedDataAreAsExpected(controller.createCompany(companyDTO), companyDTO)
 
         where:
-        a << [
+        companyDTO << [
                 new CompanyDTO(UUID.randomUUID(), "Example company", "US", "example@gmail.com", "example.com")
         ]
     }
