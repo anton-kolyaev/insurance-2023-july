@@ -146,7 +146,7 @@ public class UserServiceImplTests {
     }
 
     @Test
-    public void testFindNonExistingUserThtowException() {
+    public void testFindNonExistingUserThrowException() {
         // Arrange
         UUID userId = UUID.randomUUID();
 
