@@ -20,7 +20,6 @@ public class CompanyRestController {
     }
 
     @GetMapping
-    @ResponseStatus(HttpStatus.OK)
     public Object getAllCompanies() {
         return companyService.getAllCompanies();
     }
