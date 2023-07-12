@@ -31,7 +31,6 @@ public class UserRestController {
     @GetMapping()
     public Object findAllUsers(){
         return userService.findAll();
-        
     }
 
     @GetMapping("/{userId}")

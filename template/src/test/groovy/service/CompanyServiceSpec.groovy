@@ -11,8 +11,6 @@ import pot.insurance.manager.service.CompanyService
 import spock.lang.Shared
 import spock.lang.Specification
 
-import java.sql.ClientInfoStatus
-
 class CompanyServiceSpec extends Specification implements TestableTrait {
 
     @Shared
@@ -77,6 +75,34 @@ class CompanyServiceSpec extends Specification implements TestableTrait {
         ]
         b << [
                 new Company(UUID.randomUUID(), "US", "Second company", "example2.com", "email2@gmail.com")
+        ]
+    }
+
+    def "test for getCompanyById method with correct existing Id"() {
+        when:
+        companyRepository.findById(company.get().getId()) >> company
+
+        then:
+        assertReceivedDataAreAsExpected(companyService.getCompanyById(company.get().getId()), companyMapper.companyToCompanyDTO(company.get()))
+        notThrown(DataValidationException)
+
+        where:
+        company << [
+                Optional.of(new Company(UUID.randomUUID(), "US", "First company", "example1.com", "email1@gmail.com"))
+        ]
+    }
+
+    def "test for getCompanyById method with non-existing/incorrect Id"() {
+        when:
+        companyRepository.findById(id) >> Optional.empty()
+        companyService.getCompanyById(id)
+
+        then:
+        thrown(DataValidationException)
+
+        where:
+        id << [
+                UUID.randomUUID()
         ]
     }
 }
