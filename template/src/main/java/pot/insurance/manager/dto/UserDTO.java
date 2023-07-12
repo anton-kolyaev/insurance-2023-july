@@ -1,11 +1,8 @@
 package pot.insurance.manager.dto;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonSetter;
-import com.fasterxml.jackson.annotation.Nulls;
+import com.fasterxml.jackson.annotation.*;
 
-import java.util.Date;
+import java.time.LocalDate;
 import java.util.UUID;
 
 import lombok.AllArgsConstructor;
@@ -23,28 +20,35 @@ public class UserDTO {
     @JsonProperty
     private UUID id;
 
-    @JsonSetter(nulls = Nulls.FAIL)
     @JsonProperty(required = true)
+    @JsonSetter(nulls = Nulls.FAIL)
     private String firstName;
 
-    @JsonSetter(nulls = Nulls.FAIL)
     @JsonProperty(required = true)
+    @JsonSetter(nulls = Nulls.FAIL)
     private String lastName;
 
-    @JsonSetter(nulls = Nulls.FAIL)
     @JsonProperty(required = true)
-    private Date birthday;
+    @JsonSetter(nulls = Nulls.FAIL)
+    private LocalDate birthday;
 
-    @JsonSetter(nulls = Nulls.FAIL)
     @JsonProperty(required = true)
+    @JsonSetter(nulls = Nulls.FAIL)
     private String email;
 
     @JsonSetter(nulls = Nulls.FAIL)
-    @JsonProperty(required = true)
+    @JsonProperty(
+        required = true,
+        access = JsonProperty.Access.WRITE_ONLY
+    )
     private String ssn;
 
     @JsonProperty(required = true)
     private boolean deletionStatus;
+
+
+    @JsonProperty
+    private UserAuthDTO auth;
 
 }
 

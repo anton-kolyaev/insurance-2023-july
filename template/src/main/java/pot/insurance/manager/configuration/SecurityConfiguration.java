@@ -17,7 +17,7 @@ public class SecurityConfiguration {
     @Order(2)
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity security) throws Exception {
-        security
+        security.authorizeHttpRequests(customizer -> customizer.anyRequest().authenticated())
         // (START)
         // Not very safe in production.
         // Vulnerable to cross-site resource forgery attacks

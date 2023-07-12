@@ -13,6 +13,7 @@ import java.util.Collections;
 import java.util.List;
 
 public class UserAuthDetails implements UserDetails {
+
 	@Getter
 	private final UserAuth auth;
 	private final List<UserAuthGrantedRole> roles;
@@ -55,4 +56,5 @@ public class UserAuthDetails implements UserDetails {
 	public boolean isEnabled() {
 		return this.auth.getStatus() == UserAuthStatus.ACTIVE;
 	}
+
 }

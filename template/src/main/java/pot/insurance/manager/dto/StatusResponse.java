@@ -22,4 +22,5 @@ public class StatusResponse {
         LocalDateTime dateTime = LocalDateTime.ofInstant(instant, ZoneId.systemDefault());
         this.timestamp = dateTime.format(DateTimeFormatter.ISO_DATE_TIME);
     }
+
 }

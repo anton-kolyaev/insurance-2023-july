@@ -1,6 +1,6 @@
-package pot.insurance.manager.entity;
+package pot.insurance.manager.dto;
 
-import jakarta.persistence.*;
+import com.fasterxml.jackson.annotation.*;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -13,28 +13,31 @@ import pot.insurance.manager.type.UserAuthStatus;
 import java.util.UUID;
 
 @Data
-@Entity
 @Builder
 @NoArgsConstructor
-@AllArgsConstructor
-@Table (name = "user_auth")
-public class UserAuth {
+@AllArgsConstructor(onConstructor = @__(@JsonCreator))
+public class UserAuthDTO {
 
-	@Id
-	@Column(name = "id")
+	@JsonProperty
 	private UUID id;
 
-	@Column(name = "username")
+	@JsonProperty(required = true)
+	@JsonSetter(contentNulls = Nulls.FAIL)
 	private String username;
 
-	@Column(name = "password")
+	@JsonSetter(contentNulls = Nulls.FAIL)
+	@JsonProperty(
+		required = true,
+		access = JsonProperty.Access.WRITE_ONLY
+	)
 	private String password;
 
-	@Enumerated(EnumType.STRING)
-	@Column(name = "role")
+
+	@JsonProperty
 	private UserAuthRole role;
 
-	@Enumerated(EnumType.STRING)
-	@Column(name = "status")
+
+	@JsonProperty
 	private UserAuthStatus status;
+
 }

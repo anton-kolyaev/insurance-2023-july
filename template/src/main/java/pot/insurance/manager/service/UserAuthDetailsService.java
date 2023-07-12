@@ -1,15 +1,14 @@
 package pot.insurance.manager.service;
 
 import lombok.Getter;
-
 import lombok.RequiredArgsConstructor;
+
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import pot.insurance.manager.dto.UserAuthDetails;
-import pot.insurance.manager.entity.UserAuth;
 import pot.insurance.manager.repository.UserAuthRepository;
 import pot.insurance.manager.type.DataValidation;
 
@@ -22,11 +21,12 @@ public class UserAuthDetailsService implements UserDetailsService {
 
 	@Override
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-		UserAuth auth = this.repository.findByUsername(username);
-		if (auth == null) {
-			throw new UsernameNotFoundException(DataValidation.Status.USER_NOT_FOUND.getDescription());
-		}
-		return new UserAuthDetails(auth);
+		return new UserAuthDetails(this.repository
+			.findByUsername(username.toLowerCase())
+			.orElseThrow(() ->
+				new UsernameNotFoundException(DataValidation.Status.USER_NOT_FOUND.getDescription())
+			)
+		);
 	}
 
 }

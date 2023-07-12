@@ -10,9 +10,9 @@ public interface UserService {
     
     List<UserDTO> findAll();
 
-    UserDTO findById(UUID userId);
+    UserDTO find(UUID userId);
 
-    UserDTO update(UUID userId, UserDTO userDTO);
+    UserDTO update(UserDTO userDTO);
 
-    UserDTO softDeleteById(UUID userId);
+    UserDTO delete(UUID userId);
 }

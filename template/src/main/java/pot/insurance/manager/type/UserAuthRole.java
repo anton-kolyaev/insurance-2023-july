@@ -1,6 +1,7 @@
 package pot.insurance.manager.type;
 
 public enum UserAuthRole {
+
 	VIEWER,
 	MODERATOR,
 	ADMIN;
@@ -9,4 +10,5 @@ public enum UserAuthRole {
 	public String toString() {
 		return "ROLE_" + this.name().toUpperCase();
 	}
+
 }

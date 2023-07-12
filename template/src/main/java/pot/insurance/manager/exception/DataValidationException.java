@@ -1,10 +1,10 @@
 package pot.insurance.manager.exception;
 
 import lombok.Getter;
-import org.springframework.dao.DataIntegrityViolationException;
+
 import pot.insurance.manager.type.DataValidation;
 
-public class DataValidationException extends DataIntegrityViolationException {
+public class DataValidationException extends IllegalArgumentException {
 
     @Getter
     DataValidation.Status status;

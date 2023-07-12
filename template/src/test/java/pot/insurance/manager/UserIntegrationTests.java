@@ -159,7 +159,7 @@ public class UserIntegrationTests {
         user.setEmail("test@test.test");
 
         // Act
-        when(userService.findById(userId)).thenReturn(user);
+        when(userService.find(userId)).thenReturn(user);
 
         // Assert
         mockMvc.perform(get("/v1/users/{userId}", user.getId() ))
@@ -172,7 +172,7 @@ public class UserIntegrationTests {
                 .andExpect(jsonPath("$.birthday", is(user.getBirthday().getTime())))
                 .andExpect(jsonPath("$.email", is(user.getEmail())));
 
-        verify(userService).findById(userId);
+        verify(userService).find(userId);
     }
 
     @Test
@@ -182,13 +182,13 @@ public class UserIntegrationTests {
       UUID userId = UUID.randomUUID();
 
       // Act
-      when(userService.findById(userId)).thenThrow(new DataValidationException(Status.USER_NOT_FOUND));
+      when(userService.find(userId)).thenThrow(new DataValidationException(Status.USER_NOT_FOUND));
       // Assert
       mockMvc.perform(get("/users/{userId}", userId)
               .contentType(MediaType.APPLICATION_JSON))
               .andExpect(status().isNotFound());
 
-      verify(userService, never()).findById(userId);
+      verify(userService, never()).find(userId);
     }
 
     @Test
@@ -241,7 +241,7 @@ public class UserIntegrationTests {
         deletedUser.setDeletionStatus(true);
 
         // Act
-        when(userService.softDeleteById(userId)).thenReturn(deletedUser);
+        when(userService.delete(userId)).thenReturn(deletedUser);
 
         // Assert
         mockMvc.perform(delete("/v1/users/{userId}", userId)
@@ -252,6 +252,6 @@ public class UserIntegrationTests {
             .andExpect(jsonPath("$.id", is(deletedUser.getId().toString())))
             .andExpect(jsonPath("$.deletionStatus", is(true)));
 
-        verify(userService, times(1)).softDeleteById(userId);
+        verify(userService, times(1)).delete(userId);
     }
 }

@@ -1,16 +1,19 @@
 package pot.insurance.manager.mapper;
 
 import org.mapstruct.Mapper;
-import org.mapstruct.factory.Mappers;
+import org.mapstruct.Mapping;
+import org.mapstruct.MappingConstants;
+
 import pot.insurance.manager.dto.UserDTO;
 import pot.insurance.manager.entity.User;
 
-@Mapper
+@Mapper(componentModel = MappingConstants.ComponentModel.SPRING)
 public interface UserMapper {
 
-    UserMapper INSTANCE = Mappers.getMapper(UserMapper.class);
-    
-    UserDTO userToUserDTO(User User);
+    @Mapping(source = "authId", target = "auth.id")
+    UserDTO toDTO(User User);
 
-    User userDTOToUser(UserDTO UserDTO);
+    @Mapping(source = "auth.id", target = "authId")
+    User toEntity(UserDTO UserDTO);
+
 }

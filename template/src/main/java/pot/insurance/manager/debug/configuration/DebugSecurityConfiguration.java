@@ -83,17 +83,16 @@ public class DebugSecurityConfiguration {
 
 	@PreDestroy
 	private void removeTestAuthUsers() {
-		UserAuth viewer = this.repository.findByUsername("viewer");
-		if (viewer != null) {
-			this.repository.delete(viewer);
-		}
-		UserAuth moderator = this.repository.findByUsername("moderator");
-		if (moderator != null) {
-			this.repository.delete(moderator);
-		}
-		UserAuth admin = this.repository.findByUsername("admin");
-		if (admin != null) {
-			this.repository.delete(admin);
-		}
+		this.repository
+			.findByUsername("viewer")
+			.ifPresent(this.repository::delete);
+
+		this.repository
+			.findByUsername("moderator")
+			.ifPresent(this.repository::delete);
+
+		this.repository
+			.findByUsername("admin")
+			.ifPresent(this.repository::delete);
 	}
 }
