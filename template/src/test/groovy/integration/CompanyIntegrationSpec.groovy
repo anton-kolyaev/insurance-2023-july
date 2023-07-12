@@ -8,8 +8,10 @@ import pot.insurance.manager.dto.CompanyDTO
 import pot.insurance.manager.service.CompanyService
 import spock.lang.Specification
 import com.fasterxml.jackson.databind.ObjectMapper
-import static org.springframework.test.web.servlet.setup.MockMvcBuilders.*
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*
+import static org.springframework.test.web.servlet.setup.MockMvcBuilders.standaloneSetup
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status
 
 class CompanyIntegrationSpec extends Specification implements TestableTrait {
 
@@ -21,7 +23,7 @@ class CompanyIntegrationSpec extends Specification implements TestableTrait {
         mockMvc = standaloneSetup(new CompanyRestController(companyService)).build()
     }
 
-    def "test for 'create company' functionality with correct data"() {
+    def "test for 'create company' functionality"() {
         given:
         CompanyDTO companyDTO = new CompanyDTO(id, name, code, email, site)
         companyService.saveCompany(companyDTO) >> companyDTO
@@ -32,18 +34,30 @@ class CompanyIntegrationSpec extends Specification implements TestableTrait {
         def result = mockMvc.perform(post('/v1/companies')
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(json))
+                .andExpect(status().is2xxSuccessful())
                 .andReturn()
                 .response
-
 
         then:
         result.contentAsString.equals(json)
         result.getStatus() == 201
-
 
         where:
                id         | code |        name       |      site     |     email
         UUID.randomUUID() | "US" | "Example company" | "example.com" | "email@gmail.com"
         UUID.randomUUID() | "US" | "Example company" |     "A"       | "a"
     }
+
+    def "test for 'display companies' functionality"() {
+        when:
+        def result = mockMvc.perform(get('/v1/companies')
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().is2xxSuccessful())
+                .andReturn()
+                .response
+
+        then:
+        assertReceivedDataAreAsExpected(result.getStatus(), 200)
+    }
+
 }
