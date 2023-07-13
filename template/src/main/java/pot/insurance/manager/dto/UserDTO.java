@@ -1,11 +1,15 @@
 package pot.insurance.manager.dto;
 
+import org.springframework.beans.factory.annotation.Value;
+
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonSetter;
 import com.fasterxml.jackson.annotation.Nulls;
+
 import java.util.Date;
 import java.util.UUID;
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -41,8 +45,8 @@ public class UserDTO {
     @JsonProperty(required = true)
     private String ssn;
 
-    @JsonSetter(nulls = Nulls.FAIL)
-    @JsonProperty(required = true)
+    @Value("${deletionStatusDefaultValue:false}")
+    @JsonProperty
     private boolean deletionStatus;
 
 }

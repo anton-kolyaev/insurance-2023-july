@@ -1,13 +1,17 @@
 package pot.insurance.manager.dto;
 
+import org.springframework.beans.factory.annotation.Value;
+
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonSetter;
 import com.fasterxml.jackson.annotation.Nulls;
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+
 import java.util.UUID;
 
 @Data
@@ -33,5 +37,9 @@ public class CompanyDTO {
 
     @JsonProperty
     private String site;
+
+    @Value("${deletionStatusDefaultValue:false}")
+    @JsonProperty
+    private Boolean deletionStatus;
 }
 
