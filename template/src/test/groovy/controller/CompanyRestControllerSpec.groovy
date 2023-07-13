@@ -3,7 +3,6 @@ package controller
 import pot.insurance.manager.dto.CompanyDTO
 import base.TestableTrait
 import pot.insurance.manager.controller.CompanyRestController
-import pot.insurance.manager.entity.Company
 import pot.insurance.manager.service.CompanyService
 import spock.lang.Specification
 
@@ -11,7 +10,7 @@ class CompanyRestControllerSpec extends Specification implements TestableTrait {
     def companyService = Mock(CompanyService)
     def controller = new CompanyRestController(companyService)
 
-    def "test for createCompany method"() {
+    def "expect createCompany method to return created DTO"() {
         when:
         companyService.saveCompany(_) >> companyDTO
 
@@ -24,7 +23,7 @@ class CompanyRestControllerSpec extends Specification implements TestableTrait {
         ]
     }
 
-    def "test for getAllCompanies method"() {
+    def "expect getAllCompanies method to return the list of existing companies"() {
         given:
         List<CompanyDTO> companyDTOList = List.of(a, b)
 

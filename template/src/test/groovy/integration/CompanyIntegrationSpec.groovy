@@ -23,7 +23,7 @@ class CompanyIntegrationSpec extends Specification implements TestableTrait {
         mockMvc = standaloneSetup(new CompanyRestController(companyService)).build()
     }
 
-    def "test for 'create company' functionality"() {
+    def "expect 201 status code and response body with saved data when performing POST request to save new company"() {
         given:
         CompanyDTO companyDTO = new CompanyDTO(id, name, code, email, site)
         companyService.saveCompany(companyDTO) >> companyDTO
@@ -48,7 +48,7 @@ class CompanyIntegrationSpec extends Specification implements TestableTrait {
         UUID.randomUUID() | "US" | "Example company" |     "A"       | "a"
     }
 
-    def "test for 'display companies' functionality"() {
+    def "expect 200 status code when performing GET request to retrieve all existing companies"() {
         when:
         def result = mockMvc.perform(get('/v1/companies')
                 .contentType(MediaType.APPLICATION_JSON))
