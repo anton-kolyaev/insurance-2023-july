@@ -2,7 +2,9 @@ package pot.insurance.manager.controller;
 
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.exc.InvalidFormatException;
+
 import lombok.RequiredArgsConstructor;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -16,9 +18,7 @@ import pot.insurance.manager.type.DataValidation;
 @RequiredArgsConstructor
 public class RestExceptionHandler {
 
-    private final StatusMapper mapper;
-
-        @ExceptionHandler({JsonMappingException.class})
+    @ExceptionHandler({JsonMappingException.class})
         public ResponseEntity<StatusResponse> handle(JsonMappingException exception) {
             DataValidation.Status status;
             if (exception instanceof InvalidFormatException) {
@@ -47,6 +47,6 @@ public class RestExceptionHandler {
                 .timestamp(System.currentTimeMillis())
                 .message(exception.getMessage())
                 .build();
-            return ResponseEntity.status(this.mapper.toHttp(status.getCategory())).body(response);
+            return ResponseEntity.status(StatusMapper.toHttp(status.getCategory())).body(response);
         }
 }

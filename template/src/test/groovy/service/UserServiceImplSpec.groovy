@@ -12,7 +12,6 @@ import pot.insurance.manager.exception.DataValidationException
 import pot.insurance.manager.mapper.UserMapper
 import pot.insurance.manager.repository.UserRepository
 import pot.insurance.manager.service.UserServiceImpl
-import pot.insurance.manager.type.DataValidation
 
 import java.util.Optional
 import java.util.UUID

@@ -5,7 +5,7 @@ import org.springframework.dao.DataIntegrityViolationException
 import pot.insurance.manager.dto.CompanyFunctionsDTO
 import pot.insurance.manager.entity.CompanyFunctions
 import pot.insurance.manager.exception.DataValidationException
-import pot.insurance.manager.type.DataValidation
+
 import pot.insurance.manager.mapper.CompanyFunctionsMapper
 import pot.insurance.manager.repository.CompanyFunctionsRepository
 import pot.insurance.manager.repository.CompanyRepository
@@ -13,13 +13,12 @@ import pot.insurance.manager.service.CompanyFunctionsServiceImpl
 import pot.insurance.manager.entity.Company
 
 import spock.lang.Specification
-import spock.lang.Subject
 import spock.lang.Shared
 import spock.lang.Unroll
 
 import java.util.Optional
 import java.util.UUID
-import java.sql.Date
+
 
 class CompanyFunctionsServiceSpec extends Specification{
 
