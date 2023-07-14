@@ -25,13 +25,13 @@ class UserRestControllerSpec extends Specification {
     def "test saveUser metod for successful save"() {
         given: "UserDTO object with valid data"
             def userDTO = new UserDTO(
-                UUID.randomUUID(),
-                "Harry",
-                "Truman",
-                Date.valueOf("1990-02-12"),
-                "true@mail.by",
-                "123-456-7890",
-                false
+                id: UUID.randomUUID(),
+                firstName: "Harry",
+                lastName: "Truman",
+                birthday: Date.valueOf("1990-02-12"),
+                email: "trueharry@gmail.com",
+                ssn: "123-456-7890",
+                deletionStatus: false
             )
         
         when: "is called method saveUser with userDTO"
@@ -64,13 +64,13 @@ class UserRestControllerSpec extends Specification {
     def "test findUserById method for successful find"() {
         given: "UserDTO object with valid data"
             def userDTO = new UserDTO(
-                UUID.randomUUID(),
-                "Harry",
-                "Truman",
-                Date.valueOf("1990-02-12"),
-                "true@mail.by",
-                "123-456-7890",
-                false
+                id: UUID.randomUUID(),
+                firstName: "Harry",
+                lastName: "Truman",
+                birthday: Date.valueOf("1990-02-12"),
+                email: "trueharry@gmail.com",
+                ssn: "123-456-7890",
+                deletionStatus: false
             )
         
         when: "is called method findUserById with userDTO"
@@ -103,23 +103,23 @@ class UserRestControllerSpec extends Specification {
     def "test retrive all users by calling findAll method return list of users"() {
         given: "UserDTO objects with valid data"
             def userDTO1 = new UserDTO(
-                UUID.randomUUID(),
-                "Harry",
-                "Truman",
-                Date.valueOf("1990-02-12"),
-                "true@mail.by",
-                "123-456-7890",
-                false
+                id: UUID.randomUUID(),
+                firstName: "Harry",
+                lastName: "Truman",
+                birthday: Date.valueOf("1990-02-12"),
+                email: "trueharry@gmail.com",
+                ssn: "123-456-7890",
+                deletionStatus: false
             )
             
             def userDTO2 = new UserDTO(
-                UUID.randomUUID(),
-                "Vitalii",
-                "Tsal",
-                Date.valueOf("1990-02-12"),
-                "arthas@mail.ua",
-                "123-456-7890",
-                false
+                id: UUID.randomUUID(),
+                firstName: "Vitalii",
+                lastName: "Tsal",
+                birthday: Date.valueOf("1990-02-12"),
+                email: "arthas@mail.ua",
+                ssn: "123-456-7890",
+                deletionStatus: false
             )
             
             def List<UserDTO> users = [userDTO1, userDTO2]
@@ -156,13 +156,13 @@ class UserRestControllerSpec extends Specification {
         given: "UserDTO object with valid data and userId to update concrete user"
             def userId = UUID.randomUUID()
             def userDTO = new UserDTO(
-                null,
-                "Vitalii",
-                "Tsal",
-                Date.valueOf("1990-02-12"),
-                "the_greatest@gmail.com",
-                "123-456-7890",
-                false
+                id: userId,
+                firstName: "Vitalii",
+                lastName: "Tsal",
+                birthday: Date.valueOf("1990-02-12"),
+                email: "the_greatest@gmail.com",
+                ssn: "123-456-7890",
+                deletionStatus: false
             )
         when: "is called method updateUser"
             UserDTO result = userRestController.updateUser(userId, userDTO)
@@ -195,13 +195,13 @@ class UserRestControllerSpec extends Specification {
         given: "userId to delete concrete user"
             def userId = UUID.randomUUID()
             def userDTO = new UserDTO(
-                userId,
-                "Vitalii",
-                "Tsal",
-                Date.valueOf("1990-02-12"),
-                "papich@gmail.com",
-                "123-456-7890",
-                true
+                id: userId,
+                firstName: "Vitalii",
+                lastName: "Tsal",
+                birthday: Date.valueOf("1990-02-12"),
+                email: "papich@gmail.com",
+                ssn: "123-456-7890",
+                deletionStatus: true
             )
         
         when: "is called method deleteUserById"

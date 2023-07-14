@@ -40,13 +40,13 @@ class CompanyFunctionsServiceSpec extends Specification{
         given:
             def companyId = UUID.randomUUID()
             def companyFunctionsDTO = new CompanyFunctionsDTO(
-                companyId,
-                true,
-                false,
-                false,
-                false,
-                true,
-                false
+                id: null,
+                companyManager: true,
+                consumer: false,
+                companyClaimManager: true,
+                consumerClaimManager: true,
+                companySettingManager: false,
+                companyReportManager: true
             )
         
         when:
@@ -69,13 +69,13 @@ class CompanyFunctionsServiceSpec extends Specification{
         given:
             UUID companyId = UUID.randomUUID()
             def companyFunctionsDTO = new CompanyFunctionsDTO(
-                companyId,
-                true,
-                false,
-                false,
-                false,
-                true,
-                false
+                id: null,
+                companyManager: true,
+                consumer: false,
+                companyClaimManager: true,
+                consumerClaimManager: true,
+                companySettingManager: false,
+                companyReportManager: true
             )
 
         when:

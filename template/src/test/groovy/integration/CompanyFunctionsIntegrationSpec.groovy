@@ -43,7 +43,7 @@ import org.springframework.context.annotation.Import;
 class CompanyFunctionsIntegrationSpec extends Specification {
 
     ObjectMapper objectMapper = new ObjectMapper()
- 
+
     MockMvc mockMvc
     CompanyRepository companyRepository = Mock(CompanyRepository)
     CompanyFunctionsRepository companyFunctionsRepository = Mock(CompanyFunctionsRepository)

@@ -21,13 +21,13 @@ class CompanyFunctionsRestControllerSpec extends Specification {
     def "test saveCompanyFunctions metod for successful save"() {
         given: "CompanyFunctionsDTO object with valid data"
             def companyFunctionsDTO = new CompanyFunctionsDTO(
-                null,
-                true,
-                false,
-                true,
-                true,
-                false,
-                true
+                id: null,
+                companyManager: true,
+                consumer: false,
+                companyClaimManager: true,
+                consumerClaimManager: true,
+                companySettingManager: false,
+                companyReportManager: true
             )
             
             def companyId = UUID.randomUUID()

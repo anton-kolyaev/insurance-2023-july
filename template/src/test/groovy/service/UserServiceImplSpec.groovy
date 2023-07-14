@@ -33,14 +33,14 @@ class UserServiceImplSpec extends Specification {
     @Unroll("test should save user success")
     def "test should save user successfully and return userDTO"() {
         given: "as input userDTO converted to user"
-            UserDTO userDTO = new UserDTO(
-                UUID.randomUUID(),
-                "Harry",
-                "Truman",
-                Date.valueOf("1990-02-12"),
-                "true@mail.by",
-                "123-456-7890",
-                false
+            def userDTO = new UserDTO(
+                id: UUID.randomUUID(),
+                firstName: "Vitalii",
+                lastName: "Tsal",
+                birthday: Date.valueOf("1990-02-12"),
+                email: "the_greatest@gmail.com",
+                ssn: "123-456-7890",
+                deletionStatus: false
             )
         
         when: "save user and return userDTO by passing required parameters"
@@ -63,14 +63,14 @@ class UserServiceImplSpec extends Specification {
     @Unroll
     def "test should throw DataValidationException for conflicting user id"() {
         given:
-            UserDTO userDTO = new UserDTO(
-                UUID.randomUUID(),
-                "Harry",
-                "Truman",
-                Date.valueOf("1990-02-12"),
-                "true@mail.by",
-                "123-456-7890",
-                false
+            def userDTO = new UserDTO(
+                id: UUID.randomUUID(),
+                firstName: "Vitalii",
+                lastName: "Tsal",
+                birthday: Date.valueOf("1990-02-12"),
+                email: "the_greatest@gmail.com",
+                ssn: "123-456-7890",
+                deletionStatus: false
             )
         
         when:
@@ -93,14 +93,14 @@ class UserServiceImplSpec extends Specification {
     @Unroll
     def "test should throw DataValidationException for conflicting user ssn"() {
         given:
-            UserDTO userDTO = new UserDTO(
-                UUID.randomUUID(),
-                "Harry",
-                "Truman",
-                Date.valueOf("1990-02-12"),
-                "true@mail.by",
-                "123-456-7890",
-                false
+            def userDTO = new UserDTO(
+                id: UUID.randomUUID(),
+                firstName: "Vitalii",
+                lastName: "Tsal",
+                birthday: Date.valueOf("1990-02-12"),
+                email: "the_greatest@gmail.com",
+                ssn: "123-456-7890",
+                deletionStatus: false
             )
         
         when:
@@ -123,14 +123,14 @@ class UserServiceImplSpec extends Specification {
     @Unroll
     def "test should throw DataValidationException for malformed data"() {
         given:
-            UserDTO userDTO = new UserDTO(
-                UUID.randomUUID(),
-                "Harry",
-                "Truman",
-                Date.valueOf("1990-02-12"),
-                "true@mail.by",
-                "123-456-7890",
-                false
+            def userDTO = new UserDTO(
+                id: UUID.randomUUID(),
+                firstName: "Vitalii",
+                lastName: "Tsal",
+                birthday: Date.valueOf("1990-02-12"),
+                email: "the_greatest@gmail.com",
+                ssn: "123-456-7890",
+                deletionStatus: false
             )
         
         when:
