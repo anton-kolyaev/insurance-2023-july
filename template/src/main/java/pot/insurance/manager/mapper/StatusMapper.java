@@ -7,7 +7,7 @@ import pot.insurance.manager.type.DataValidation;
 @Component
 public class StatusMapper {
 
-    public HttpStatus toHttp(DataValidation.Category category) {
+    public static HttpStatus toHttp(DataValidation.Category category) {
         return switch (category) {
             case VALID -> HttpStatus.OK;
             case INVALID -> HttpStatus.BAD_REQUEST;
