@@ -11,6 +11,8 @@ import pot.insurance.manager.service.CompanyService
 import spock.lang.Shared
 import spock.lang.Specification
 
+import java.sql.ClientInfoStatus
+
 class CompanyServiceSpec extends Specification implements TestableTrait {
 
     @Shared
@@ -22,7 +24,7 @@ class CompanyServiceSpec extends Specification implements TestableTrait {
         companyService = new CompanyService(companyRepository)
     }
 
-    def "test for saveCompany method with correct data"() {
+    def "expect saveCompany method to return the saved dto without throwing exception"() {
         when:
         companyRepository.findById(companyDTO.getId()) >> Optional.empty()
         companyRepository.save(_) >> companyMapper.companyDTOToCompany(companyDTO)
@@ -37,7 +39,7 @@ class CompanyServiceSpec extends Specification implements TestableTrait {
         ]
     }
 
-    def "test for saveCompany method when ID already exists"() {
+    def "expect saveCompany method to throw an exception when company already exists"() {
         when:
         companyRepository.findById(_) >> conflictEntity
         companyRepository.save(companyMapper.companyDTOToCompany(companyDTO)) >> { throw new DataIntegrityViolationException("") }
@@ -56,5 +58,25 @@ class CompanyServiceSpec extends Specification implements TestableTrait {
                 new CompanyDTO(UUID.randomUUID(), null, null, null, "email@gmail.com", false)
         ]
 
+    }
+
+    def "expect getAllCompanies method to return the list of existing companies"() {
+        given:
+        List<Company> companyList = List.of(a, b)
+        List<CompanyDTO> companyDTOList = companyList.stream().map(companyMapper::companyToCompanyDTO).toList()
+
+        when:
+        companyRepository.findAll() >> companyList
+
+        then:
+        assertReceivedDataAreAsExpected(companyService.getAllCompanies(), companyDTOList)
+
+        where:
+        a << [
+                new Company(UUID.randomUUID(), "US", "First company", "example1.com", "email1@gmail.com")
+        ]
+        b << [
+                new Company(UUID.randomUUID(), "US", "Second company", "example2.com", "email2@gmail.com")
+        ]
     }
 }
