@@ -1,6 +1,4 @@
 spring:
-    profiles:
-        active: local
     # Liquibase setup
     liquibase:
         change-log: classpath:db/changelog/changelog-master.json
