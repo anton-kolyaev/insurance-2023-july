@@ -23,11 +23,11 @@ public class UserDTO {
     @JsonCreator
     public UserDTO(
         @JsonProperty("id") UUID id,
-        @JsonProperty("firstName") String firstName,
-        @JsonProperty("lastName") String lastName,
-        @JsonProperty("birthday") Date birthday,
-        @JsonProperty("email") String email,
-        @JsonProperty("ssn") String ssn,
+        @JsonProperty(required = true, value = "firstName") String firstName,
+        @JsonProperty(required = true, value = "lastName") String lastName,
+        @JsonProperty(required = true, value = "birthday") Date birthday,
+        @JsonProperty(required = true, value = "email") String email,
+        @JsonProperty(required = true, value = "ssn") String ssn,
         @JsonProperty("deletionStatus") boolean deletionStatus) {
 
             this.id = id;
