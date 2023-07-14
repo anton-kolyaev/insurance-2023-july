@@ -10,17 +10,17 @@ import pot.insurance.manager.dto.CompanyFunctionsDTO;
 import pot.insurance.manager.entity.CompanyFunctions;
 import pot.insurance.manager.exception.DataValidationException;
 import pot.insurance.manager.type.DataValidation;
-import pot.insurance.manager.mapper.FunctionsMapper;
+import pot.insurance.manager.mapper.CompanyFunctionsMapper;
 import pot.insurance.manager.repository.CompanyFunctionsRepository;
 import pot.insurance.manager.repository.CompanyRepository;
 
 @Service
 @RequiredArgsConstructor
-public class FunctionsServiceImpl implements FunctionsService {
+public class CompanyFunctionsServiceImpl implements CompanyFunctionsService {
 
     private final CompanyRepository companyRepository;
     private final CompanyFunctionsRepository companyFunctionsRepository;
-    private static final FunctionsMapper companyFunctionsMapper = FunctionsMapper.INSTANCE;
+    private static final CompanyFunctionsMapper companyFunctionsMapper = CompanyFunctionsMapper.INSTANCE;
 
     @Override
     public CompanyFunctionsDTO saveCompanyFunctions(UUID id, CompanyFunctionsDTO companyFunctionsDTO) {

@@ -6,10 +6,10 @@ import pot.insurance.manager.dto.CompanyFunctionsDTO
 import pot.insurance.manager.entity.CompanyFunctions
 import pot.insurance.manager.exception.DataValidationException
 import pot.insurance.manager.type.DataValidation
-import pot.insurance.manager.mapper.FunctionsMapper
+import pot.insurance.manager.mapper.CompanyFunctionsMapper
 import pot.insurance.manager.repository.CompanyFunctionsRepository
 import pot.insurance.manager.repository.CompanyRepository
-import pot.insurance.manager.service.FunctionsServiceImpl
+import pot.insurance.manager.service.CompanyFunctionsServiceImpl
 import pot.insurance.manager.entity.Company
 
 import spock.lang.Specification
@@ -21,19 +21,19 @@ import java.util.Optional
 import java.util.UUID
 import java.sql.Date
 
-class FunctionsServiceSpec extends Specification{
+class CompanyFunctionsServiceSpec extends Specification{
 
     
     CompanyRepository companyRepository = Mock()
     CompanyFunctionsRepository companyFunctionsRepository = Mock()
-    FunctionsMapper functionsMapper = FunctionsMapper.INSTANCE
+    CompanyFunctionsMapper companyFunctionsMapper = CompanyFunctionsMapper.INSTANCE
 
     @Shared
-    FunctionsServiceImpl functionsService
+    CompanyFunctionsServiceImpl companyFunctionsService
 
 
     def setup() {
-        functionsService = new FunctionsServiceImpl(companyRepository, companyFunctionsRepository)
+        companyFunctionsService = new CompanyFunctionsServiceImpl(companyRepository, companyFunctionsRepository)
     }
 
     @Unroll
@@ -52,8 +52,8 @@ class FunctionsServiceSpec extends Specification{
         
         when:
             companyRepository.findByIdAndDeletionStatusFalse(companyId) >> Optional.of(new Company())
-            companyFunctionsRepository.save(_ as CompanyFunctions) >> functionsMapper.companyFunctionsDTOToEntity(companyFunctionsDTO)
-            def result = functionsService.saveCompanyFunctions(companyId, companyFunctionsDTO)
+            companyFunctionsRepository.save(_ as CompanyFunctions) >> companyFunctionsMapper.companyFunctionsDTOToEntity(companyFunctionsDTO)
+            def result = companyFunctionsService.saveCompanyFunctions(companyId, companyFunctionsDTO)
 
         then:
             result != null
@@ -61,7 +61,7 @@ class FunctionsServiceSpec extends Specification{
             notThrown(DataValidationException)
         and:
             1 * companyRepository.findByIdAndDeletionStatusFalse(companyId) >> Optional.of(new Company())
-            1 * companyFunctionsRepository.save(_ as CompanyFunctions) >> functionsMapper.companyFunctionsDTOToEntity(companyFunctionsDTO)
+            1 * companyFunctionsRepository.save(_ as CompanyFunctions) >> companyFunctionsMapper.companyFunctionsDTOToEntity(companyFunctionsDTO)
     }
 
 
@@ -81,8 +81,8 @@ class FunctionsServiceSpec extends Specification{
 
         when:
             companyRepository.findByIdAndDeletionStatusFalse(_) >> Optional.empty()
-            companyFunctionsRepository.save(_ as CompanyFunctions) >> functionsMapper.companyFunctionsDTOToEntity(companyFunctionsDTO)
-            def result = functionsService.saveCompanyFunctions(companyId, companyFunctionsDTO)
+            companyFunctionsRepository.save(_ as CompanyFunctions) >> companyFunctionsMapper.companyFunctionsDTOToEntity(companyFunctionsDTO)
+            def result = companyFunctionsService.saveCompanyFunctions(companyId, companyFunctionsDTO)
 
         then:
             result == null
@@ -90,7 +90,7 @@ class FunctionsServiceSpec extends Specification{
         
         and:
             1 * companyRepository.findByIdAndDeletionStatusFalse(companyId) >> Optional.empty()
-            0 * companyFunctionsRepository.save(_ as CompanyFunctions) >> functionsMapper.companyFunctionsDTOToEntity(companyFunctionsDTO)
+            0 * companyFunctionsRepository.save(_ as CompanyFunctions) >> companyFunctionsMapper.companyFunctionsDTOToEntity(companyFunctionsDTO)
     
     }
 
@@ -103,7 +103,7 @@ class FunctionsServiceSpec extends Specification{
         when:
             companyRepository.findByIdAndDeletionStatusFalse(companyId) >> Optional.of(new Company())
             companyFunctionsRepository.save(_ as CompanyFunctions) >> { throw new DataIntegrityViolationException("") }
-            def result = functionsService.saveCompanyFunctions(companyId, companyFunctionsDTO)
+            def result = companyFunctionsService.saveCompanyFunctions(companyId, companyFunctionsDTO)
         
         then:
             result == null

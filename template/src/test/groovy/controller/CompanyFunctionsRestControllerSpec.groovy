@@ -1,8 +1,8 @@
 package controller
 
 import pot.insurance.manager.dto.CompanyFunctionsDTO
-import pot.insurance.manager.service.FunctionsService
-import pot.insurance.manager.controller.FunctionsRestController
+import pot.insurance.manager.service.CompanyFunctionsService
+import pot.insurance.manager.controller.CompanyFunctionsRestController
 
 import spock.lang.Specification
 import spock.lang.Subject
@@ -10,12 +10,12 @@ import spock.lang.Unroll
 
 import java.util.UUID
 
-class FunctionsRestControllerSpec extends Specification {
+class CompanyFunctionsRestControllerSpec extends Specification {
 
-    FunctionsService functionsService = Mock()
+    CompanyFunctionsService companyFunctionsService = Mock()
 
     @Subject
-    FunctionsRestController functionsRestController = new FunctionsRestController(functionsService)
+    CompanyFunctionsRestController CompanyFunctionsRestController = new CompanyFunctionsRestController(companyFunctionsService)
 
     @Unroll("test saveCompanyFunctions metod for successful save with defined #companyFunctionsDTO and #companyId")
     def "test saveCompanyFunctions metod for successful save"() {
@@ -33,14 +33,14 @@ class FunctionsRestControllerSpec extends Specification {
             def companyId = UUID.randomUUID()
         
         when: "is called method saveCompanyFunctions with companyFunctionsDTO"
-            CompanyFunctionsDTO result = functionsRestController.saveCompanyFunctions(companyId, companyFunctionsDTO)
+            CompanyFunctionsDTO result = CompanyFunctionsRestController.saveCompanyFunctions(companyId, companyFunctionsDTO)
         
         then: "result is not null and equals companyFunctionsDTO"
             result != null
             result == companyFunctionsDTO
         
         and: "method for saving is called once"
-            1 * functionsService.saveCompanyFunctions(companyId, companyFunctionsDTO) >> companyFunctionsDTO
+            1 * companyFunctionsService.saveCompanyFunctions(companyId, companyFunctionsDTO) >> companyFunctionsDTO
     }
 
     @Unroll("test saveCompanyFunctions metod for unsuccessful save with #companyFunctionsDTO")
@@ -50,12 +50,12 @@ class FunctionsRestControllerSpec extends Specification {
             def companyId = UUID.randomUUID()
         
         when: "is called method saveCompanyFunctions with companyFunctionsDTO"
-            CompanyFunctionsDTO response = functionsRestController.saveCompanyFunctions(companyId, companyFunctionsDTO)
+            CompanyFunctionsDTO response = CompanyFunctionsRestController.saveCompanyFunctions(companyId, companyFunctionsDTO)
         
         then: "response is null"
             response == null
         
         and: "save method is called once"
-            1 * functionsService.saveCompanyFunctions(companyId, companyFunctionsDTO) >> null
+            1 * companyFunctionsService.saveCompanyFunctions(companyId, companyFunctionsDTO) >> null
     }
 }

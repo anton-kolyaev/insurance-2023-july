@@ -8,9 +8,9 @@ import pot.insurance.manager.entity.CompanyFunctions;
 
 
 @Mapper
-public interface FunctionsMapper {
+public interface CompanyFunctionsMapper {
 
-    FunctionsMapper INSTANCE = Mappers.getMapper(FunctionsMapper.class);
+    CompanyFunctionsMapper INSTANCE = Mappers.getMapper(CompanyFunctionsMapper.class);
     
     CompanyFunctionsDTO companyFunctionsEntityToDTO(CompanyFunctions companyFunctions);
 

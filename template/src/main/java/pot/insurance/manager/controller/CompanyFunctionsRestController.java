@@ -10,16 +10,16 @@ import org.springframework.web.bind.annotation.RestController;
 
 import lombok.RequiredArgsConstructor;
 import pot.insurance.manager.dto.CompanyFunctionsDTO;
-import pot.insurance.manager.service.FunctionsService;
+import pot.insurance.manager.service.CompanyFunctionsService;
 
 @RestController
-@RequestMapping("/v1/companies/{companyId}")
+@RequestMapping("/v1/companies/{companyId}/functions")
 @RequiredArgsConstructor
-public class FunctionsRestController {
+public class CompanyFunctionsRestController {
 
-    private final FunctionsService companyFunctionsService;
+    private final CompanyFunctionsService companyFunctionsService;
 
-    @PostMapping("/functions")
+    @PostMapping()
     public CompanyFunctionsDTO saveCompanyFunctions(@PathVariable UUID companyId, @RequestBody CompanyFunctionsDTO companyFunctionsDTO) {
         return companyFunctionsService.saveCompanyFunctions(companyId, companyFunctionsDTO);
     }

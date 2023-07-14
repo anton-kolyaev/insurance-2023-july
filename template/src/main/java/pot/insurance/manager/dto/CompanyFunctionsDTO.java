@@ -7,18 +7,35 @@ import java.util.UUID;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Data
 @NoArgsConstructor
-@AllArgsConstructor(onConstructor = @__(@JsonCreator))
 @Builder
 public class CompanyFunctionsDTO {
+
+    @JsonCreator
+    public CompanyFunctionsDTO(
+        @JsonProperty("id") UUID id,
+        @JsonProperty("companyManager") boolean companyManager,
+        @JsonProperty("consumer") boolean consumer,
+        @JsonProperty("companyClaimManager") boolean companyClaimManager,
+        @JsonProperty("consumerClaimManager") boolean consumerClaimManager,
+        @JsonProperty("companySettingManager") boolean companySettingManager,
+        @JsonProperty("companyReportManager") boolean companyReportManager) {
+
+            this.id = id;
+            this.companyManager = companyManager;
+            this.consumer = consumer;
+            this.companyClaimManager = companyClaimManager;
+            this.consumerClaimManager = consumerClaimManager;
+            this.companySettingManager = companySettingManager;
+            this.companyReportManager = companyReportManager;
+    }
     
-    @JsonProperty
+    @JsonProperty("id")
     private UUID id;
     
     @Value("${companyManagerDefaultValue:false}")
