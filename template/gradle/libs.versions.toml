@@ -10,6 +10,7 @@ lombokMapstructBindingVersion = "0.2.0"
 [libraries]
 groovy-all = { module = "org.codehaus.groovy:groovy-all", version.ref = "groovyVersion" }
 spock-core = { module = "org.spockframework:spock-core", version.ref = "spockVersion" }
+spock-spring = { module = "org.spockframework:spock-spring", version.ref = "spockVersion" }
 mapstruct = { module = "org.mapstruct:mapstruct", version.ref = "mapstructVersion"}
 mapstruct-processor = { module = "org.mapstruct:mapstruct-processor", version.ref = "mapstructVersion"}
 lombok = { module = "org.projectlombok:lombok", version.ref = "lombokVersion" }

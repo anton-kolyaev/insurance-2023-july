@@ -22,7 +22,7 @@ public class UserAuthDetailsService implements UserDetailsService {
 	@Override
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 		return new UserAuthDetails(this.repository
-			.findByUsername(username.toLowerCase())
+			.findByUsernameIgnoreCase(username)
 			.orElseThrow(() ->
 				new UsernameNotFoundException(DataValidation.Status.USER_NOT_FOUND.getDescription())
 			)

@@ -15,14 +15,14 @@ public interface UserAuthRepository extends JpaRepository<UserAuth, UUID> {
 
 	Optional<UserAuth> findByIdAndStatusNot(UUID id, UserAuthStatus status);
 
-	Optional<UserAuth> findByUsername(String username);
+	Optional<UserAuth> findByUsernameIgnoreCase(String username);
 
-	Optional<UserAuth> findByUsernameAndStatusNot(String username, UserAuthStatus status);
+	Optional<UserAuth> findByUsernameIgnoreCaseAndStatusNot(String username, UserAuthStatus status);
 
 	List<UserAuth> findAllByStatusNot(UserAuthStatus status);
 
 	boolean existsByIdAndStatusNot(UUID id, UserAuthStatus status);
 
-	boolean existsByUsername(String username);
+	boolean existsByUsernameIgnoreCase(String username);
 
 }

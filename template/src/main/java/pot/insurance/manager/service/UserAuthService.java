@@ -11,9 +11,9 @@ public interface UserAuthService {
 
 	List<UserAuthDTO> findAll();
 
-	UserAuthDTO findAll(UUID id);
+	UserAuthDTO find(UUID id);
 
-	UserAuthDTO findAll(String username);
+	UserAuthDTO find(String username);
 
 	UserAuthDTO update(UserAuthDTO dto);
 
@@ -24,5 +24,9 @@ public interface UserAuthService {
 	boolean exists(UUID id);
 
 	boolean exists(UserAuthDTO dto);
+
+	int getMaxUsernameLength();
+
+	int getMaxPasswordLength();
 
 }

@@ -85,7 +85,9 @@ public class UserServiceImpl implements UserService {
                 authDTO = this.service.save(authDTO);
                 entity.setAuthId(authDTO.getId());
             } else {
-                authDTO.setId(authId);
+                if (authDTO.getId() == null) {
+                    authDTO.setId(authId);
+                }
                 authDTO = this.service.update(authDTO);
             }
         } else if (authId != null) {

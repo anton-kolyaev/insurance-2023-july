@@ -23,9 +23,6 @@ import java.util.UUID;
 @RequiredArgsConstructor
 public class UserAuthServiceImpl implements UserAuthService {
 
-	private final static UserAuthRole DEFAULT_ROLE = UserAuthRole.VIEWER;
-	private final static UserAuthStatus DEFAULT_STATUS = UserAuthStatus.ACTIVE;
-
 	private final UserAuthRepository repository;
 	private final UserAuthMapper mapper;
 
@@ -33,19 +30,32 @@ public class UserAuthServiceImpl implements UserAuthService {
 
 	private UserAuth prepareEntity(UserAuth entity) {
 		if (entity.getRole() == null) {
-			entity.setRole(UserAuthServiceImpl.DEFAULT_ROLE);
+			entity.setRole(UserAuthRole.getDefault());
 		}
 		if (entity.getStatus() == null) {
-			entity.setStatus(UserAuthServiceImpl.DEFAULT_STATUS);
+			entity.setStatus(UserAuthStatus.getDefault());
 		}
 		entity.setUsername(entity.getUsername().toLowerCase());
 		entity.setPassword(encoder.encode(entity.getPassword()));
 		return entity;
 	}
 
+	private void checkRequirements(UserAuthDTO dto) {
+		String username = dto.getUsername();
+		String password = dto.getPassword();
+
+		if (username.isBlank() || username.length() > this.getMaxUsernameLength()) {
+			throw new DataValidationException(DataValidation.Status.USER_AUTH_USERNAME_BAD_REQUIREMENTS);
+		}
+		if (password.isBlank() || password.length() > this.getMaxPasswordLength()) {
+			throw new DataValidationException(DataValidation.Status.USER_AUTH_PASSWORD_BAD_REQUIREMENTS);
+		}
+	}
+
 	@Override
 	public UserAuthDTO save(UserAuthDTO dto) {
-		if (this.repository.existsByUsername(dto.getUsername())) {
+		this.checkRequirements(dto);
+		if (this.repository.existsByUsernameIgnoreCase(dto.getUsername())) {
 			throw new DataValidationException(DataValidation.Status.USER_AUTH_USERNAME_EXISTS);
 		}
 		UserAuth entity = this.mapper.toEntity(dto);
@@ -77,21 +87,22 @@ public class UserAuthServiceImpl implements UserAuthService {
 	}
 
 	@Override
-	public UserAuthDTO findAll(UUID id) {
+	public UserAuthDTO find(UUID id) {
 		return this.getDTO(this.repository.findByIdAndStatusNot(id, UserAuthStatus.DELETED));
 	}
 
 	@Override
-	public UserAuthDTO findAll(String username) {
-		return this.getDTO(this.repository.findByUsernameAndStatusNot(username.toLowerCase(), UserAuthStatus.DELETED));
+	public UserAuthDTO find(String username) {
+		return this.getDTO(this.repository.findByUsernameIgnoreCaseAndStatusNot(username.toLowerCase(), UserAuthStatus.DELETED));
 	}
 
 	@Override
 	public UserAuthDTO update(UserAuthDTO dto) {
+		this.checkRequirements(dto);
 		if (!this.exists(dto.getId())) {
 			throw new DataValidationException(DataValidation.Status.USER_AUTH_NOT_FOUND);
 		}
-		if (this.repository.existsByUsername(dto.getUsername())) {
+		if (this.repository.existsByUsernameIgnoreCase(dto.getUsername())) {
 			throw new DataValidationException(DataValidation.Status.USER_AUTH_USERNAME_EXISTS);
 		}
 		UserAuth entity = this.mapper.toEntity(dto);
@@ -104,15 +115,15 @@ public class UserAuthServiceImpl implements UserAuthService {
 
 	@Override
 	public void delete(UUID id) {
-		if (!this.exists(id)) {
-			throw new DataValidationException(DataValidation.Status.USER_NOT_FOUND);
-		}
-		this.repository.deleteById(id);
+		UserAuthDTO dto = this.find(id);
+		dto.setStatus(UserAuthStatus.DELETED);
+		this.update(dto);
 	}
 
 	@Override
 	public void delete(UserAuthDTO dto) {
 		this.delete(dto.getId());
+		dto.setStatus(UserAuthStatus.DELETED);
 	}
 
 	@Override
@@ -122,5 +133,15 @@ public class UserAuthServiceImpl implements UserAuthService {
 	@Override
 	public boolean exists(UserAuthDTO dto) {
 		return this.exists(dto.getId());
+	}
+
+	@Override
+	public int getMaxUsernameLength() {
+		return 35;
+	}
+
+	@Override
+	public int getMaxPasswordLength() {
+		return 100;
 	}
 }

@@ -2,10 +2,7 @@ package pot.insurance.manager.dto;
 
 import com.fasterxml.jackson.annotation.*;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import pot.insurance.manager.type.UserAuthRole;
 import pot.insurance.manager.type.UserAuthStatus;

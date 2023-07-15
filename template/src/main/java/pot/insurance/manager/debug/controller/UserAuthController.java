@@ -22,6 +22,6 @@ public class UserAuthController {
 
     @GetMapping
     public UserAuth outputUserData(Principal principal) {
-        return repository.findByUsername(principal.getName()).orElseThrow();
+        return repository.findByUsernameIgnoreCase(principal.getName()).orElseThrow();
     }
 }

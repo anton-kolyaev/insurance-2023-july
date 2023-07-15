@@ -27,9 +27,12 @@ public class DataValidation {
         USER_ID_EXISTS(Category.PRESENT, "user id is already exists"),
         USER_SSN_EXISTS(Category.PRESENT, "user ssn is already used"),
 
-        USER_AUTH_NOT_FOUND(Category.PRESENT, "user auth not found"),
+        USER_AUTH_NOT_FOUND(Category.ABSENT, "user auth not found"),
         USER_AUTH_ID_EXISTS(Category.PRESENT, "user auth id is already used"),
         USER_AUTH_USERNAME_EXISTS(Category.PRESENT, "user auth username is already used"),
+        USER_AUTH_USERNAME_BAD_REQUIREMENTS(Category.INVALID, "user auth username does not meet the requirements"),
+        USER_AUTH_PASSWORD_BAD_REQUIREMENTS(Category.INVALID, "user auth password does not meet the requirements"),
+
 
         COMPANY_NOT_FOUND(Category.ABSENT, "company not found"),
         COMPANY_ID_EXISTS(Category.PRESENT, "company id is already exists");

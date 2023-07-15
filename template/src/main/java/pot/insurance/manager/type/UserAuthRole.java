@@ -11,4 +11,8 @@ public enum UserAuthRole {
 		return "ROLE_" + this.name().toUpperCase();
 	}
 
+	public static UserAuthRole getDefault() {
+		return UserAuthRole.VIEWER;
+	}
+
 }

@@ -84,15 +84,15 @@ public class DebugSecurityConfiguration {
 	@PreDestroy
 	private void removeTestAuthUsers() {
 		this.repository
-			.findByUsername("viewer")
+			.findByUsernameIgnoreCase("viewer")
 			.ifPresent(this.repository::delete);
 
 		this.repository
-			.findByUsername("moderator")
+			.findByUsernameIgnoreCase("moderator")
 			.ifPresent(this.repository::delete);
 
 		this.repository
-			.findByUsername("admin")
+			.findByUsernameIgnoreCase("admin")
 			.ifPresent(this.repository::delete);
 	}
 }

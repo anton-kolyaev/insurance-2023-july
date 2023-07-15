@@ -4,6 +4,9 @@ public enum UserAuthStatus {
 
     ACTIVE,
     DEACTIVATED,
-    DELETED
+    DELETED;
 
+    public static UserAuthStatus getDefault() {
+        return UserAuthStatus.ACTIVE;
+    }
 }
