@@ -93,4 +93,41 @@ class CompanyIntegrationSpec extends Specification implements TestableTrait {
                 List.of(new Company(UUID.randomUUID(), "US", "Example company", "A", "a" ))
         ]
     }
+
+    def "expect corresponding status code when performing GET request to retrieve company by ID"() {
+        given:
+        companyRepository.findById(id) >> optional
+
+        when:
+        def result
+        try {
+            result = mockMvc.perform(get('/v1/companies/{id}', id.toString())
+                    .contentType(MediaType.APPLICATION_JSON))
+                    .andReturn()
+                    .response
+                    .getStatus()
+        } catch (ServletException ex) {
+            Throwable rootCause = ex.getRootCause()
+            if(rootCause instanceof DataValidationException) {
+                result = StatusMapper.toHttp(rootCause.getStatus().getCategory()).value()
+            }
+        }
+
+        then:
+        assertReceivedDataAreAsExpected(result, status)
+
+        where:
+        id << [
+                UUID.fromString("2e3949b1-29bf-46a3-b7c9-9d82a576583e"),
+                UUID.fromString("9ab0d8c7-08d4-4b5c-8d34-5876a905f3b7")
+        ]
+        optional << [
+                Optional.of(new Company(UUID.fromString("2e3949b1-29bf-46a3-b7c9-9d82a576583e"), "Company", "US", "email@gmail.com", "site.com")),
+                Optional.empty()
+        ]
+        status << [
+                200,
+                404
+        ]
+    }
 }
