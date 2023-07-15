@@ -15,7 +15,7 @@ import java.util.UUID;
 public class CompanyDTO {
 
     @JsonCreator
-    public CompanyDTO(@JsonProperty("id") UUID id, @JsonProperty("companyName") String companyName, @JsonProperty("countryCode") String countryCode, @JsonProperty("email") String email, @JsonProperty("site") String site) {
+    public CompanyDTO(@JsonProperty("id") UUID id, @JsonProperty(required = true, value = "companyName") String companyName, @JsonProperty(required = true, value = "countryCode") String countryCode, @JsonProperty(required = true, value = "email") String email, @JsonProperty("site") String site) {
         this.id = id;
         this.companyName = companyName;
         this.countryCode = countryCode;

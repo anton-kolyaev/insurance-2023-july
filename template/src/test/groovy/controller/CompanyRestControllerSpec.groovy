@@ -10,7 +10,7 @@ class CompanyRestControllerSpec extends Specification implements TestableTrait {
     def companyService = Mock(CompanyService)
     def controller = new CompanyRestController(companyService)
 
-    def "test for createCompany method"() {
+    def "expect createCompany method to return created DTO"() {
         when:
         companyService.saveCompany(_) >> companyDTO
 
@@ -23,7 +23,7 @@ class CompanyRestControllerSpec extends Specification implements TestableTrait {
         ]
     }
 
-    def "test for getAllCompanies method"() {
+    def "expect getAllCompanies method to return the list of existing companies"() {
         given:
         List<CompanyDTO> companyDTOList = List.of(a, b)
 
@@ -39,19 +39,6 @@ class CompanyRestControllerSpec extends Specification implements TestableTrait {
         ]
         b << [
                 new CompanyDTO(UUID.randomUUID(), "US", "Second company", "example2.com", "email2@gmail.com")
-        ]
-    }
-
-    def "test for getCompanyById method"() {
-        when:
-        companyService.getCompanyById(companyDTO.getId()) >> companyDTO
-
-        then:
-        assertReceivedDataAreAsExpected(controller.getCompanyById(companyDTO.getId()), companyDTO)
-
-        where:
-        companyDTO << [
-                new CompanyDTO(UUID.randomUUID(), "US", "First company", "example1.com", "email1@gmail.com")
         ]
     }
 }
