@@ -24,11 +24,11 @@ public class DataValidation {
         MALFORMED_DATA(Category.INVALID, "data is malformed"),
 
         USER_NOT_FOUND(Category.ABSENT, "user not found"),
-        USER_ID_EXISTS(Category.PRESENT, "user id is already used"),
+        USER_ID_EXISTS(Category.PRESENT, "user id is already exists"),
         USER_SSN_EXISTS(Category.PRESENT, "user ssn is already used"),
 
         COMPANY_NOT_FOUND(Category.ABSENT, "company not found"),
-        COMPANY_ID_EXISTS(Category.PRESENT, "company id is already used");
+        COMPANY_ID_EXISTS(Category.PRESENT, "company id is already exists");
 
         @Getter
         private final Category category;

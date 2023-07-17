@@ -35,7 +35,7 @@ class CompanyServiceSpec extends Specification implements TestableTrait {
 
         where:
         companyDTO << [
-                new CompanyDTO(UUID.randomUUID(), "US", "Example company", "example.com", "email@gmail.com")
+                new CompanyDTO(UUID.randomUUID(), "US", "Example company", "example.com", "email@gmail.com", false)
         ]
     }
 
@@ -50,12 +50,12 @@ class CompanyServiceSpec extends Specification implements TestableTrait {
 
         where:
         conflictEntity << [
-                Optional.of(new Company(UUID.randomUUID(), "US", "Example company", "example.com", "email@gmail.com")),
+                Optional.of(new Company(UUID.randomUUID(), "US", "Example company", "example.com", "email@gmail.com", false)),
                 Optional.empty()
         ]
         companyDTO << [
-                new CompanyDTO(UUID.randomUUID(), "US", "Example company", "example.com", "email@gmail.com"),
-                new CompanyDTO(UUID.randomUUID(), null, null, null, "email@gmail.com")
+                new CompanyDTO(UUID.randomUUID(), "US", "Example company", "example.com", "email@gmail.com", false),
+                new CompanyDTO(UUID.randomUUID(), null, null, null, "email@gmail.com", false)
         ]
 
     }
