@@ -82,7 +82,7 @@ class CompanyServiceSpec extends Specification implements TestableTrait {
 
     def "expect getCompanyById method to return the company with provided correct ID"() {
         when:
-        companyRepository.findById(company.get().getId()) >> company
+        companyRepository.findByIdAndDeletionStatusFalse(company.get().getId()) >> company
 
         then:
         assertReceivedDataAreAsExpected(companyService.getCompanyById(company.get().getId()), companyMapper.companyToCompanyDTO(company.get()))
@@ -90,13 +90,13 @@ class CompanyServiceSpec extends Specification implements TestableTrait {
 
         where:
         company << [
-                Optional.of(new Company(UUID.randomUUID(), "US", "First company", "example1.com", "email1@gmail.com"))
+                Optional.of(new Company(UUID.randomUUID(), "US", "First company", "example1.com", "email1@gmail.com", false))
         ]
     }
 
     def "expect getCompanyById method to throw an exception when the company with provided ID is non-existent"() {
         when:
-        companyRepository.findById(id) >> Optional.empty()
+        companyRepository.findByIdAndDeletionStatusFalse(id) >> Optional.empty()
         companyService.getCompanyById(id)
 
         then:

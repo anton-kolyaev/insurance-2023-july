@@ -40,7 +40,6 @@ public class UserFunctionsServiceImpl implements UserFunctionsService {
             UserFunctions userFunctions = userFunctionsMapper.userFunctionsDTOToEntity(modifiedUserFunctionsDTO);
             userFunctions.setUserId(userId);
             userFunctions.setCompanyId(companyId);
-            System.out.println(userFunctions);
 
             return userFunctionsMapper.userFunctionsEntityToDTO(userFunctionsRepository.save(userFunctions));
         } catch (DataIntegrityViolationException e) {
@@ -48,8 +47,7 @@ public class UserFunctionsServiceImpl implements UserFunctionsService {
         }
     }
 
-    @Override
-    public UserFunctionsDTO modifyUserFunctionsDTO(UserFunctionsDTO userFunctionsDTO, CompanyFunctions companyFunctions) {
+    private UserFunctionsDTO modifyUserFunctionsDTO(UserFunctionsDTO userFunctionsDTO, CompanyFunctions companyFunctions) {
         Arrays.stream(userFunctionsDTO.getClass().getDeclaredFields())
                 .filter(field -> field.getType() == Boolean.TYPE)
                 .forEach(field -> {
