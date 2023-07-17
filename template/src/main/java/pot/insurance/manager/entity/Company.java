@@ -26,5 +26,5 @@ public class Company {
     @Column(name = "site")
     private String site;
     @Column(name = "deletion_status")
-    private Boolean deletionStatus;
+    private boolean deletionStatus;
 }

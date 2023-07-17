@@ -11,8 +11,6 @@ import pot.insurance.manager.service.CompanyService
 import spock.lang.Shared
 import spock.lang.Specification
 
-import java.sql.ClientInfoStatus
-
 class CompanyServiceSpec extends Specification implements TestableTrait {
 
     @Shared
@@ -66,23 +64,23 @@ class CompanyServiceSpec extends Specification implements TestableTrait {
         List<CompanyDTO> companyDTOList = companyList.stream().map(companyMapper::companyToCompanyDTO).toList()
 
         when:
-        companyRepository.findAll() >> companyList
+        companyRepository.findAllByDeletionStatusFalse() >> companyList
 
         then:
         assertReceivedDataAreAsExpected(companyService.getAllCompanies(), companyDTOList)
 
         where:
         a << [
-                new Company(UUID.randomUUID(), "US", "First company", "example1.com", "email1@gmail.com")
+                new Company(UUID.randomUUID(), "US", "First company", "example1.com", "email1@gmail.com", false)
         ]
         b << [
-                new Company(UUID.randomUUID(), "US", "Second company", "example2.com", "email2@gmail.com")
+                new Company(UUID.randomUUID(), "US", "Second company", "example2.com", "email2@gmail.com", false)
         ]
     }
 
     def "expect getCompanyById method to return the company with provided correct ID"() {
         when:
-        companyRepository.findById(company.get().getId()) >> company
+        companyRepository.findByIdAndDeletionStatusFalse(company.get().getId()) >> company
 
         then:
         assertReceivedDataAreAsExpected(companyService.getCompanyById(company.get().getId()), companyMapper.companyToCompanyDTO(company.get()))
@@ -90,14 +88,43 @@ class CompanyServiceSpec extends Specification implements TestableTrait {
 
         where:
         company << [
-                Optional.of(new Company(UUID.randomUUID(), "US", "First company", "example1.com", "email1@gmail.com"))
+                Optional.of(new Company(UUID.randomUUID(), "US", "First company", "example1.com", "email1@gmail.com", false))
         ]
     }
 
     def "expect getCompanyById method to throw an exception when the company with provided ID is non-existent"() {
         when:
-        companyRepository.findById(id) >> Optional.empty()
+        companyRepository.findByIdAndDeletionStatusFalse(id) >> Optional.empty()
         companyService.getCompanyById(id)
+
+        then:
+        thrown(DataValidationException)
+
+        where:
+        id << [
+                UUID.randomUUID()
+        ]
+    }
+
+    def "expect deleteCompanyById method to return the dto with the deletionStatus set to true"() {
+        when:
+        companyRepository.findByIdAndDeletionStatusFalse(company.get().getId()) >> company
+        companyRepository.save(_ as Company) >> company.get()
+
+        then:
+        assertReceivedDataAreAsExpected(companyService.deleteCompanyById(company.get().getId()).isDeletionStatus(), true)
+        notThrown(DataValidationException)
+
+        where:
+        company << [
+                Optional.of(new Company(UUID.randomUUID(), "US", "First company", "example1.com", "email1@gmail.com", false))
+        ]
+    }
+
+    def "expect deleteCompanyById method to throw an exception when company is not found"() {
+        when:
+        companyRepository.findByIdAndDeletionStatusFalse(id) >> Optional.empty()
+        companyService.deleteCompanyById(id)
 
         then:
         thrown(DataValidationException)

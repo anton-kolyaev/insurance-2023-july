@@ -26,10 +26,8 @@ public class CompanyService {
             company.setId(UUID.randomUUID());
         }
 
-        Optional<Company> conflictEntity = companyRepository.findById(company.getId());
-        if(conflictEntity.isPresent()) {
-            throw new DataValidationException(DataValidation.Status.COMPANY_ID_EXISTS);
-        }
+        companyRepository.findById(company.getId())
+            .ifPresent(c -> {throw new DataValidationException(DataValidation.Status.COMPANY_ID_EXISTS);});
 
         try {
             return companyMapper.companyToCompanyDTO(companyRepository.save(company));
@@ -39,16 +37,24 @@ public class CompanyService {
     }
 
     public List<CompanyDTO> getAllCompanies() {
-        List<Company> companyList = companyRepository.findAll();
+        List<Company> companyList = companyRepository.findAllByDeletionStatusFalse();
         return companyList.stream()
             .map(companyMapper::companyToCompanyDTO)
             .toList();
     }
 
     public CompanyDTO getCompanyById(UUID companyId) {
-        Company company = companyRepository.findById(companyId)
+        Company company = companyRepository.findByIdAndDeletionStatusFalse(companyId)
             .orElseThrow(() -> new DataValidationException(DataValidation.Status.COMPANY_NOT_FOUND));
 
         return companyMapper.companyToCompanyDTO(company);
+    }
+
+    public CompanyDTO deleteCompanyById(UUID companyId) {
+        Company company = companyRepository.findByIdAndDeletionStatusFalse(companyId)
+            .orElseThrow(() -> new DataValidationException(DataValidation.Status.COMPANY_NOT_FOUND));
+        company.setDeletionStatus(true);
+
+        return companyMapper.companyToCompanyDTO(companyRepository.save(company));
     }
 }

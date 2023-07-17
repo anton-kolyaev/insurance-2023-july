@@ -79,7 +79,6 @@ public class UserServiceImpl implements UserService {
             .orElseThrow(() -> new DataValidationException(DataValidation.Status.USER_NOT_FOUND));
         user.setDeletionStatus(true);
         return userMapper.userToUserDTO(userRepository.save(user));
-        
     }
 
 }
