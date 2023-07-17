@@ -216,49 +216,6 @@ class UserFunctionsIntegrationSpec extends Specification {
     }
 
     @Unroll
-    def "test saveUserFunctions should return 400 HTTP status when throw illigal accept exception"() {
-        given:
-            UUID companyId = UUID.randomUUID()
-            UUID userId = UUID.randomUUID()
-            UserFunctionsDTO userFunctionsDTO = new UserFunctionsDTO(
-                    userId: null,
-                    companyId: null,
-                    companyManager: true,
-                    consumer: false,
-                    companyClaimManager: true,
-                    consumerClaimManager: true,
-                    companySettingManager: false,
-                    companyReportManager: true
-            )
-
-            userRepository.findById(userId) >> Optional.of(new User())
-            companyFunctionsRepository.findById(companyId) >> Optional.of(new CompanyFunctions())
-            userFunctionsService.saveUserFunctions(companyId, userId, userFunctionsDTO) >> {
-                throw new DataValidationException(DataValidation.Status.ILLEGAL_ACCEPT)}
-            def response
-        
-        when:
-            try{
-                response = mockMvc.perform(post("/v1/companies/{companyId}/users/{userId}/functions", companyId, userId)
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsString(userFunctionsDTO)))
-            } catch (ServletException ex) {
-                Throwable rootCause = ((ServletException) ex).getRootCause()
-                if (rootCause instanceof DataValidationException) {
-                    DataValidationException dataValidationException = (DataValidationException) rootCause
-                    HttpStatus httpStatus = StatusMapper.toHttp(dataValidationException.getStatus().getCategory())
-                    response = httpStatus
-                }
-            }
-        
-        then:
-            response == HttpStatus.BAD_REQUEST
-        
-        and:
-            1 * userFunctionsService.saveUserFunctions(companyId, userId, userFunctionsDTO) >> {throw new DataValidationException(DataValidation.Status.ILLEGAL_ACCEPT)}
-    }
-
-    @Unroll
     def "test saveUserFunctions should return 400 HTTP status when data integrity violation"() {
         given:
             UUID companyId = UUID.randomUUID()

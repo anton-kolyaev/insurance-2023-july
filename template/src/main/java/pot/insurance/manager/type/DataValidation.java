@@ -30,8 +30,7 @@ public class DataValidation {
         COMPANY_NOT_FOUND(Category.ABSENT, "company not found"),
         COMPANY_ID_EXISTS(Category.PRESENT, "company id is already exists"),
 
-        COMPANY_FUNCTIONS_NOT_SETTED(Category.ABSENT, "company functions not setted"),
-        ILLEGAL_ACCEPT(Category.INVALID, "Illegal accept value");
+        COMPANY_FUNCTIONS_NOT_SETTED(Category.ABSENT, "company functions not setted");
 
         @Getter
         private final Category category;

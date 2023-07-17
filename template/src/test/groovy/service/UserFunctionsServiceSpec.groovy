@@ -169,61 +169,6 @@ class UserFunctionsServiceImplSpec extends Specification {
     }
 
     @Unroll
-    def "expect saveUserFunctions method to return null when some company functions are not set"() {
-        given:
-            def companyId = UUID.randomUUID()
-            def userId = UUID.randomUUID()
-            def userFunctionsDTO = new UserFunctionsDTO(
-                userId: userId,
-                companyId: companyId,
-                companyManager: false,
-                consumer: false,
-                companyClaimManager: false,
-                consumerClaimManager: false,
-                companySettingManager: true,
-                companyReportManager: true
-            )
-            
-            def companyFunctions = new CompanyFunctions()
-                companyFunctions.setCompanyManager(true)
-                companyFunctions.setConsumer(true)
-                companyFunctions.setCompanyClaimManager(true)
-        
-        when:
-            userRepository.findByIdAndDeletionStatusFalse(userId) >> Optional.of(new User())
-            companyFunctionsRepository.findById(companyId) >> Optional.of(companyFunctions)
-            def result = userFunctionsService.saveUserFunctions(companyId, userId, userFunctionsDTO)
-        
-        then:
-            result == null
-        
-        and:
-            1 * userRepository.findByIdAndDeletionStatusFalse(userId) >> Optional.of(new User())
-            1 * companyFunctionsRepository.findById(companyId) >> Optional.of(companyFunctions)
-    }
-
-    @Unroll
-    def "expect saveUserFunctions method return null when illigal argument exception is thrown by another method"() {
-        given:
-            def companyId = UUID.randomUUID()
-            def userId = UUID.randomUUID()
-            def userFunctionsDTO = new UserFunctionsDTO()
-            def companyFunctions = new CompanyFunctions()
-        
-        when:
-            userRepository.findByIdAndDeletionStatusFalse(userId) >> Optional.of(new User())
-            companyFunctionsRepository.findById(companyId) >> Optional.of(companyFunctions)
-            def result = userFunctionsService.saveUserFunctions(companyId, userId, userFunctionsDTO)
-
-        then:
-            result == null
-        
-        and:
-            1 * userRepository.findByIdAndDeletionStatusFalse(userId) >> Optional.of(new User())
-            1 * companyFunctionsRepository.findById(companyId) >> Optional.of(companyFunctions)
-    }
-
-    @Unroll
     def "expect saveUserFunctions method to throw an exception when a DataIntegrityViolationException occurs"() {
         given:
             def companyId = UUID.randomUUID()
