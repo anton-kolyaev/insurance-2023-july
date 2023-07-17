@@ -73,10 +73,10 @@ class CompanyServiceSpec extends Specification implements TestableTrait {
 
         where:
         a << [
-                new Company(UUID.randomUUID(), "US", "First company", "example1.com", "email1@gmail.com")
+                new Company(UUID.randomUUID(), "US", "First company", "example1.com", "email1@gmail.com", false)
         ]
         b << [
-                new Company(UUID.randomUUID(), "US", "Second company", "example2.com", "email2@gmail.com")
+                new Company(UUID.randomUUID(), "US", "Second company", "example2.com", "email2@gmail.com", false)
         ]
     }
 }

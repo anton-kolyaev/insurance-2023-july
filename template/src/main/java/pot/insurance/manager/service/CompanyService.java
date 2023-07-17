@@ -1,7 +1,6 @@
 package pot.insurance.manager.service;
 
 import java.util.List;
-import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
@@ -26,10 +25,8 @@ public class CompanyService {
             company.setId(UUID.randomUUID());
         }
 
-        Optional<Company> conflictEntity = companyRepository.findById(company.getId());
-        if(conflictEntity.isPresent()) {
-            throw new DataValidationException(DataValidation.Status.COMPANY_ID_EXISTS);
-        }
+        companyRepository.findById(company.getId())
+            .ifPresent(c -> {throw new DataValidationException(DataValidation.Status.COMPANY_ID_EXISTS);});
 
         try {
             return companyMapper.companyToCompanyDTO(companyRepository.save(company));

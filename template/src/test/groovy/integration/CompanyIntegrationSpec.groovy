@@ -34,7 +34,7 @@ class CompanyIntegrationSpec extends Specification implements TestableTrait {
 
     def "expect corresponding status code when performing POST request to save new company"() {
         given:
-        CompanyDTO companyDTO = new CompanyDTO(id, name, code, email, site)
+        CompanyDTO companyDTO = new CompanyDTO(id, name, code, email, site, deletionStatus)
         String json = mapper.writeValueAsString(companyDTO)
         companyRepository.findById(id) >> optional
 
@@ -58,16 +58,16 @@ class CompanyIntegrationSpec extends Specification implements TestableTrait {
         assertReceivedDataAreAsExpected(result, status)
 
         where:
-               id         | code |        name       |      site     |     email         | status
-        UUID.randomUUID() | "US" | "Example company" | "example.com" | "email@gmail.com" |  201
-        UUID.randomUUID() | "US" | "Example company" |     "A"       |     "a"           |  409
-        UUID.randomUUID() | "US" |       null        |     "A"       |     "a"           |  400
+            id            | code |        name       |      site     |     email         | deletionStatus | status
+        UUID.randomUUID() | "US" | "Example company" | "example.com" | "email@gmail.com" |       false    | 201
+        UUID.randomUUID() | "US" | "Example company" |     "A"       |     "a"           |       false    | 409
+        UUID.randomUUID() | "US" |       null        |     "A"       |     "a"           |       false    | 400
 
         and:
 
         optional << [
                 Optional.empty(),
-                Optional.of(new Company(UUID.randomUUID(), "US", "Example company", "A", "a" )),
+                Optional.of(new Company(UUID.randomUUID(), "US", "Example company", "A", "a", false )),
                 Optional.empty()
         ]
     }
@@ -90,7 +90,7 @@ class CompanyIntegrationSpec extends Specification implements TestableTrait {
         where:
         list << [
                 List.of(),
-                List.of(new Company(UUID.randomUUID(), "US", "Example company", "A", "a" ))
+                List.of(new Company(UUID.randomUUID(), "US", "Example company", "A", "a", false))
         ]
     }
 }

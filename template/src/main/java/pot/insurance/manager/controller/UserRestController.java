@@ -1,5 +1,6 @@
 package pot.insurance.manager.controller;
 
+import java.util.List;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -29,7 +30,7 @@ public class UserRestController {
     }
 
     @GetMapping()
-    public Object findAllUsers(){
+    public List<UserDTO> findAllUsers(){
         return userService.findAll();
         
     }

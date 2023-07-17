@@ -35,10 +35,10 @@ class CompanyRestControllerSpec extends Specification implements TestableTrait {
 
         where:
         a << [
-                new CompanyDTO(UUID.randomUUID(), "US", "First company", "example1.com", "email1@gmail.com")
+                new CompanyDTO(UUID.randomUUID(), "US", "First company", "example1.com", "email1@gmail.com", false)
         ]
         b << [
-                new CompanyDTO(UUID.randomUUID(), "US", "Second company", "example2.com", "email2@gmail.com")
+                new CompanyDTO(UUID.randomUUID(), "US", "Second company", "example2.com", "email2@gmail.com", false)
         ]
     }
 }

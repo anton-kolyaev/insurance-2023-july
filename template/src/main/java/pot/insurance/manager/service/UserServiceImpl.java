@@ -1,7 +1,6 @@
 package pot.insurance.manager.service;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import org.springframework.dao.DataIntegrityViolationException;
@@ -28,15 +27,11 @@ public class UserServiceImpl implements UserService {
             user.setId(UUID.randomUUID());
         }
 
-        Optional<User> conflictEntity = userRepository.findById(user.getId());
-        if (conflictEntity.isPresent()) {
-            throw new DataValidationException(DataValidation.Status.USER_ID_EXISTS);
-        }
-        Optional<User> ssnEntity = this.userRepository.findBySsn(user.getSsn());
-        if (ssnEntity.isPresent()) {
-            throw new DataValidationException(DataValidation.Status.USER_SSN_EXISTS);
-        }
-
+        userRepository.findById(user.getId())
+            .ifPresent(u -> {throw new DataValidationException(DataValidation.Status.USER_ID_EXISTS);});
+        userRepository.findBySsn(user.getSsn())
+            .ifPresent(u -> {throw new DataValidationException(DataValidation.Status.USER_SSN_EXISTS);});
+        
         try {
             return userMapper.userToUserDTO(userRepository.save(user));
         } catch (DataIntegrityViolationException e) {
