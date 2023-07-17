@@ -9,16 +9,12 @@ import pot.insurance.manager.exception.DataValidationException
 import pot.insurance.manager.mapper.CompanyFunctionsMapper
 import pot.insurance.manager.repository.CompanyFunctionsRepository
 import pot.insurance.manager.repository.CompanyRepository
-import pot.insurance.manager.service.CompanyFunctionsServiceImpl
+import pot.insurance.manager.service.CompanyFunctionsService
 import pot.insurance.manager.entity.Company
-
+import pot.insurance.manager.service.CompanyFunctionsServiceImpl
 import spock.lang.Specification
 import spock.lang.Shared
 import spock.lang.Unroll
-
-import java.util.Optional
-import java.util.UUID
-
 
 class CompanyFunctionsServiceSpec extends Specification{
 
@@ -28,12 +24,7 @@ class CompanyFunctionsServiceSpec extends Specification{
     CompanyFunctionsMapper companyFunctionsMapper = CompanyFunctionsMapper.INSTANCE
 
     @Shared
-    CompanyFunctionsServiceImpl companyFunctionsService
-
-
-    def setup() {
-        companyFunctionsService = new CompanyFunctionsServiceImpl(companyRepository, companyFunctionsRepository)
-    }
+    CompanyFunctionsService companyFunctionsService = new CompanyFunctionsServiceImpl(companyRepository, companyFunctionsRepository)
 
     @Unroll
     def "test saveCompanyFunctions - successful case"() {

@@ -8,11 +8,7 @@ import spock.lang.Specification
 import spock.lang.Subject
 import spock.lang.Unroll
 
-
-
 import java.sql.Date
-import java.util.UUID
-import java.util.List
 
 class UserRestControllerSpec extends Specification {
     

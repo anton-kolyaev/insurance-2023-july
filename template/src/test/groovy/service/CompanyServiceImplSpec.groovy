@@ -8,19 +8,19 @@ import pot.insurance.manager.repository.CompanyRepository
 import pot.insurance.manager.dto.CompanyDTO
 import pot.insurance.manager.mapper.CompanyMapper
 import pot.insurance.manager.service.CompanyService
+import pot.insurance.manager.service.CompanyServiceImpl
 import spock.lang.Shared
 import spock.lang.Specification
 
-class CompanyServiceSpec extends Specification implements TestableTrait {
+class CompanyServiceImplSpec extends Specification implements TestableTrait {
 
     @Shared
-    CompanyService companyService
+    CompanyService companyService = new CompanyServiceImpl(companyRepository)
+
     CompanyMapper companyMapper = CompanyMapper.INSTANCE
+
     CompanyRepository companyRepository = Mock()
 
-    def setup() {
-        companyService = new CompanyService(companyRepository)
-    }
 
     def "expect saveCompany method to return the saved dto without throwing exception"() {
         when:

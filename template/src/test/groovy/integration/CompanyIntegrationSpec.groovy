@@ -12,7 +12,7 @@ import pot.insurance.manager.entity.Company
 import pot.insurance.manager.exception.DataValidationException
 import pot.insurance.manager.mapper.StatusMapper
 import pot.insurance.manager.repository.CompanyRepository
-import pot.insurance.manager.service.CompanyService
+import pot.insurance.manager.service.CompanyServiceImpl
 import spock.lang.Specification
 import com.fasterxml.jackson.databind.ObjectMapper
 
@@ -26,8 +26,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @WebMvcTest(CompanyRestController.class)
 class CompanyIntegrationSpec extends Specification implements TestableTrait {
     CompanyRepository companyRepository = Mock()
-    CompanyService companyService = Spy(constructorArgs: [companyRepository])
-    private static ObjectMapper mapper = new ObjectMapper();
+    CompanyServiceImpl companyService = Spy(constructorArgs: [companyRepository])
+    private static ObjectMapper mapper = new ObjectMapper()
     protected MockMvc mockMvc
 
     def setup() {

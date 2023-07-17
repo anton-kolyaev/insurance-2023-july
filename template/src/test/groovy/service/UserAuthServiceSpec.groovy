@@ -28,15 +28,13 @@ class UserAuthServiceSpec extends Specification implements TestableTrait {
     @Shared
     def encoder = Mock(PasswordEncoder)
 
-    def service = new UserAuthServiceImpl(repository, mapper, encoder);
-
-    // Data tables cannot read from not @Shared variables.
-    // Blame spock for these hardcoded values.
-    @Shared
-    def usernameLimit = 36
+    def service = new UserAuthServiceImpl(repository, mapper, encoder)
 
     @Shared
-    def passwordLimit = 101
+    def usernameLimit = UserAuthServiceImpl.getMaxUsernameLength() + 1
+
+    @Shared
+    def passwordLimit = UserAuthServiceImpl.getMaxPasswordLength() + 1
 
     def setupSpec() {
         encoder.encode(_ as String) >> {String password -> password}
