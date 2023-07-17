@@ -14,10 +14,9 @@ import pot.insurance.manager.entity.User;
 )
 public interface UserMapper {
 
-    @Mapping(source = "authId", target = "auth.id")
+    @Mapping(target = "auth", ignore = true)
     UserDTO toDTO(User User);
 
     @Mapping(source = "auth.id", target = "authId")
     User toEntity(UserDTO UserDTO);
-
 }

@@ -37,7 +37,7 @@ public class UserRestController {
     @GetMapping("/{userId}")
     @PreAuthorize("hasRole(T(pot.insurance.manager.type.UserAuthRole).ADMIN.name())")
     public Object findUserById(@PathVariable UUID userId){
-        return userService.find(userId);
+        return userService.findById(userId);
     }
 
     @PutMapping("/{userId}")
@@ -50,7 +50,7 @@ public class UserRestController {
     @DeleteMapping("/{userId}")
     @PreAuthorize("hasRole(T(pot.insurance.manager.type.UserAuthRole).ADMIN.name())")
     public Object deleteUserById(@PathVariable UUID userId){
-        return userService.delete(userId);
+        return userService.softDeleteById(userId);
     }
 
 }

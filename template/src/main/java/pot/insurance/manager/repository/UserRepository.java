@@ -15,7 +15,9 @@ public interface UserRepository extends JpaRepository<User, UUID>{
 
     Optional<User> findBySsn(String ssn);
 
-    boolean existsByIdAndDeletionStatus(UUID id, boolean deleted);
+    boolean existsByIdAndDeletionStatus(UUID id, boolean status);
 
     boolean existsBySsn(String ssn);
+
+
 }

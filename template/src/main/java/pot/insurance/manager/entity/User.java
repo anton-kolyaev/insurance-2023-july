@@ -1,6 +1,6 @@
 package pot.insurance.manager.entity;
 
-import java.time.LocalDate;
+import java.util.Date;
 import java.util.UUID;
 
 import jakarta.persistence.*;
@@ -19,7 +19,7 @@ import lombok.NoArgsConstructor;
 public class User {
 
     @Id
-    @Column(name="id")
+    @Column(name = "id")
     private UUID id;
 
     @Column(name="auth_id")
@@ -32,7 +32,7 @@ public class User {
     private String lastName;
 
     @Column(name = "birthday")
-    private LocalDate birthday;
+    private Date birthday;
 
     @Column(name = "email")
     private String email;

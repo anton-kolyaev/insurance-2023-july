@@ -25,8 +25,4 @@ public interface UserAuthService {
 
 	boolean exists(UserAuthDTO dto);
 
-	int getMaxUsernameLength();
-
-	int getMaxPasswordLength();
-
 }

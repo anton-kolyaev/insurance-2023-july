@@ -44,28 +44,38 @@ public class UserServiceImpl implements UserService {
         }
         User entity = this.mapper.toEntity(dto);
         try {
-            UserDTO finalDTO = this.mapper.toDTO(this.repository.save(entity));
+            entity = this.repository.save(entity);
+            UserDTO finalDTO = this.mapper.toDTO(entity);
             finalDTO.setAuth(authDTO);
             return finalDTO;
         } catch (DataIntegrityViolationException e) {
             throw new DataValidationException(DataValidation.Status.MALFORMED_DATA);
         }
     }
-    
+
+    private UserDTO linkAuth(User entity) {
+        UserDTO dto = this.mapper.toDTO(entity);
+        if (entity.getAuthId() != null && this.service.exists(entity.getAuthId())) {
+            UserAuthDTO authDto = this.service.find(entity.getAuthId());
+            dto.setAuth(authDto);
+        }
+        return dto;
+    }
+
     @Override
     public List<UserDTO> findAll(){
         return this.repository.findAllByDeletionStatus(false)
             .stream()
-            .map(this.mapper::toDTO)
+            .map(this::linkAuth)
             .toList();
     }
 
     @Override
-    public UserDTO find(UUID id){
-        User user = this.repository.findByIdAndDeletionStatus(id, false).orElseThrow(() ->
+    public UserDTO findById(UUID id){
+        User entity = this.repository.findByIdAndDeletionStatus(id, false).orElseThrow(() ->
             new DataValidationException(DataValidation.Status.USER_NOT_FOUND)
         );
-        return this.mapper.toDTO(user);
+        return this.linkAuth(entity);
 }
 
     @Override
@@ -74,7 +84,7 @@ public class UserServiceImpl implements UserService {
         if (id == null) {
             throw new DataValidationException(DataValidation.Status.USER_NOT_FOUND);
         }
-        User entity = this.repository.findById(id).orElseThrow(() ->
+        User entity = this.repository.findByIdAndDeletionStatus(id, false).orElseThrow(() ->
             new DataValidationException(DataValidation.Status.USER_NOT_FOUND)
         );
 
@@ -85,13 +95,10 @@ public class UserServiceImpl implements UserService {
                 authDTO = this.service.save(authDTO);
                 entity.setAuthId(authDTO.getId());
             } else {
-                if (authDTO.getId() == null) {
-                    authDTO.setId(authId);
-                }
+                authDTO.setId(authId);
                 authDTO = this.service.update(authDTO);
             }
         } else if (authId != null) {
-            entity.setAuthId(null);
             this.service.delete(authId);
         }
         try {
@@ -104,10 +111,13 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public UserDTO delete(UUID id){
+    public UserDTO softDeleteById(UUID id){
         User user = this.repository.findByIdAndDeletionStatus(id, false)
             .orElseThrow(() -> new DataValidationException(DataValidation.Status.USER_NOT_FOUND));
         user.setDeletionStatus(true);
+        if (user.getAuthId() != null) {
+            this.service.delete(user.getAuthId());
+        }
         return this.mapper.toDTO(this.repository.save(user));
         
     }

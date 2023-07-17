@@ -44,10 +44,10 @@ public class UserAuthServiceImpl implements UserAuthService {
 		String username = dto.getUsername();
 		String password = dto.getPassword();
 
-		if (username.isBlank() || username.length() > this.getMaxUsernameLength()) {
+		if (username.isBlank() || username.length() > UserAuthServiceImpl.getMaxUsernameLength()) {
 			throw new DataValidationException(DataValidation.Status.USER_AUTH_USERNAME_BAD_REQUIREMENTS);
 		}
-		if (password.isBlank() || password.length() > this.getMaxPasswordLength()) {
+		if (password.isBlank() || password.length() > UserAuthServiceImpl.getMaxPasswordLength()) {
 			throw new DataValidationException(DataValidation.Status.USER_AUTH_PASSWORD_BAD_REQUIREMENTS);
 		}
 	}
@@ -99,10 +99,11 @@ public class UserAuthServiceImpl implements UserAuthService {
 	@Override
 	public UserAuthDTO update(UserAuthDTO dto) {
 		this.checkRequirements(dto);
-		if (!this.exists(dto.getId())) {
+		if (!this.repository.existsById(dto.getId())) {
 			throw new DataValidationException(DataValidation.Status.USER_AUTH_NOT_FOUND);
 		}
-		if (this.repository.existsByUsernameIgnoreCase(dto.getUsername())) {
+		Optional<UserAuth> optional = this.repository.findByUsernameIgnoreCase(dto.getUsername());
+		if (optional.isPresent() && optional.get().getId().compareTo(dto.getId()) != 0) {
 			throw new DataValidationException(DataValidation.Status.USER_AUTH_USERNAME_EXISTS);
 		}
 		UserAuth entity = this.mapper.toEntity(dto);
@@ -135,13 +136,11 @@ public class UserAuthServiceImpl implements UserAuthService {
 		return this.exists(dto.getId());
 	}
 
-	@Override
-	public int getMaxUsernameLength() {
+	public static int getMaxUsernameLength() {
 		return 35;
 	}
 
-	@Override
-	public int getMaxPasswordLength() {
+	public static int getMaxPasswordLength() {
 		return 100;
 	}
 }
