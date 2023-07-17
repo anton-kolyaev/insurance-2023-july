@@ -35,7 +35,7 @@ class CompanyServiceSpec extends Specification implements TestableTrait {
 
         where:
         companyDTO << [
-                new CompanyDTO(UUID.randomUUID(), "US", "Example company", "example.com", "email@gmail.com")
+                new CompanyDTO(UUID.randomUUID(), "US", "Example company", "example.com", "email@gmail.com", false)
         ]
     }
 
@@ -50,12 +50,12 @@ class CompanyServiceSpec extends Specification implements TestableTrait {
 
         where:
         conflictEntity << [
-                Optional.of(new Company(UUID.randomUUID(), "US", "Example company", "example.com", "email@gmail.com")),
+                Optional.of(new Company(UUID.randomUUID(), "US", "Example company", "example.com", "email@gmail.com", false)),
                 Optional.empty()
         ]
         companyDTO << [
-                new CompanyDTO(UUID.randomUUID(), "US", "Example company", "example.com", "email@gmail.com"),
-                new CompanyDTO(UUID.randomUUID(), null, null, null, "email@gmail.com")
+                new CompanyDTO(UUID.randomUUID(), "US", "Example company", "example.com", "email@gmail.com", false),
+                new CompanyDTO(UUID.randomUUID(), null, null, null, "email@gmail.com", false)
         ]
 
     }
@@ -77,6 +77,34 @@ class CompanyServiceSpec extends Specification implements TestableTrait {
         ]
         b << [
                 new Company(UUID.randomUUID(), "US", "Second company", "example2.com", "email2@gmail.com")
+        ]
+    }
+
+    def "expect getCompanyById method to return the company with provided correct ID"() {
+        when:
+        companyRepository.findById(company.get().getId()) >> company
+
+        then:
+        assertReceivedDataAreAsExpected(companyService.getCompanyById(company.get().getId()), companyMapper.companyToCompanyDTO(company.get()))
+        notThrown(DataValidationException)
+
+        where:
+        company << [
+                Optional.of(new Company(UUID.randomUUID(), "US", "First company", "example1.com", "email1@gmail.com"))
+        ]
+    }
+
+    def "expect getCompanyById method to throw an exception when the company with provided ID is non-existent"() {
+        when:
+        companyRepository.findById(id) >> Optional.empty()
+        companyService.getCompanyById(id)
+
+        then:
+        thrown(DataValidationException)
+
+        where:
+        id << [
+                UUID.randomUUID()
         ]
     }
 }

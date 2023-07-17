@@ -38,22 +38,17 @@ public class CompanyService {
         }
     }
 
-    public Object getAllCompanies() {
+    public List<CompanyDTO> getAllCompanies() {
         List<Company> companyList = companyRepository.findAll();
         return companyList.stream()
-            .filter(company -> !company.isDeletionStatus())
             .map(companyMapper::companyToCompanyDTO)
             .toList();
     }
 
-    public CompanyDTO deleteCompanyById(UUID companyId) {
-        Optional<Company> company = companyRepository.findByIdAndDeletionStatusFalse(companyId);
+    public CompanyDTO getCompanyById(UUID companyId) {
+        Company company = companyRepository.findById(companyId)
+            .orElseThrow(() -> new DataValidationException(DataValidation.Status.COMPANY_NOT_FOUND));
 
-        if(company.isPresent()) {
-            company.get().setDeletionStatus(true);
-            return companyMapper.companyToCompanyDTO(companyRepository.save(company.get()));
-        } else {
-            throw new DataValidationException(DataValidation.Status.COMPANY_NOT_FOUND);
-        }
+        return companyMapper.companyToCompanyDTO(company);
     }
 }

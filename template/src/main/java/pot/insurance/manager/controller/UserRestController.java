@@ -1,5 +1,6 @@
 package pot.insurance.manager.controller;
 
+import java.util.List;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -29,23 +30,22 @@ public class UserRestController {
     }
 
     @GetMapping()
-    public Object findAllUsers(){
+    public List<UserDTO> findAllUsers(){
         return userService.findAll();
-        
     }
 
     @GetMapping("/{userId}")
-    public Object findUserById(@PathVariable UUID userId){
+    public UserDTO findUserById(@PathVariable UUID userId){
         return userService.findById(userId);
     }
 
     @PutMapping("/{userId}")
-    public Object updateUser(@PathVariable UUID userId, @RequestBody UserDTO userDTO){
+    public UserDTO updateUser(@PathVariable UUID userId, @RequestBody UserDTO userDTO){
         return userService.update(userId, userDTO);
     }
 
     @DeleteMapping("/{userId}")
-    public Object deleteUserById(@PathVariable UUID userId){
+    public UserDTO deleteUserById(@PathVariable UUID userId){
         return userService.softDeleteById(userId);
     }
 

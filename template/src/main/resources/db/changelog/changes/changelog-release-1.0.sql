@@ -28,7 +28,7 @@ CREATE TABLE `users` (
 -- changeset dzmitry.papkou:3
 -- comment: add deletion status to users table
 ALTER TABLE IF EXISTS `users`
-ADD COLUMN `deletion_status` BOOLEAN NOT NULL DEFAULT FALSE;
+ADD COLUMN `deletion_status` BOOLEAN NOT NULL;
 
 -- rollback ALTER TABLE IF EXISTS `users` DROP COLUMN `deletion_status`;
 
@@ -46,9 +46,3 @@ CREATE TABLE `companies` (
 );
 -- rollback DROP TABLE `companies`;
 
--- changeset paulius.kondratas:5
--- comment: add deletion status to companies table
-ALTER TABLE IF EXISTS `companies`
-ADD COLUMN `deletion_status` BOOLEAN NOT NULL DEFAULT FALSE;
-
--- rollback ALTER TABLE IF EXISTS `companies` DROP COLUMN `deletion_status`;

@@ -48,9 +48,9 @@ public class UserServiceImpl implements UserService {
     public List<UserDTO> findAll(){
         List<User> users = userRepository.findAll();
         return users.stream()
-            .filter(user -> !user.isDeletionStatus())
-            .map(userMapper::userToUserDTO)
-            .toList();
+                    .filter(user -> !user.isDeletionStatus())
+                    .map(userMapper::userToUserDTO)
+                    .toList();
     }
 
     @Override
