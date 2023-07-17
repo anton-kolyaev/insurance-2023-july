@@ -25,7 +25,7 @@ public class CompanyDTO {
         @JsonProperty(required = true, value = "countryCode") String countryCode,
         @JsonProperty(required = true, value = "email") String email,
         @JsonProperty("site") String site,
-        @JsonProperty("deletionStatus") Boolean deletionStatus) {
+        @JsonProperty("deletionStatus") boolean deletionStatus) {
         
             this.id = id;
             this.companyName = companyName;
@@ -55,6 +55,6 @@ public class CompanyDTO {
 
     @Value("${deletionStatusDefaultValue:false}")
     @JsonProperty
-    private Boolean deletionStatus;
+    private boolean deletionStatus;
 }
 
