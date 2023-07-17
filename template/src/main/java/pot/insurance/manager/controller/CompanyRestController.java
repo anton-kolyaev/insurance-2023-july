@@ -1,5 +1,7 @@
 package pot.insurance.manager.controller;
 
+import java.util.List;
+import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -20,7 +22,12 @@ public class CompanyRestController {
     }
 
     @GetMapping
-    public Object getAllCompanies() {
+    public List<CompanyDTO> getAllCompanies() {
         return companyService.getAllCompanies();
+    }
+
+    @GetMapping("/{companyId}")
+    public CompanyDTO getCompanyById(@PathVariable UUID companyId) {
+        return companyService.getCompanyById(companyId);
     }
 }

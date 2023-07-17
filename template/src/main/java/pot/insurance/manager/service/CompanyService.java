@@ -38,10 +38,17 @@ public class CompanyService {
         }
     }
 
-    public Object getAllCompanies() {
+    public List<CompanyDTO> getAllCompanies() {
         List<Company> companyList = companyRepository.findAll();
         return companyList.stream()
             .map(companyMapper::companyToCompanyDTO)
             .toList();
+    }
+
+    public CompanyDTO getCompanyById(UUID companyId) {
+        Company company = companyRepository.findById(companyId)
+            .orElseThrow(() -> new DataValidationException(DataValidation.Status.COMPANY_NOT_FOUND));
+
+        return companyMapper.companyToCompanyDTO(company);
     }
 }
