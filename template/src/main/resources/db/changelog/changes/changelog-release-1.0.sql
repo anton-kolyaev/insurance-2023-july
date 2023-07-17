@@ -45,3 +45,10 @@ CREATE TABLE `companies` (
     PRIMARY KEY (`id`)
 );
 -- rollback DROP TABLE `companies`;
+
+-- changeset paulius.kondratas:5
+-- comment: add deletion status to companies table
+ALTER TABLE IF EXISTS `companies`
+ADD COLUMN `deletion_status` BOOLEAN NOT NULL DEFAULT FALSE;
+
+-- rollback ALTER TABLE IF EXISTS `companies` DROP COLUMN `deletion_status`;

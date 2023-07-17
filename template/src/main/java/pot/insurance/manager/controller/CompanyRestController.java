@@ -1,5 +1,6 @@
 package pot.insurance.manager.controller;
 
+import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -22,5 +23,10 @@ public class CompanyRestController {
     @GetMapping
     public Object getAllCompanies() {
         return companyService.getAllCompanies();
+    }
+
+    @DeleteMapping("/{companyId}")
+    public CompanyDTO deleteCompanyById(@PathVariable UUID companyId) {
+        return companyService.deleteCompanyById(companyId);
     }
 }

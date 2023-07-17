@@ -15,12 +15,13 @@ import java.util.UUID;
 public class CompanyDTO {
 
     @JsonCreator
-    public CompanyDTO(@JsonProperty("id") UUID id, @JsonProperty(required = true, value = "companyName") String companyName, @JsonProperty(required = true, value = "countryCode") String countryCode, @JsonProperty(required = true, value = "email") String email, @JsonProperty("site") String site) {
+    public CompanyDTO(@JsonProperty("id") UUID id, @JsonProperty(required = true, value = "companyName") String companyName, @JsonProperty(required = true, value = "countryCode") String countryCode, @JsonProperty(required = true, value = "email") String email, @JsonProperty("site") String site, @JsonProperty(required = true, value = "deletionStatus") boolean deletionStatus) {
         this.id = id;
         this.companyName = companyName;
         this.countryCode = countryCode;
         this.email = email;
         this.site = site;
+        this.deletionStatus = deletionStatus;
     }
 
     @JsonProperty
@@ -40,5 +41,9 @@ public class CompanyDTO {
 
     @JsonProperty
     private String site;
+
+    @JsonSetter(nulls = Nulls.FAIL)
+    @JsonProperty(required = true)
+    private boolean deletionStatus;
 }
 
