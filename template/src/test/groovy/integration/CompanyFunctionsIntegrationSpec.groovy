@@ -61,7 +61,7 @@ class CompanyFunctionsIntegrationSpec extends Specification {
     }
 
     @Unroll
-    def "test saveCompanyFunctions success shoud return 200 http status"() {
+    def "test saveCompanyFunctions success should return 200 http status"() {
         given:
             UUID companyId = UUID.randomUUID()
             CompanyFunctionsDTO companyFunctionsDTO = Spy(new CompanyFunctionsDTO(

@@ -11,8 +11,6 @@ import pot.insurance.manager.service.CompanyService
 import spock.lang.Shared
 import spock.lang.Specification
 
-import java.sql.ClientInfoStatus
-
 class CompanyServiceSpec extends Specification implements TestableTrait {
 
     @Shared
@@ -98,6 +96,35 @@ class CompanyServiceSpec extends Specification implements TestableTrait {
         when:
         companyRepository.findByIdAndDeletionStatusFalse(id) >> Optional.empty()
         companyService.getCompanyById(id)
+
+        then:
+        thrown(DataValidationException)
+
+        where:
+        id << [
+                UUID.randomUUID()
+        ]
+    }
+
+    def "expect deleteCompanyById method to return the dto with the deletionStatus set to true"() {
+        when:
+        companyRepository.findByIdAndDeletionStatusFalse(company.get().getId()) >> company
+        companyRepository.save(_ as Company) >> company.get()
+
+        then:
+        assertReceivedDataAreAsExpected(companyService.deleteCompanyById(company.get().getId()).isDeletionStatus(), true)
+        notThrown(DataValidationException)
+
+        where:
+        company << [
+                Optional.of(new Company(UUID.randomUUID(), "US", "First company", "example1.com", "email1@gmail.com", false))
+        ]
+    }
+
+    def "expect deleteCompanyById method to throw an exception when company is not found"() {
+        when:
+        companyRepository.findByIdAndDeletionStatusFalse(id) >> Optional.empty()
+        companyService.deleteCompanyById(id)
 
         then:
         thrown(DataValidationException)

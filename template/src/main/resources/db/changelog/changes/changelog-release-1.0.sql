@@ -45,4 +45,3 @@ CREATE TABLE `companies` (
     PRIMARY KEY (`id`)
 );
 -- rollback DROP TABLE `companies`;
-

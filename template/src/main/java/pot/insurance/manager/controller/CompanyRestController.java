@@ -31,4 +31,9 @@ public class CompanyRestController {
     public CompanyDTO getCompanyById(@PathVariable UUID companyId) {
         return companyService.getCompanyById(companyId);
     }
+
+    @DeleteMapping("/{companyId}")
+    public CompanyDTO deleteCompanyById(@PathVariable UUID companyId) {
+        return companyService.deleteCompanyById(companyId);
+    }
 }
