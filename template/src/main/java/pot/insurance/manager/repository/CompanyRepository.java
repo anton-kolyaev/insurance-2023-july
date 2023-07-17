@@ -6,7 +6,6 @@ import pot.insurance.manager.entity.Company;
 
 import java.util.Optional;
 import java.util.UUID;
-import java.util.List;
 
 public interface CompanyRepository extends JpaRepository<Company, UUID> {
 
