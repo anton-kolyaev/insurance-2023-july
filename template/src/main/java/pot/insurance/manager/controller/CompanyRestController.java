@@ -1,6 +1,9 @@
 package pot.insurance.manager.controller;
 
 import lombok.RequiredArgsConstructor;
+
+import java.util.List;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import pot.insurance.manager.dto.CompanyDTO;
@@ -20,7 +23,7 @@ public class CompanyRestController {
     }
 
     @GetMapping
-    public Object getAllCompanies() {
+    public List<CompanyDTO> getAllCompanies() {
         return companyService.getAllCompanies();
     }
 }
