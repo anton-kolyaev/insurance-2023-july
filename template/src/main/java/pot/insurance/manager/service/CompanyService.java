@@ -37,9 +37,8 @@ public class CompanyService {
     }
 
     public List<CompanyDTO> getAllCompanies() {
-        List<Company> companyList = companyRepository.findAll();
+        List<Company> companyList = companyRepository.findAllByDeletionStatusFalse();
         return companyList.stream()
-            .filter(company -> !company.isDeletionStatus())
             .map(companyMapper::companyToCompanyDTO)
             .toList();
     }

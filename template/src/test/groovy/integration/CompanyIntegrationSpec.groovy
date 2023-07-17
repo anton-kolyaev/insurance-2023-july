@@ -80,7 +80,7 @@ class CompanyIntegrationSpec extends Specification implements TestableTrait {
 
     def "expect 200 status code when performing GET request to retrieve all existing companies"() {
         given:
-        companyRepository.findAll() >> list
+        companyRepository.findAllByDeletionStatusFalse() >> list
 
         when:
         def result = mockMvc.perform(get('/v1/companies')
