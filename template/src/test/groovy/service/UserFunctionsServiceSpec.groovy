@@ -242,47 +242,5 @@ class UserFunctionsServiceImplSpec extends Specification {
             thrown(DataValidationException)
     }
 
-    @Unroll
-    def "expect modifyUserFunctionsDTO to modify fields based on companyFunctions"() {
-        given:
-            def userFunctionsDTO = new UserFunctionsDTO(
-                userId: null,
-                companyId: null,
-                companyManager: true,
-                consumer: true,
-                companyClaimManager: true,
-                consumerClaimManager: true,
-                companySettingManager: true,
-                companyReportManager: true
-            )
-            
-            def companyFunctions = new CompanyFunctions(
-                id: null,
-                companyManager: false,
-                consumer: true,
-                companyClaimManager: true,
-                consumerClaimManager: false,
-                companySettingManager: true,
-                companyReportManager: false
-            )
-            
-            def modifyUserFunctionsDTO = new UserFunctionsDTO(
-                userId: null,
-                companyId: null,
-                companyManager: false,
-                consumer: true,
-                companyClaimManager: true,
-                consumerClaimManager: false,
-                companySettingManager: true,
-                companyReportManager: false
-            )
-        
-        when:
-            def result = userFunctionsService.modifyUserFunctionsDTO(userFunctionsDTO, companyFunctions)
-        
-        then:
-            result != null
-            result == modifyUserFunctionsDTO
-    }
 }
 

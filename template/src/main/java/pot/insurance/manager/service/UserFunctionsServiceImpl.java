@@ -1,7 +1,5 @@
 package pot.insurance.manager.service;
 
-import java.lang.reflect.Field;
-import java.util.Arrays;
 import java.util.UUID;
 
 import org.springframework.dao.DataIntegrityViolationException;
@@ -35,9 +33,15 @@ public class UserFunctionsServiceImpl implements UserFunctionsService {
                 .orElseThrow(() -> new DataValidationException(DataValidation.Status.USER_NOT_FOUND));
             CompanyFunctions companyFunctions = companyFunctionsRepository.findById(companyId)
                 .orElseThrow(() -> new DataValidationException(DataValidation.Status.COMPANY_FUNCTIONS_NOT_SETTED));
-            
-            UserFunctionsDTO modifiedUserFunctionsDTO = modifyUserFunctionsDTO(userFunctionsDTO, companyFunctions);
-            UserFunctions userFunctions = userFunctionsMapper.userFunctionsDTOToEntity(modifiedUserFunctionsDTO);
+
+            userFunctionsDTO.setCompanyManager(companyFunctions.isCompanyManager() && userFunctionsDTO.isCompanyManager());
+            userFunctionsDTO.setCompanyClaimManager(companyFunctions.isCompanyClaimManager() && userFunctionsDTO.isCompanyClaimManager());
+            userFunctionsDTO.setCompanyReportManager(companyFunctions.isCompanyReportManager() && userFunctionsDTO.isCompanyReportManager());
+            userFunctionsDTO.setCompanySettingManager(companyFunctions.isCompanySettingManager() && userFunctionsDTO.isCompanySettingManager());
+            userFunctionsDTO.setConsumer(companyFunctions.isConsumer() && userFunctionsDTO.isConsumer());
+            userFunctionsDTO.setConsumerClaimManager(companyFunctions.isConsumerClaimManager() && userFunctionsDTO.isConsumerClaimManager());
+                
+            UserFunctions userFunctions = userFunctionsMapper.userFunctionsDTOToEntity(userFunctionsDTO);
             userFunctions.setUserId(userId);
             userFunctions.setCompanyId(companyId);
 
@@ -47,30 +51,6 @@ public class UserFunctionsServiceImpl implements UserFunctionsService {
         }
     }
 
-    private UserFunctionsDTO modifyUserFunctionsDTO(UserFunctionsDTO userFunctionsDTO, CompanyFunctions companyFunctions) {
-        Arrays.stream(userFunctionsDTO.getClass().getDeclaredFields())
-                .filter(field -> field.getType() == Boolean.TYPE)
-                .forEach(field -> {
-                    try {
-                        field.setAccessible(true);
-                        String fieldName = field.getName();
-                        Field companyField = companyFunctions.getClass().getDeclaredField(fieldName);
-                        companyField.setAccessible(true);
-                        boolean companyFunctionValue = (boolean) companyField.get(companyFunctions);
-                        if (!companyFunctionValue) {
-                            field.set(userFunctionsDTO, false);
-                        }
-                    } catch (IllegalAccessException | NoSuchFieldException e) {
-                        if (e instanceof IllegalAccessException) {
-                            throw new DataValidationException(DataValidation.Status.ILLEGAL_ACCEPT);
-                        } else {
-                            throw new DataValidationException(DataValidation.Status.COMPANY_FUNCTIONS_NOT_SETTED);
-                        }
-                    }
-                });
-            
-        return userFunctionsDTO;
-    }
     
     
 }
