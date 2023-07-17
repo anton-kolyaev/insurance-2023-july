@@ -38,7 +38,7 @@ public class CompanyService {
         }
     }
 
-    public Object getAllCompanies() {
+    public List<CompanyDTO> getAllCompanies() {
         List<Company> companyList = companyRepository.findAll();
         return companyList.stream()
             .map(companyMapper::companyToCompanyDTO)
@@ -46,12 +46,9 @@ public class CompanyService {
     }
 
     public CompanyDTO getCompanyById(UUID companyId) {
-        Optional<Company> company = companyRepository.findById(companyId);
+        Company company = companyRepository.findById(companyId)
+            .orElseThrow(() -> new DataValidationException(DataValidation.Status.COMPANY_NOT_FOUND));
 
-        if(company.isPresent()) {
-            return companyMapper.companyToCompanyDTO(company.get());
-        } else {
-            throw new DataValidationException(DataValidation.Status.COMPANY_NOT_FOUND);
-        }
+        return companyMapper.companyToCompanyDTO(company);
     }
 }
