@@ -25,4 +25,6 @@ public class Company {
     private String email;
     @Column(name = "site")
     private String site;
+    @Column(name = "deletion_status")
+    private Boolean deletionStatus;
 }
