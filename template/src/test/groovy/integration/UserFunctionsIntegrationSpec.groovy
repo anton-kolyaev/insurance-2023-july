@@ -78,7 +78,7 @@ class UserFunctionsIntegrationSpec extends Specification {
         when:
             def response = mockMvc.perform(post("/v1/companies/{companyId}/users/{userId}/functions", companyId, userId)
                     .contentType(MediaType.APPLICATION_JSON)
-                    .content(new ObjectMapper().writeValueAsString(userFunctionsDTO)))
+                    .content(objectMapper.writeValueAsString(userFunctionsDTO)))
         
         then:
             response.andExpect(status().is(HttpStatus.OK.value()))
@@ -112,7 +112,7 @@ class UserFunctionsIntegrationSpec extends Specification {
             try{
                 response = mockMvc.perform(post("/v1/companies/{companyId}/users/{userId}/functions", companyId, userId)
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content(new ObjectMapper().writeValueAsString(userFunctionsDTO)))
+                        .content(objectMapper.writeValueAsString(userFunctionsDTO)))
             } catch (ServletException ex) {
                 Throwable rootCause = ((ServletException) ex).getRootCause()
                 if (rootCause instanceof DataValidationException) {
@@ -155,7 +155,7 @@ class UserFunctionsIntegrationSpec extends Specification {
             try{
                 response = mockMvc.perform(post("/v1/companies/{companyId}/users/{userId}/functions", companyId, userId)
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content(new ObjectMapper().writeValueAsString(userFunctionsDTO)))
+                        .content(objectMapper.writeValueAsString(userFunctionsDTO)))
             } catch (ServletException ex) {
                 Throwable rootCause = ((ServletException) ex).getRootCause()
                 if (rootCause instanceof DataValidationException) {
@@ -198,7 +198,7 @@ class UserFunctionsIntegrationSpec extends Specification {
             try{
                 response = mockMvc.perform(post("/v1/companies/{companyId}/users/{userId}/functions", companyId, userId)
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content(new ObjectMapper().writeValueAsString(userFunctionsDTO)))
+                        .content(objectMapper.writeValueAsString(userFunctionsDTO)))
             } catch (ServletException ex) {
                 Throwable rootCause = ((ServletException) ex).getRootCause()
                 if (rootCause instanceof DataValidationException) {
@@ -241,7 +241,7 @@ class UserFunctionsIntegrationSpec extends Specification {
             try{
                 response = mockMvc.perform(post("/v1/companies/{companyId}/users/{userId}/functions", companyId, userId)
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content(new ObjectMapper().writeValueAsString(userFunctionsDTO)))
+                        .content(objectMapper.writeValueAsString(userFunctionsDTO)))
             } catch (ServletException ex) {
                 Throwable rootCause = ((ServletException) ex).getRootCause()
                 if (rootCause instanceof DataValidationException) {
@@ -284,7 +284,7 @@ class UserFunctionsIntegrationSpec extends Specification {
             try{
                 response = mockMvc.perform(post("/v1/companies/{companyId}/users/{userId}/functions", companyId, userId)
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content(new ObjectMapper().writeValueAsString(userFunctionsDTO)))
+                        .content(objectMapper.writeValueAsString(userFunctionsDTO)))
             } catch (ServletException ex) {
                 Throwable rootCause = ((ServletException) ex).getRootCause()
                 if (rootCause instanceof DataValidationException) {

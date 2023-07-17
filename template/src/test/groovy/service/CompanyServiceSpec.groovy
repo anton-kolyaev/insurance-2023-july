@@ -66,7 +66,7 @@ class CompanyServiceSpec extends Specification implements TestableTrait {
         List<CompanyDTO> companyDTOList = companyList.stream().map(companyMapper::companyToCompanyDTO).toList()
 
         when:
-        companyRepository.findAll() >> companyList
+        companyRepository.findAllByDeletionStatusFalse() >> companyList
 
         then:
         assertReceivedDataAreAsExpected(companyService.getAllCompanies(), companyDTOList)
