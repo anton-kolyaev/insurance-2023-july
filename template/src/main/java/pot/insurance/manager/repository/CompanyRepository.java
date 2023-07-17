@@ -1,5 +1,6 @@
 package pot.insurance.manager.repository;
 
+import java.util.List;
 import org.springframework.data.jpa.repository.JpaRepository;
 import pot.insurance.manager.entity.Company;
 

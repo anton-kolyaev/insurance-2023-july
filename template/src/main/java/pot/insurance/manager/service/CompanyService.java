@@ -48,4 +48,12 @@ public class CompanyService {
 
         return companyMapper.companyToCompanyDTO(company);
     }
+
+    public CompanyDTO deleteCompanyById(UUID companyId) {
+        Company company = companyRepository.findByIdAndDeletionStatusFalse(companyId)
+            .orElseThrow(() -> new DataValidationException(DataValidation.Status.COMPANY_NOT_FOUND));
+        company.setDeletionStatus(true);
+
+        return companyMapper.companyToCompanyDTO(companyRepository.save(company));
+    }
 }
