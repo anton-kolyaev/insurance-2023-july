@@ -41,4 +41,11 @@ public class CompanyService {
             .map(companyMapper::companyToCompanyDTO)
             .toList();
     }
+
+    public CompanyDTO getCompanyById(UUID companyId) {
+        Company company = companyRepository.findById(companyId)
+            .orElseThrow(() -> new DataValidationException(DataValidation.Status.COMPANY_NOT_FOUND));
+
+        return companyMapper.companyToCompanyDTO(company);
+    }
 }

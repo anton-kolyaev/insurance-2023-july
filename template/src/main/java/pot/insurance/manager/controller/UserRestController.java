@@ -32,7 +32,6 @@ public class UserRestController {
     @GetMapping()
     public List<UserDTO> findAllUsers(){
         return userService.findAll();
-        
     }
 
     @GetMapping("/{userId}")

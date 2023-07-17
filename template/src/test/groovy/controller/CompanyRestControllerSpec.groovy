@@ -41,4 +41,17 @@ class CompanyRestControllerSpec extends Specification implements TestableTrait {
                 new CompanyDTO(UUID.randomUUID(), "US", "Second company", "example2.com", "email2@gmail.com", false)
         ]
     }
+
+    def "expect getCompanyById method to return the dto of the company with provided ID"() {
+        when:
+        companyService.getCompanyById(companyDTO.getId()) >> companyDTO
+
+        then:
+        assertReceivedDataAreAsExpected(controller.getCompanyById(companyDTO.getId()), companyDTO)
+
+        where:
+        companyDTO << [
+                new CompanyDTO(UUID.randomUUID(), "US", "First company", "example1.com", "email1@gmail.com")
+        ]
+    }
 }
