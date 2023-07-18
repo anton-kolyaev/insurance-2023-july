@@ -15,7 +15,6 @@ import pot.insurance.manager.type.DataValidation;
 import pot.insurance.manager.type.UserAuthRole;
 import pot.insurance.manager.type.UserAuthStatus;
 
-import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -72,14 +71,6 @@ public class UserAuthServiceImpl implements UserAuthService {
 		}
 	}
 
-	@Override
-	public List<UserAuthDTO> findAll() {
-		return this.repository.findAllByStatusNot(UserAuthStatus.DELETED)
-			.stream()
-			.map(this.mapper::toDTO)
-			.toList();
-	}
-
 	private UserAuthDTO getDTO(Optional<UserAuth> entity) {
 		return this.mapper.toDTO(entity.orElseThrow(() ->
 			new DataValidationException(DataValidation.Status.USER_AUTH_NOT_FOUND))
@@ -92,13 +83,7 @@ public class UserAuthServiceImpl implements UserAuthService {
 	}
 
 	@Override
-	public UserAuthDTO find(String username) {
-		return this.getDTO(this.repository.findByUsernameIgnoreCaseAndStatusNot(username.toLowerCase(), UserAuthStatus.DELETED));
-	}
-
-	@Override
 	public UserAuthDTO update(UserAuthDTO dto) {
-		this.checkRequirements(dto);
 		if (!this.repository.existsById(dto.getId())) {
 			throw new DataValidationException(DataValidation.Status.USER_AUTH_NOT_FOUND);
 		}
@@ -106,6 +91,7 @@ public class UserAuthServiceImpl implements UserAuthService {
 		if (optional.isPresent() && optional.get().getId().compareTo(dto.getId()) != 0) {
 			throw new DataValidationException(DataValidation.Status.USER_AUTH_USERNAME_EXISTS);
 		}
+		this.checkRequirements(dto);
 		UserAuth entity = this.mapper.toEntity(dto);
 		try {
 			return this.mapper.toDTO(this.repository.save(this.prepareEntity(entity)));
@@ -122,18 +108,8 @@ public class UserAuthServiceImpl implements UserAuthService {
 	}
 
 	@Override
-	public void delete(UserAuthDTO dto) {
-		this.delete(dto.getId());
-		dto.setStatus(UserAuthStatus.DELETED);
-	}
-
-	@Override
 	public boolean exists(UUID id) {
 		return this.repository.existsByIdAndStatusNot(id, UserAuthStatus.DELETED);
-	}
-	@Override
-	public boolean exists(UserAuthDTO dto) {
-		return this.exists(dto.getId());
 	}
 
 	public static int getMaxUsernameLength() {

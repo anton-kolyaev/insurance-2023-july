@@ -5,7 +5,6 @@ import jakarta.servlet.ServletException
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.http.MediaType
-import org.springframework.test.web.servlet.MockMvc
 import pot.insurance.manager.controller.CompanyRestController
 import pot.insurance.manager.dto.CompanyDTO
 import pot.insurance.manager.entity.Company
@@ -25,33 +24,33 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @SpringBootTest
 @WebMvcTest(CompanyRestController.class)
 class CompanyIntegrationSpec extends Specification implements TestableTrait {
-    CompanyRepository companyRepository = Mock()
-    CompanyServiceImpl companyService = Spy(constructorArgs: [companyRepository])
-    private static ObjectMapper mapper = new ObjectMapper()
-    protected MockMvc mockMvc
 
-    def setup() {
-        mockMvc = standaloneSetup(new CompanyRestController(companyService)).build()
-    }
+    def repository = Mock(CompanyRepository)
+
+    def companyService = Spy(type: CompanyServiceImpl, constructorArgs: [repository])
+
+    def mapper = new ObjectMapper()
+
+    def mockMvc = standaloneSetup(new CompanyRestController(companyService as CompanyServiceImpl)).build()
 
     def "expect corresponding status code when performing POST request to save new company"() {
         given:
         CompanyDTO companyDTO = new CompanyDTO(id, name, code, email, site, deletionStatus)
         String json = mapper.writeValueAsString(companyDTO)
-        companyRepository.findById(id) >> optional
+        repository.findById(id) >> optional
 
         when:
-        def result
+        def result = null
         try {
             result = mockMvc.perform(post('/v1/companies')
-                    .contentType(MediaType.APPLICATION_JSON)
-                    .content(json))
-                    .andReturn()
-                    .response
-                    .getStatus()
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(json))
+                .andReturn()
+                .response
+                .getStatus()
         } catch (ServletException ex) {
             Throwable rootCause = ((ServletException) ex).getRootCause()
-            if(rootCause instanceof DataValidationException) {
+            if (rootCause instanceof DataValidationException) {
                 result = StatusMapper.toHttp(rootCause.getStatus().getCategory()).value()
             }
         }
@@ -80,7 +79,7 @@ class CompanyIntegrationSpec extends Specification implements TestableTrait {
 
     def "expect 200 status code when performing GET request to retrieve all existing companies"() {
         given:
-        companyRepository.findAllByDeletionStatusFalse() >> list
+        repository.findAllByDeletionStatus(false) >> list
 
         when:
         def result = mockMvc.perform(get('/v1/companies')
@@ -102,19 +101,19 @@ class CompanyIntegrationSpec extends Specification implements TestableTrait {
 
     def "expect corresponding status code when performing GET request to retrieve company by ID"() {
         given:
-        companyRepository.findByIdAndDeletionStatusFalse(id) >> optional
+        repository.findByIdAndDeletionStatus(id, false) >> optional
 
         when:
-        def result
+        def result = null
         try {
             result = mockMvc.perform(get('/v1/companies/{id}', id.toString())
-                    .contentType(MediaType.APPLICATION_JSON))
-                    .andReturn()
-                    .response
-                    .getStatus()
+                .contentType(MediaType.APPLICATION_JSON))
+                .andReturn()
+                .response
+                .getStatus()
         } catch (ServletException ex) {
             Throwable rootCause = ex.getRootCause()
-            if(rootCause instanceof DataValidationException) {
+            if (rootCause instanceof DataValidationException) {
                 result = StatusMapper.toHttp(rootCause.getStatus().getCategory()).value()
             }
         }
@@ -139,23 +138,23 @@ class CompanyIntegrationSpec extends Specification implements TestableTrait {
 
     def "expect corresponding status code when performing DELETE request to soft delete company by ID"() {
         given:
-        companyRepository.findByIdAndDeletionStatusFalse(id) >> optional
+        repository.findByIdAndDeletionStatus(id, false) >> optional
 
         if(!optional.isEmpty()) {
-            companyRepository.save(_ as Company) >> optional.get()
+            repository.save(_ as Company) >> optional.get()
         }
 
         when:
-        def result
+        def result = null
         try {
             result = mockMvc.perform(delete('/v1/companies/{id}', id.toString())
-                    .contentType(MediaType.APPLICATION_JSON))
-                    .andReturn()
-                    .response
-                    .getStatus()
+                .contentType(MediaType.APPLICATION_JSON))
+                .andReturn()
+                .getResponse()
+                .getStatus()
         } catch (ServletException ex) {
             Throwable rootCause = ex.getRootCause()
-            if(rootCause instanceof DataValidationException) {
+            if (rootCause instanceof DataValidationException) {
                 result = StatusMapper.toHttp(rootCause.getStatus().getCategory()).value()
             }
         }

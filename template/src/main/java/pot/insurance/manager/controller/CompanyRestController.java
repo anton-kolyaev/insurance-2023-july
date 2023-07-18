@@ -9,14 +9,14 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import pot.insurance.manager.dto.CompanyDTO;
-import pot.insurance.manager.service.CompanyServiceImpl;
+import pot.insurance.manager.service.CompanyService;
 
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/v1/companies")
 public class CompanyRestController {
 
-    private final CompanyServiceImpl companyService;
+    private final CompanyService companyService;
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)

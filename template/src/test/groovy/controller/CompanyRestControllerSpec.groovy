@@ -7,19 +7,21 @@ import pot.insurance.manager.service.CompanyService
 import spock.lang.Specification
 
 class CompanyRestControllerSpec extends Specification implements TestableTrait {
-    def companyService = Mock(CompanyService)
-    def controller = new CompanyRestController(companyService)
+
+    def service = Mock(CompanyService)
+
+    def controller = new CompanyRestController(service)
 
     def "expect createCompany method to return created DTO"() {
         when:
-        companyService.saveCompany(_) >> companyDTO
+        service.saveCompany(_ as CompanyDTO) >> dto
 
         then:
-        assertReceivedDataAreAsExpected(controller.createCompany(companyDTO), companyDTO)
+        assertReceivedDataAreAsExpected(controller.createCompany(dto), dto)
 
         where:
-        companyDTO << [
-                new CompanyDTO(UUID.randomUUID(), "Example company", "US", "example@gmail.com", "example.com", false)
+        dto << [
+            new CompanyDTO(UUID.randomUUID(), "Example company", "US", "example@gmail.com", "example.com", false)
         ]
     }
 
@@ -28,43 +30,43 @@ class CompanyRestControllerSpec extends Specification implements TestableTrait {
         List<CompanyDTO> companyDTOList = List.of(a, b)
 
         when:
-        companyService.getAllCompanies() >> companyDTOList
+        service.getAllCompanies() >> companyDTOList
 
         then:
         assertReceivedDataAreAsExpected(controller.getAllCompanies(), companyDTOList)
 
         where:
         a << [
-                new CompanyDTO(UUID.randomUUID(), "US", "First company", "example1.com", "email1@gmail.com", false)
+            new CompanyDTO(UUID.randomUUID(), "US", "First company", "example1.com", "email1@gmail.com", false)
         ]
         b << [
-                new CompanyDTO(UUID.randomUUID(), "US", "Second company", "example2.com", "email2@gmail.com", false)
+            new CompanyDTO(UUID.randomUUID(), "US", "Second company", "example2.com", "email2@gmail.com", false)
         ]
     }
 
     def "expect getCompanyById method to return the dto of the company with provided ID"() {
         when:
-        companyService.getCompanyById(companyDTO.getId()) >> companyDTO
+        service.getCompanyById(companyDTO.getId()) >> companyDTO
 
         then:
         assertReceivedDataAreAsExpected(controller.getCompanyById(companyDTO.getId()), companyDTO)
 
         where:
         companyDTO << [
-                new CompanyDTO(UUID.randomUUID(), "US", "First company", "example1.com", "email1@gmail.com", false)
+            new CompanyDTO(UUID.randomUUID(), "US", "First company", "example1.com", "email1@gmail.com", false)
         ]
     }
 
-    def "expect deleteCompanyById method to return soft-deleted company dto with deletionStaus true "() {
+    def "expect deleteCompanyById method to return soft-deleted company dto with deletionStatus true "() {
         when:
-        companyService.deleteCompanyById(companyDTO.getId()) >> companyDTO
+        service.deleteCompanyById(companyDTO.getId()) >> companyDTO
 
         then:
         assertReceivedDataAreAsExpected(controller.deleteCompanyById(companyDTO.getId()), companyDTO)
 
         where:
         companyDTO << [
-                new CompanyDTO(UUID.randomUUID(), "US", "First company", "example1.com", "email1@gmail.com", true)
+            new CompanyDTO(UUID.randomUUID(), "US", "First company", "example1.com", "email1@gmail.com", true)
         ]
     }
 }

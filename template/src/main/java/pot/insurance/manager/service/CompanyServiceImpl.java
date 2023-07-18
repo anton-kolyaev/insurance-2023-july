@@ -3,6 +3,7 @@ package pot.insurance.manager.service;
 import java.util.List;
 
 import lombok.RequiredArgsConstructor;
+
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 import pot.insurance.manager.entity.Company;
@@ -10,7 +11,9 @@ import pot.insurance.manager.dto.CompanyDTO;
 import pot.insurance.manager.exception.DataValidationException;
 import pot.insurance.manager.mapper.CompanyMapper;
 import pot.insurance.manager.repository.CompanyRepository;
+
 import java.util.UUID;
+
 import pot.insurance.manager.type.DataValidation;
 
 @Service
@@ -22,7 +25,7 @@ public class CompanyServiceImpl implements CompanyService {
 
     @Override
     public CompanyDTO saveCompany(CompanyDTO companyDTO) {
-        Company company = companyMapper.companyDTOToCompany(companyDTO);
+        Company company = companyMapper.toEntity(companyDTO);
         if(company.getId() == null) {
             company.setId(UUID.randomUUID());
         }
@@ -39,7 +42,7 @@ public class CompanyServiceImpl implements CompanyService {
 
     @Override
     public List<CompanyDTO> getAllCompanies() {
-        List<Company> companyList = companyRepository.findAllByDeletionStatusFalse();
+        List<Company> companyList = companyRepository.findAllByDeletionStatus(false);
         return companyList.stream()
             .map(companyMapper::companyToCompanyDTO)
             .toList();
@@ -47,7 +50,7 @@ public class CompanyServiceImpl implements CompanyService {
 
     @Override
     public CompanyDTO getCompanyById(UUID companyId) {
-        Company company = companyRepository.findByIdAndDeletionStatusFalse(companyId)
+        Company company = companyRepository.findByIdAndDeletionStatus(companyId, false)
             .orElseThrow(() -> new DataValidationException(DataValidation.Status.COMPANY_NOT_FOUND));
 
         return companyMapper.companyToCompanyDTO(company);
@@ -55,7 +58,7 @@ public class CompanyServiceImpl implements CompanyService {
 
     @Override
     public CompanyDTO deleteCompanyById(UUID companyId) {
-        Company company = companyRepository.findByIdAndDeletionStatusFalse(companyId)
+        Company company = companyRepository.findByIdAndDeletionStatus(companyId, false)
             .orElseThrow(() -> new DataValidationException(DataValidation.Status.COMPANY_NOT_FOUND));
         company.setDeletionStatus(true);
 
