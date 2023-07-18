@@ -1,70 +1,76 @@
 package pot.insurance.manager.dto;
 
-import org.springframework.beans.factory.annotation.Value;
-
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonSetter;
-import com.fasterxml.jackson.annotation.Nulls;
-
-import java.util.Date;
-import java.util.UUID;
+import com.fasterxml.jackson.annotation.*;
 
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import org.springframework.beans.factory.annotation.Value;
+
+import java.util.Date;
+import java.util.UUID;
 
 @Data
-@NoArgsConstructor
 @Builder
+@NoArgsConstructor
 public class UserDTO {
 
-    @JsonCreator
-    public UserDTO(
-        @JsonProperty("id") UUID id,
-        @JsonProperty(required = true, value = "firstName") String firstName,
-        @JsonProperty(required = true, value = "lastName") String lastName,
-        @JsonProperty(required = true, value = "birthday") Date birthday,
-        @JsonProperty(required = true, value = "email") String email,
-        @JsonProperty(required = true, value = "ssn") String ssn,
-        @JsonProperty("deletionStatus") boolean deletionStatus) {
+	@JsonCreator
+	public UserDTO(
+		@JsonProperty("id") UUID id,
+		@JsonProperty(required = true, value = "firstName") String firstName,
+		@JsonProperty(required = true, value = "lastName") String lastName,
+		@JsonProperty(required = true, value = "birthday") Date birthday,
+		@JsonProperty(required = true, value = "email") String email,
+		@JsonProperty(required = true, value = "ssn") String ssn,
+		@JsonProperty("deletionStatus") boolean deletionStatus,
+		@JsonProperty("auth") UserAuthDTO auth
+	) {
+		this.id = id;
+		this.auth = auth;
+		this.firstName = firstName;
+		this.lastName = lastName;
+		this.birthday = birthday;
+		this.email = email;
+		this.ssn = ssn;
+		this.deletionStatus = deletionStatus;
+	}
 
-            this.id = id;
-            this.firstName = firstName;
-            this.lastName = lastName;
-            this.birthday = birthday;
-            this.email = email;
-            this.ssn = ssn;
-            this.deletionStatus = deletionStatus;
-    }
+	@JsonProperty
+	private UUID id;
 
-    @JsonProperty
-    private UUID id;
+	@JsonProperty(required = true)
+	@JsonSetter(nulls = Nulls.FAIL)
+	private String firstName;
 
-    @JsonSetter(nulls = Nulls.FAIL)
-    @JsonProperty(required = true)
-    private String firstName;
+	@JsonProperty(required = true)
+	@JsonSetter(nulls = Nulls.FAIL)
+	private String lastName;
 
-    @JsonSetter(nulls = Nulls.FAIL)
-    @JsonProperty(required = true)
-    private String lastName;
+	@JsonProperty(required = true)
+	@JsonSetter(nulls = Nulls.FAIL)
+	private Date birthday;
 
-    @JsonSetter(nulls = Nulls.FAIL)
-    @JsonProperty(required = true)
-    private Date birthday;
+	@JsonProperty(required = true)
+	@JsonSetter(nulls = Nulls.FAIL)
+	private String email;
 
-    @JsonSetter(nulls = Nulls.FAIL)
-    @JsonProperty(required = true)
-    private String email;
+	@JsonSetter(nulls = Nulls.FAIL)
+	@JsonProperty(
+		required = true
+	)
+	private String ssn;
 
-    @JsonSetter(nulls = Nulls.FAIL)
-    @JsonProperty(required = true)
-    private String ssn;
+	@JsonProperty(
+		access = JsonProperty.Access.WRITE_ONLY
+	)
+	@Value("${deletionStatusDefaultValue:false}")
+	private boolean deletionStatus;
 
-    @Value("${deletionStatusDefaultValue:false}")
-    @JsonProperty
-    private boolean deletionStatus;
+	@JsonProperty
+	@JsonInclude(JsonInclude.Include.NON_NULL)
+	private UserAuthDTO auth;
 
 }
 

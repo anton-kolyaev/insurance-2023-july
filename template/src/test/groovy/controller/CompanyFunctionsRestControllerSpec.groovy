@@ -8,54 +8,52 @@ import spock.lang.Specification
 import spock.lang.Subject
 import spock.lang.Unroll
 
-import java.util.UUID
-
 class CompanyFunctionsRestControllerSpec extends Specification {
 
-    CompanyFunctionsService companyFunctionsService = Mock()
+    CompanyFunctionsService service = Mock()
 
     @Subject
-    CompanyFunctionsRestController CompanyFunctionsRestController = new CompanyFunctionsRestController(companyFunctionsService)
+    CompanyFunctionsRestController controller = new CompanyFunctionsRestController(service)
 
-    @Unroll("test saveCompanyFunctions metod for successful save with defined #companyFunctionsDTO and #companyId")
+    @Unroll
     def "test saveCompanyFunctions metod for successful save"() {
         given: "CompanyFunctionsDTO object with valid data"
-            def companyFunctionsDTO = new CompanyFunctionsDTO(
-                id: null,
-                companyManager: true,
-                consumer: false,
-                companyClaimManager: true,
-                consumerClaimManager: true,
-                companySettingManager: false,
-                companyReportManager: true
-            )
-            
-            def companyId = UUID.randomUUID()
+        def dto = new CompanyFunctionsDTO(
+            id: null,
+            companyManager: true,
+            consumer: false,
+            companyClaimManager: true,
+            consumerClaimManager: true,
+            companySettingManager: false,
+            companyReportManager: true
+        )
+
+        def companyId = UUID.randomUUID()
         
         when: "is called method saveCompanyFunctions with companyFunctionsDTO"
-            CompanyFunctionsDTO result = CompanyFunctionsRestController.saveCompanyFunctions(companyId, companyFunctionsDTO)
+        CompanyFunctionsDTO result = controller.saveCompanyFunctions(companyId, dto)
         
         then: "result is not null and equals companyFunctionsDTO"
-            result != null
-            result == companyFunctionsDTO
+        result != null
+        result == dto
         
         and: "method for saving is called once"
-            1 * companyFunctionsService.saveCompanyFunctions(companyId, companyFunctionsDTO) >> companyFunctionsDTO
+        1 * service.saveCompanyFunctions(companyId, dto) >> dto
     }
 
-    @Unroll("test saveCompanyFunctions metod for unsuccessful save with #companyFunctionsDTO")
+    @Unroll
     def "test saveCompanyFunctions metod for unsuccessful save should return null"() {
         given: "CompanyFunctionsDTO object with invalid data"
-            def companyFunctionsDTO = null
-            def companyId = UUID.randomUUID()
+        def dto = null
+        def id = UUID.randomUUID()
         
         when: "is called method saveCompanyFunctions with companyFunctionsDTO"
-            CompanyFunctionsDTO response = CompanyFunctionsRestController.saveCompanyFunctions(companyId, companyFunctionsDTO)
+        CompanyFunctionsDTO response = controller.saveCompanyFunctions(id, dto)
         
         then: "response is null"
-            response == null
+        response == null
         
         and: "save method is called once"
-            1 * companyFunctionsService.saveCompanyFunctions(companyId, companyFunctionsDTO) >> null
+        1 * service.saveCompanyFunctions(id, dto) >> null
     }
 }

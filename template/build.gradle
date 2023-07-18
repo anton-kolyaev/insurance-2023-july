@@ -35,11 +35,12 @@ dependencies {
 	testImplementation 'org.springframework.security:spring-security-test'
 	testImplementation libs.groovy.all
 	testImplementation libs.spock.core
+	testImplementation libs.spock.spring
 	testImplementation 'org.mockito:mockito-core'
 
 }
 
-tasks.named('test') {
+tasks.named('test', Test) {
 	useJUnitPlatform()
 	testLogging {
         events 'passed', 'skipped', 'failed'
@@ -50,9 +51,6 @@ sourceSets {
     test {
         groovy {
             srcDirs = ['src/test/groovy']
-        }
-        java {
-            srcDirs = ['src/test/java']
         }
     }
 }

@@ -53,8 +53,10 @@ public class CompanyDTO {
     @JsonProperty
     private String site;
 
+    @JsonProperty(
+        access = JsonProperty.Access.WRITE_ONLY
+    )
     @Value("${deletionStatusDefaultValue:false}")
-    @JsonProperty
     private boolean deletionStatus;
 }
 

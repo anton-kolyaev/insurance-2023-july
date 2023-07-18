@@ -3,8 +3,11 @@ package pot.insurance.manager.controller;
 import java.util.List;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
+
 import org.springframework.http.HttpStatus;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
+
 import pot.insurance.manager.dto.CompanyDTO;
 import pot.insurance.manager.service.CompanyService;
 
@@ -17,6 +20,7 @@ public class CompanyRestController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
+    @PreAuthorize("hasRole(T(pot.insurance.manager.type.UserAuthRole).ADMIN.name())")
     public CompanyDTO createCompany(@RequestBody CompanyDTO companyDTO) {
         return companyService.saveCompany(companyDTO);
     }

@@ -9,7 +9,7 @@ import java.util.UUID;
 
 public interface CompanyRepository extends JpaRepository<Company, UUID> {
 
-    Optional<Company> findByIdAndDeletionStatusFalse(UUID companyId);
+    Optional<Company> findByIdAndDeletionStatus(UUID id, boolean deletionStatus);
 
-    List<Company> findAllByDeletionStatusFalse();
+    List<Company> findAllByDeletionStatus(boolean deletionStatus);
 }

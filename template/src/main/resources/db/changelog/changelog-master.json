@@ -11,6 +11,12 @@
                 "relativeToChangelogFile": true,
                 "file": "changes/changelog-release-1.1.sql"
             }
+        },
+        {
+            "include": {
+                "relativeToChangelogFile": true,
+                "file": "changes/changelog-release-1.2.sql"
+            }
         }
     ]
 }

@@ -12,7 +12,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Entity
-@Table(name = "company_functions", schema = "insurance_manager")
+@Table(name = "company_functions")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
@@ -20,7 +20,7 @@ import lombok.NoArgsConstructor;
 public class CompanyFunctions {
     
     @Id
-    @Column(name="id", columnDefinition = "BINARY(16)")
+    @Column(name = "id")
     private UUID id;
 
     @Column(name = "company_manager")

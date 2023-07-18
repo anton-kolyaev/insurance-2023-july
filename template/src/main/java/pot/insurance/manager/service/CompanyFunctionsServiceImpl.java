@@ -25,8 +25,9 @@ public class CompanyFunctionsServiceImpl implements CompanyFunctionsService {
     @Override
     public CompanyFunctionsDTO saveCompanyFunctions(UUID id, CompanyFunctionsDTO companyFunctionsDTO) {
         try {
-            companyRepository.findByIdAndDeletionStatusFalse(id)
-                .orElseThrow(() -> new DataValidationException(DataValidation.Status.COMPANY_NOT_FOUND));
+            companyRepository.findByIdAndDeletionStatus(id, false).orElseThrow(() ->
+                new DataValidationException(DataValidation.Status.COMPANY_NOT_FOUND)
+            );
             CompanyFunctions companyFunctions = companyFunctionsMapper.companyFunctionsDTOToEntity(companyFunctionsDTO);
             companyFunctions.setId(id);
             return companyFunctionsMapper.companyFunctionsEntityToDTO(companyFunctionsRepository.save(companyFunctions));
