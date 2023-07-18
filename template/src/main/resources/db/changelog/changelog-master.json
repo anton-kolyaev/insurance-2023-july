@@ -11,6 +11,12 @@
                 "relativeToChangelogFile": true,
                 "file": "changes/changelog-release-1.1.sql"
             }
+        },
+        {
+            "include": {
+                "relativeToChangelogFile": true,
+                "file": "changes/changelog-release-1.2_user-functions_by-dzmirty.papkou_17.07.2023.sql"
+            }
         }
     ]
 }

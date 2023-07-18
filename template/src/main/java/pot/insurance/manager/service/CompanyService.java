@@ -1,7 +1,6 @@
 package pot.insurance.manager.service;
 
 import java.util.List;
-import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
@@ -39,8 +38,8 @@ public class CompanyService {
     public List<CompanyDTO> getAllCompanies() {
         List<Company> companyList = companyRepository.findAllByDeletionStatusFalse();
         return companyList.stream()
-            .map(companyMapper::companyToCompanyDTO)
-            .toList();
+                .map(companyMapper::companyToCompanyDTO)
+                .toList();
     }
 
     public CompanyDTO getCompanyById(UUID companyId) {

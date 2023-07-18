@@ -159,7 +159,7 @@ class UserServiceImplSpec extends Specification {
             ]
         
         when:
-            userRepository.findAll() >> users
+            userRepository.findAllByDeletionStatusFalse() >> users
             List<UserDTO> result = userService.findAll()
         
         then:
@@ -168,7 +168,7 @@ class UserServiceImplSpec extends Specification {
             result.size() == users.size()
         
         and:
-            1 * userRepository.findAll() >> users
+            1 * userRepository.findAllByDeletionStatusFalse() >> users
     }
 
     @Unroll
@@ -180,16 +180,16 @@ class UserServiceImplSpec extends Specification {
             ]
         
         when:
-            userRepository.findAll() >> users
+            userRepository.findAllByDeletionStatusFalse() >> users.findAll { !it.deletionStatus }
             List<UserDTO> result = userService.findAll()
         
         then:
             result.collect { it.id } == users.findAll { !it.deletionStatus }.collect { it.id }
             result.collect { it.deletionStatus } == users.findAll { !it.deletionStatus }.collect { it.deletionStatus }
-            result.size() == users.findAll { !it.deletionStatus }.size()
+            result.size() == users.count { !it.deletionStatus }
         
         and:
-        1 * userRepository.findAll() >> users
+        1 * userRepository.findAllByDeletionStatusFalse() >> users.findAll { !it.deletionStatus }
     }
 
     @Unroll
